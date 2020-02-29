@@ -12,3 +12,4 @@ target/
 
 ### Propeject Preoperties ###
 /mvn.properties
+/src/main/resources/db/migration/dev.properties

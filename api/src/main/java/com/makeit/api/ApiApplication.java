@@ -5,12 +5,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
+import org.springframework.context.annotation.Profile;
 
-@SpringBootApplication(exclude = {
-    DataSourceAutoConfiguration.class,
-    FlywayAutoConfiguration.class,
-    HibernateJpaAutoConfiguration.class
-})
+@Profile("dev")
+@SpringBootApplication
 public class ApiApplication {
 
     public static void main(String[] args) {
