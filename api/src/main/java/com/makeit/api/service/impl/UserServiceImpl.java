@@ -45,14 +45,6 @@ public class UserServiceImpl implements UserService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<User> findByEmail(String email) {
-        return userRepository.findByEmail(email);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Optional<User> findById(Long id) {
         return userRepository.findById(id);
     }
@@ -89,7 +81,6 @@ public class UserServiceImpl implements UserService {
         var user = User.builder()
             .username(registerRequest.getEmail())
             .password(passwordEncoder.encode(registerRequest.getPassword()))
-            .email(registerRequest.getEmail())
             .roles(getRolesForNewUser(registerRequest.isRegisterAsAdmin()))
             .active(true)
             .emailVerified(false)

@@ -17,11 +17,6 @@ public interface UserService {
     Optional<User> findByUsername(String username);
 
     /**
-     * Finds a user in the database by email
-     */
-    Optional<User> findByEmail(String email);
-
-    /**
      * Find a user in db by id.
      */
     Optional<User> findById(Long id);

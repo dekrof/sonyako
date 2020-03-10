@@ -2,7 +2,9 @@ package com.makeit.dao.model;
 
 import lombok.*;
 import lombok.experimental.*;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -28,10 +30,18 @@ public abstract class AbstractEntity implements Serializable {
 
     private static final long serialVersionUID = 1675053377955422291L;
     @CreatedDate
-    @Column(nullable = false, updatable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 
     @LastModifiedDate
-    @Column(nullable = false)
+    @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
+
+    @CreatedBy
+    @Column(name = "created_by", nullable = false)
+    private String createdBy;
+
+    @LastModifiedBy
+    @Column(name = "updated_by", nullable = false)
+    private String updatedBy;
 }

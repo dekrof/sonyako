@@ -16,7 +16,7 @@
     <version>0.0.1-SNAPSHOT</version>
 
     <name>API for Job Promoter Application</name>
-    <description>Spring Boot Based API for Job Promoter Application ""Make IT"</description>
+    <description>Spring Boot Based API for Job Promoter Application "Make IT"</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

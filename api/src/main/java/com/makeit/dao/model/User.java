@@ -3,7 +3,6 @@ package com.makeit.dao.model;
 import com.makeit.validation.NullOrNotBlank;
 import lombok.*;
 import lombok.experimental.*;
-import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,8 +14,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
@@ -38,12 +38,7 @@ public class User extends AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-    @NaturalId
-    @Column(unique = true)
-    @NotBlank(message = "User email should not be null")
-    private String email;
+    private Long id;
 
     @Column
     @NullOrNotBlank(message = "Username should not be blank")
@@ -53,22 +48,19 @@ public class User extends AbstractEntity {
     @NotNull(message = "Password should not be null")
     private String password;
 
-    @Column(name = "first_name")
-    @NullOrNotBlank(message = "First name should not be blank")
-    private String firstName;
-
-    @Column(name = "last_name")
-    @NullOrNotBlank(message = "Last name should not be blank")
-    private String lastName;
-
     @Builder.Default
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
         name = "USER_AUTHORITY",
-        joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id")
+        joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
     )
     private Set<Role> roles = Set.of();
+
+    @Valid
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JoinColumn(name = "profile_id", referencedColumnName = "id")
+    private Profile profile;
 
     @Column(name = "is_active", nullable = false)
     private boolean active;
