@@ -16,17 +16,18 @@ import javax.persistence.*;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class SkillRating {
 
-    @EmbeddedId SkillRatingId id;
+    @EmbeddedId
+    SkillRatingId id;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @MapsId("user_id")
     @JoinColumn(name = "user_id")
-    User user;
+    private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @MapsId("skill_id")
     @JoinColumn(name = "skill_id")
-    Skill skill;
+    private Skill skill;
 
     double rating;
 }

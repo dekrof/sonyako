@@ -24,11 +24,11 @@ public class SkillRatingId implements Serializable {
 
     private static final long serialVersionUID = 5756765817964913492L;
 
-    @Column (name = "user_id")
-    Long userId;
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
 
-    @Column (name = "skill_id")
-    Long skillId;
+    @Column(name = "skill_id", nullable = false)
+    private Long skillId;
 
 }
 

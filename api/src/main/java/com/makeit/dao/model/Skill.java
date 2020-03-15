@@ -3,6 +3,7 @@ package com.makeit.dao.model;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.util.Set;
@@ -18,19 +19,21 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Skill {
+
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     @NotEmpty(message = "Name should not be blank")
     private String name;
 
-    @Column(name = "description")
+    @Column(name = "description", nullable = false)
     @NotBlank(message = "Description shoud not be null")
     private String description;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private final Set <SkillRating> ratings = Set.of();
+    @Valid
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private final Set<SkillRating> ratings = Set.of();
 }
