@@ -2,9 +2,16 @@ package com.makeit.dao.model;
 
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
 import java.util.Set;
 
 /**
@@ -17,7 +24,9 @@ import java.util.Set;
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class Tag {
+public class Tag implements Serializable {
+
+    private static final long serialVersionUID = -6798308330040809876L;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -29,9 +38,9 @@ public class Tag {
     private String name;
 
     @Column(name = "description", nullable = false)
-    @NotBlank(message = "Description shoud not be null")
+    @NotBlank(message = "Description should not be null")
     private String description;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private final Set<User> users = Set.of();
+    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
+    private Set<User> users = Set.of();
 }

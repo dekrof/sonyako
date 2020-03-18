@@ -18,8 +18,8 @@ CREATE TABLE IF NOT EXISTS `make_it`.`USER_SKILL`
     `rating`   DECIMAL(19, 2) NOT NULL DEFAULT 0.0,
 
     -- ID
-    PRIMARY KEY(`user_id`,`skill_id`),
-    UNIQUE INDEX `PK_USER_SKILL_IDX` (`user_id`,`skill_id` ASC) INVISIBLE,
+    PRIMARY KEY (`user_id`, `skill_id`),
+    UNIQUE INDEX `PK_USER_SKILL_IDX` (`user_id`, `skill_id` ASC) INVISIBLE,
 
     -- FK
     CONSTRAINT `FK_SKILL_HAS_USER` FOREIGN KEY (`user_id`) REFERENCES `make_it`.`USER` (`id`),
@@ -32,10 +32,10 @@ CREATE TABLE IF NOT EXISTS `make_it`.`USER_SKILL`
 -- Table: SKILL
 CREATE TABLE IF NOT EXISTS `make_it`.`SKILL`
 (
-    -- Columnns
-    `id`            INT UNSIGNED   NOT NULL AUTO_INCREMENT,
-    `name`          VARCHAR(32)    NOT NULL,
-    `description`   TEXT(500)      NOT NULL,
+    -- Columns
+    `id`          INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `name`        VARCHAR(32)  NOT NULL,
+    `description` TEXT(500)    NOT NULL,
 
     -- ID
     PRIMARY KEY (`id`),
@@ -49,15 +49,15 @@ CREATE TABLE IF NOT EXISTS `make_it`.`SKILL`
 ;
 
 -- Table: USER_TAG
-CREATE TABLE IF NOT EXISTS  `make_it`.`USER_TAG`
+CREATE TABLE IF NOT EXISTS `make_it`.`USER_TAG`
 (
     -- Columns
-    `user_id`      INT UNSIGNED NOT NULL,
-    `tag_id`       INT UNSIGNED NOT NULL,
+    `user_id` INT UNSIGNED NOT NULL,
+    `tag_id`  INT UNSIGNED NOT NULL,
 
     -- ID
-    PRIMARY KEY(`user_id`,`tag_id`),
-    UNIQUE INDEX `PK_USER_TAG_IDX` (`user_id`,`tag_id` ASC) INVISIBLE,
+    PRIMARY KEY (`user_id`, `tag_id`),
+    UNIQUE INDEX `PK_USER_TAG_IDX` (`user_id`, `tag_id` ASC) INVISIBLE,
 
     -- FK
     CONSTRAINT `FK_TAG_HAS_USER` FOREIGN KEY (`user_id`) REFERENCES `make_it`.`USER` (`id`),
@@ -71,9 +71,9 @@ CREATE TABLE IF NOT EXISTS  `make_it`.`USER_TAG`
 CREATE TABLE IF NOT EXISTS `make_it`.`TAG`
 (
     -- Columns
-    `id`            INT UNSIGNED   NOT NULL AUTO_INCREMENT,
-    `name`          VARCHAR(32)    NOT NULL,
-    `description`   TEXT(500)      NOT NULL,
+    `id`          INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `name`        VARCHAR(32)  NOT NULL,
+    `description` TEXT(500)    NOT NULL,
 
     -- ID
     PRIMARY KEY (`id`),

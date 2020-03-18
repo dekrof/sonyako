@@ -22,10 +22,10 @@ CREATE TABLE IF NOT EXISTS `make_it`.`USER`
     `is_email_verified` BOOLEAN DEFAULT false,
 
     -- Audit
-    `created_at`      TIMESTAMP        NOT NULL,
-    `updated_at`      TIMESTAMP        NOT NULL,
-    `created_by`      VARCHAR(64)      NOT NULL,
-    `updated_by`      VARCHAR(64)      NOT NULL,
+    `created_at`        TIMESTAMP        NOT NULL,
+    `updated_at`        TIMESTAMP        NOT NULL,
+    `created_by`        VARCHAR(64)      NOT NULL,
+    `updated_by`        VARCHAR(64)      NOT NULL,
 
     -- ID
     PRIMARY KEY (`id`),
@@ -112,10 +112,10 @@ CREATE TABLE IF NOT EXISTS `make_it`.`ADDRESS`
     `postal_code`  VARCHAR(9)       NOT NULL,
 
     -- Audit
-    `created_at`      TIMESTAMP        NOT NULL,
-    `updated_at`      TIMESTAMP        NOT NULL,
-    `created_by`      VARCHAR(64)      NOT NULL,
-    `updated_by`      VARCHAR(64)      NOT NULL,
+    `created_at`   TIMESTAMP        NOT NULL,
+    `updated_at`   TIMESTAMP        NOT NULL,
+    `created_by`   VARCHAR(64)      NOT NULL,
+    `updated_by`   VARCHAR(64)      NOT NULL,
 
     -- ID
     PRIMARY KEY (`id`),

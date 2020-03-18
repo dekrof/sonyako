@@ -1,10 +1,6 @@
 package com.makeit.dao.model;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -16,7 +12,7 @@ import java.io.Serializable;
  * @since 1.0.0
  */
 @Data
-@SuperBuilder(toBuilder = true)
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Embeddable
@@ -24,12 +20,11 @@ public class SkillRatingId implements Serializable {
 
     private static final long serialVersionUID = 5756765817964913492L;
 
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "user_id", table = "USER_SKILL", nullable = false)
     private Long userId;
 
-    @Column(name = "skill_id", nullable = false)
+    @Column(name = "skill_id", table = "USER_SKILL", nullable = false)
     private Long skillId;
-
 }
 
 

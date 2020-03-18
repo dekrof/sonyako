@@ -2,9 +2,21 @@ package com.makeit.dao.model;
 
 import com.makeit.validation.NullOrNotBlank;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
+import lombok.experimental.*;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
@@ -52,7 +64,12 @@ public class User extends AbstractEntity {
 
     @Singular
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private Set<Tag> usertag = Set.of();
+    @JoinTable(
+        name = "USER_TAG",
+        joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id")
+    )
+    private Set<Tag> tags = Set.of();
 
     @Valid
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
@@ -77,5 +94,19 @@ public class User extends AbstractEntity {
     public void removeRole(Role role) {
         roles.remove(role);
         role.getUsers().remove(this);
+    }
+
+    public void addTag(Tag tag) {
+        tags.add(tag);
+        tag.getUsers().add(this);
+    }
+
+    public void addTags(Set<Tag> tags) {
+        tags.forEach(this::addTag);
+    }
+
+    public void removeTag(Tag tag) {
+        tags.remove(tag);
+        tag.getUsers().remove(this);
     }
 }

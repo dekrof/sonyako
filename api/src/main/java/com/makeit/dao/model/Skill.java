@@ -2,10 +2,18 @@ package com.makeit.dao.model;
 
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
 import java.util.Set;
 
 /**
@@ -18,7 +26,9 @@ import java.util.Set;
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class Skill {
+public class Skill implements Serializable {
+
+    private static final long serialVersionUID = 2727725082049465738L;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -35,5 +45,5 @@ public class Skill {
 
     @Valid
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private final Set<SkillRating> ratings = Set.of();
+    private Set<SkillRating> ratings = Set.of();
 }

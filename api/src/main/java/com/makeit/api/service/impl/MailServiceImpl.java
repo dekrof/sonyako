@@ -116,6 +116,7 @@ public class MailServiceImpl implements MailService {
 
     /**
      * Sends a simple mail as a MIME Multipart message
+     *
      * @param mail the mail to be sent
      */
     private void send(Mail mail) throws MessagingException {
@@ -132,9 +133,9 @@ public class MailServiceImpl implements MailService {
 
     /**
      * Creates message helper
+     *
      * @param message the message to be sent
      * @return a new helper
-     *
      * @throws MessagingException
      */
     private static MimeMessageHelper getHelper(MimeMessage message) throws MessagingException {
