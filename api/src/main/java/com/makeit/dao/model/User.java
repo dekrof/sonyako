@@ -71,6 +71,15 @@ public class User extends AbstractEntity {
     )
     private Set<Tag> tags = Set.of();
 
+    @Singular
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+        name = "USER_COMMENT",
+        joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "comment_id", referencedColumnName = "id")
+    )
+    private Set<Comment> comments = Set.of();
+
     @Valid
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "profile_id", referencedColumnName = "id")
@@ -108,5 +117,19 @@ public class User extends AbstractEntity {
     public void removeTag(Tag tag) {
         tags.remove(tag);
         tag.getUsers().remove(this);
+    }
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
+        comment.getUsers().add(this);
+    }
+
+    public void addComments(Set<Comment> comments) {
+        comments.forEach(this::addComment);
+    }
+
+    public void removeComment(Comment comment) {
+        comments.remove(comment);
+        comment.getUsers().remove(this);
     }
 }
