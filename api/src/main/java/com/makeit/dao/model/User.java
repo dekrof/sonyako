@@ -72,13 +72,8 @@ public class User extends AbstractEntity {
     private Set<Tag> tags = Set.of();
 
     @Singular
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(
-        name = "USER_COMMENT",
-        joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "comment_id", referencedColumnName = "id")
-    )
-    private Set<Comment> comments = Set.of();
+    @OneToMany(mappedBy = "commentator", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<@Valid Comment> comments = Set.of();
 
     @Valid
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
@@ -121,7 +116,7 @@ public class User extends AbstractEntity {
 
     public void addComment(Comment comment) {
         comments.add(comment);
-        comment.getUsers().add(this);
+        comment.setCommentator(this);
     }
 
     public void addComments(Set<Comment> comments) {
@@ -130,6 +125,6 @@ public class User extends AbstractEntity {
 
     public void removeComment(Comment comment) {
         comments.remove(comment);
-        comment.getUsers().remove(this);
+        comment.setCommentator(null);
     }
 }
