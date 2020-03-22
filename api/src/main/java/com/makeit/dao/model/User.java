@@ -72,6 +72,10 @@ public class User extends AbstractEntity {
     private Set<Tag> tags = Set.of();
 
     @Singular
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Task> tasks = Set.of();
+
+    @Singular
     @OneToMany(mappedBy = "commentator", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<@Valid Comment> comments = Set.of();
 
