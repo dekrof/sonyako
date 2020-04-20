@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import java.io.Serializable;
 import java.util.Set;
 
 /**
@@ -24,7 +25,9 @@ import java.util.Set;
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class Role {
+public class Role implements Serializable {
+
+    private static final long serialVersionUID = 6953392706754925598L;
 
     @Id
     @Column(name = "id")

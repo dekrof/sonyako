@@ -11,9 +11,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import java.util.Set;
 
 /**
  * @author sonnyako <Makydon Sofiia>
@@ -43,7 +45,7 @@ public class Company extends AbstractEntity {
     @NotBlank(message = "Company description should not be blank")
     private String description;
 
-    @Column
+    @Column(name = "logo")
     private String logo;
 
     @Valid
@@ -51,4 +53,6 @@ public class Company extends AbstractEntity {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     private User owner;
 
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<@Valid Project> projects = Set.of();
 }

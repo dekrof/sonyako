@@ -3,6 +3,7 @@ package com.makeit.dao.model;
 import lombok.*;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -38,5 +39,6 @@ public class SkillRating implements Serializable {
     @JoinColumn(name = "skill_id")
     private Skill skill;
 
+    @Column(name = "rating", nullable = false)
     private double rating;
 }

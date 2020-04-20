@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.experimental.*;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -41,10 +42,12 @@ public class UserProject implements Serializable {
     @JoinColumn(name = "project_id")
     private Project project;
 
+    @Column(name = "rating", nullable = false)
     private double rating;
 
+    @Column(name = "is_user_creator", nullable = false)
     private boolean isUserCreator;
 
+    @Column(name = "is_user_owner", nullable = false)
     private boolean isUserOwner;
-
 }

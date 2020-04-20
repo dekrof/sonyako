@@ -2,7 +2,6 @@ package com.makeit.dao.model;
 
 import lombok.*;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -45,9 +44,9 @@ public class Tag implements Serializable {
     @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
     private Set<User> users = Set.of();
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
     private Set<Project> projects = Set.of();
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
     private Set<Task> tasks = Set.of();
 }

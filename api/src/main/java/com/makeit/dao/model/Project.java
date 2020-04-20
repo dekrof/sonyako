@@ -10,6 +10,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -48,19 +50,20 @@ public class Project extends AbstractEntity {
     @Valid
     @Column(name = "company_id")
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-    private Company companyId;
+    private Company company;
 
-    @Column
-    private Long category;
+    @Column(name = "category")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+    private Category category;
 
     @Column(name = "is_fixed_rate", nullable = false)
     private boolean fixedRate;
 
     @Column(name = "is_fixed_time", nullable = false)
-    private boolean fexedTime;
+    private boolean fixedTime;
 
     @Column(name = "rate_per_hour", nullable = false)
-    @NotBlank(message = "Rete per hour should not be blank")
+    @NotBlank(message = "Rate per hour should not be blank")
     private double ratePerHour;
 
     @Column(name = "rate_currency", nullable = false)
@@ -77,6 +80,10 @@ public class Project extends AbstractEntity {
 
     @Valid
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+        name = "PROJECT_TAG",
+        joinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id")
+    )
     private Set<Tag> tags = Set.of();
-
 }

@@ -10,6 +10,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -39,7 +41,7 @@ public class Task extends AbstractEntity {
     private Long id;
 
     @Column(name = "name", nullable = false, unique = true)
-    @NotBlank(message = "Task name shoud not be  blank")
+    @NotBlank(message = "Task name should not be blank")
     private String name;
 
     @Column(name = "description", nullable = false)
@@ -51,7 +53,7 @@ public class Task extends AbstractEntity {
     private Long complexity;
 
     @Column(name = "duration", nullable = false)
-    @NotBlank(message = "Task duration shold not be blank ")
+    @NotBlank(message = "Task duration should not be blank")
     private Long duration;
 
     @Column(name = "project_id", nullable = false)
@@ -61,7 +63,7 @@ public class Task extends AbstractEntity {
     private Long parentTaskId;
 
     @Column(name = "progress_status", nullable = false)
-    private Long progressStatus;
+    private Integer progressStatus;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "stated_at")
@@ -70,9 +72,19 @@ public class Task extends AbstractEntity {
     @Column(name = "is_overdone", nullable = false)
     private boolean isOverdone;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "USER_TASK",
+        joinColumns = @JoinColumn(name = "task_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
+    )
     private Set<User> users = Set.of();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+        name = "TASK_TAG",
+        joinColumns = @JoinColumn(name = "task_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id")
+    )
     private Set<Tag> tags = Set.of();
 }

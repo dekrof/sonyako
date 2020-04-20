@@ -49,36 +49,6 @@ public class User extends AbstractEntity {
     @NotNull(message = "Password should not be null")
     private String password;
 
-    @Builder.Default
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(
-        name = "USER_AUTHORITY",
-        joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
-    )
-    private Set<Role> roles = Set.of();
-
-    @Singular
-    @OneToMany(mappedBy = "skill", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private Set<SkillRating> raredSkills = Set.of();
-
-    @Singular
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(
-        name = "USER_TAG",
-        joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id")
-    )
-    private Set<Tag> tags = Set.of();
-
-    @Singular
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Task> tasks = Set.of();
-
-    @Singular
-    @OneToMany(mappedBy = "commentator", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<@Valid Comment> comments = Set.of();
-
     @Valid
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "profile_id", referencedColumnName = "id")
@@ -90,45 +60,37 @@ public class User extends AbstractEntity {
     @Column(name = "is_email_verified", nullable = false)
     private boolean emailVerified;
 
-    public void addRole(Role role) {
-        roles.add(role);
-        role.getUsers().add(this);
-    }
+    @Builder.Default
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+        name = "USER_AUTHORITY",
+        joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
+    )
+    private Set<Role> roles = Set.of();
 
-    public void addRoles(Set<Role> roles) {
-        roles.forEach(this::addRole);
-    }
+    @Singular
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+        name = "USER_TAG",
+        joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id")
+    )
+    private Set<Tag> tags = Set.of();
 
-    public void removeRole(Role role) {
-        roles.remove(role);
-        role.getUsers().remove(this);
-    }
+    @Singular
+    @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<@Valid Task> tasks = Set.of();
 
-    public void addTag(Tag tag) {
-        tags.add(tag);
-        tag.getUsers().add(this);
-    }
+    @Singular
+    @OneToMany(mappedBy = "skill", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Set<@Valid SkillRating> ratedSkills = Set.of();
 
-    public void addTags(Set<Tag> tags) {
-        tags.forEach(this::addTag);
-    }
+    @Singular
+    @OneToMany(mappedBy = "commentator", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<@Valid Comment> comments = Set.of();
 
-    public void removeTag(Tag tag) {
-        tags.remove(tag);
-        tag.getUsers().remove(this);
-    }
-
-    public void addComment(Comment comment) {
-        comments.add(comment);
-        comment.setCommentator(this);
-    }
-
-    public void addComments(Set<Comment> comments) {
-        comments.forEach(this::addComment);
-    }
-
-    public void removeComment(Comment comment) {
-        comments.remove(comment);
-        comment.setCommentator(null);
-    }
+    @Singular
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<@Valid Company> companies = Set.of();
 }

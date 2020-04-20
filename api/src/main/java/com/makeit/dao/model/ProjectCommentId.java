@@ -25,5 +25,4 @@ public class ProjectCommentId implements Serializable {
 
     @Column(name = "comment_id", table = "PROJECT_COMMENT", nullable = false)
     private Long commentId;
-
 }

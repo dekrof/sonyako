@@ -25,5 +25,4 @@ public class TaskCommentId implements Serializable {
 
     @Column(name = "comment_id", table = "TASK_COMMENT", nullable = false)
     private Long commentId;
-
 }
