@@ -48,11 +48,11 @@ public class Project extends AbstractEntity {
     private String description;
 
     @Valid
-    @Column(name = "company_id")
+    @JoinColumn(name = "company_id")
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     private Company company;
 
-    @Column(name = "category")
+    @JoinColumn(name = "category_id")
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     private Category category;
 

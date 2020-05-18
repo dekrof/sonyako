@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500" height="500" viewBox="0 0 500 500">
+  <defs>
+    <clipPath id="clip-geolookup">
+      <rect width="500" height="500"/>
+    </clipPath>
+  </defs>
+  <g id="geolookup" clip-path="url(#clip-geolookup)">
+    <g id="Rectangle_1" data-name="Rectangle 1" fill="none" stroke="rgba(255,255,255,0)" stroke-width="1" opacity="0">
+      <rect width="500" height="500" stroke="none"/>
+      <rect x="0.5" y="0.5" width="499" height="499" fill="none"/>
+    </g>
+    <g id="Group_12" data-name="Group 12">
+      <path id="Path_72" data-name="Path 72" d="M700,373.658l25.776,6.535v25.426" transform="translate(-570)" fill="none" stroke="#f9f9fa" stroke-width="3"/>
+      <path id="Path_73" data-name="Path 73" d="M687.914,407.974l-21.452-8.354-5.1-15.3" transform="translate(-570)" fill="none" stroke="#f9f9fa" stroke-width="3"/>
+      <path id="Path_74" data-name="Path 74" d="M731.732,335.83l7.515-26.8" transform="translate(-570)" fill="none" stroke="#f9f9fa" stroke-width="3"/>
+      <path id="Path_75" data-name="Path 75" d="M692.178,292.058l-21.54-6.794" transform="translate(-570)" fill="none" stroke="#f9f9fa" stroke-width="3"/>
+      <path id="Path_76" data-name="Path 76" d="M835.726,225.088l26.349-5.854,2.246,9.235" transform="translate(-570)" fill="none" stroke="#f9f9fa" stroke-width="3"/>
+      <path id="Path_77" data-name="Path 77" d="M780.937,250.163l-28.918-8.455-5.835-25.877" transform="translate(-570)" fill="none" stroke="#f9f9fa" stroke-width="3"/>
+      <path id="Path_78" data-name="Path 78" d="M1004.775,393.9l-7.836,22.741" transform="translate(-570)" fill="none" stroke="#f9f9fa" stroke-width="3"/>
+      <path id="Path_79" data-name="Path 79" d="M992.326,384.324l12.021-32.124" transform="translate(-571 4)" fill="none" stroke="#f9f9fa" stroke-width="3"/>
+      <path id="Path_80" data-name="Path 80" d="M992.326,237.617c-5.1,0-32.722-9.448-32.722-9.448" transform="translate(-570)" fill="none" stroke="#f9f9fa" stroke-width="3"/>
+      <path id="Path_81" data-name="Path 81" d="M1004.775,201.261l10.74-27.125,24.678-3.243" transform="translate(-570)" fill="none" stroke="#f9f9fa" stroke-width="3"/>
+      <path id="Path_82" data-name="Path 82" d="M933.562,195.643l-22.552-9.454L904.848,152.7" transform="translate(-570)" fill="none" stroke="#f9f9fa" stroke-width="3"/>
+      <path id="Path_83" data-name="Path 83" d="M1040.193,38.526l-4.7-18.712" transform="translate(-570)" fill="none" stroke="#f9f9fa" stroke-width="3"/>
+      <path id="Path_84" data-name="Path 84" d="M772.72,86.886l-8.112-18.5L778.745,51.5l30.878-15.8" transform="translate(-570)" fill="none" stroke="#f9f9fa" stroke-width="3"/>
+      <path id="Path_85" data-name="Path 85" d="M751.547,98.268l8.236,11.907h17.31l26.019-11.907" transform="translate(-570)" fill="none" stroke="#f9f9fa" stroke-width="3"/>
+      <path id="Path_86" data-name="Path 86" d="M649.974,39.546H614.1V22.577" transform="translate(-570)" fill="none" stroke="#f9f9fa" stroke-width="3"/>
+      <path id="Path_87" data-name="Path 87" d="M681.408,71.927V92.411h-65V102.8" transform="translate(-570 -3)" fill="none" stroke="#f9f9fa" stroke-width="3"/>
+      <path id="Path_88" data-name="Path 88" d="M623.626,177.734H596.28v17.188" transform="translate(-570)" fill="none" stroke="#f9f9fa" stroke-width="3"/>
+    </g>
+    <g id="Group_5" data-name="Group 5">
+      <path id="Path_21" data-name="Path 21" d="M829.18,202.106l10.449,39.044L829.18,271" transform="translate(-570)" fill="none" stroke="#ebeeef" stroke-width="5"/>
+      <path id="Path_22" data-name="Path 22" d="M708.559,116.174V68.308h-117.4" transform="translate(-570)" fill="none" stroke="#ebeeef" stroke-width="5"/>
+      <path id="Path_23" data-name="Path 23" d="M649.859,68.308V27.987" transform="translate(-570)" fill="none" stroke="#ebeeef" stroke-width="5"/>
+      <path id="Path_24" data-name="Path 24" d="M711.711,331.75,682.246,422.19" transform="translate(-570)" fill="none" stroke="#ebeeef" stroke-width="5"/>
+      <path id="Path_25" data-name="Path 25" d="M970.911,379.894l46.92,18.222" transform="translate(-570)" fill="none" stroke="#ebeeef" stroke-width="5"/>
+      <path id="Path_26" data-name="Path 26" d="M1004.674,287.2h-24.4V262.68l27.421-67.108" transform="translate(-570)" fill="none" stroke="#ebeeef" stroke-width="5"/>
+    </g>
+    <g id="Group_4" data-name="Group 4">
+      <path id="Path_14" data-name="Path 14" d="M937.823,266.141l-28.27-11.163,28.27-68.618,18.446,9.109,12.158-31.955" transform="translate(-570)" fill="none" stroke="#dde1e4" stroke-width="8"/>
+      <path id="Path_15" data-name="Path 15" d="M1016.95,53.533l40.345-23.309" transform="translate(-570)" fill="none" stroke="#dde1e4" stroke-width="8"/>
+      <path id="Path_16" data-name="Path 16" d="M702.993,263.378l-19.9,57.788,55.518,16.815" transform="translate(-570)" fill="none" stroke="#dde1e4" stroke-width="8"/>
+      <path id="Path_17" data-name="Path 17" d="M639.99,214.828l-16.364-27.654V153.9L830.991,62.85" transform="translate(-570)" fill="none" stroke="#dde1e4" stroke-width="8"/>
+      <path id="Path_18" data-name="Path 18" d="M773.262,278.211l18.955-67.088,74.65-22.1" transform="translate(-570)" fill="none" stroke="#dde1e4" stroke-width="8"/>
+      <path id="Path_19" data-name="Path 19" d="M926.733,300.68l64.212,23.774,36.139-86.867" transform="translate(-570)" fill="none" stroke="#dde1e4" stroke-width="8"/>
+      <path id="Path_20" data-name="Path 20" d="M990.682,324.454,950.916,428.331" transform="translate(-570)" fill="none" stroke="#dde1e4" stroke-width="8"/>
+    </g>
+    <path id="Path_13" data-name="Path 13" d="M938.664,267.108l-27.423,64.735-22.032,8.009-49.721,109.87L823.144,366.57l-30.806-82.54L602.986,233.737l109.172-48.013L1016.95,50.6,964.524,171.694" transform="translate(-570)" fill="none" stroke="#727373" stroke-width="10"/>
+    <circle transform="translate(-570)" cx="" cy="" r="9" fill="#727373" stroke-width="3" stroke="#727373">
+      <animateMotion id="Animation_13" begin="0;Animation_13.end+4s" dur="15s" repeatCount="indefinite">
+        <mpath xlink:href="#Path_13"></mpath>
+      </animateMotion>
+    </circle>
+  </g>
+</svg>

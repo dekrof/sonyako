@@ -1,6 +1,6 @@
 package com.makeit.dao.model;
 
-import com.makeit.validation.NullOrNotBlank;
+import com.makeit.supported.validation.NullOrNotBlank;
 import lombok.*;
 import lombok.experimental.*;
 

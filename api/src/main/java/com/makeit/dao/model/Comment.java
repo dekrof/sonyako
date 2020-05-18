@@ -42,7 +42,7 @@ public class Comment extends AbstractEntity implements Comparable<Comment> {
     private Long id;
 
     @Valid
-    @Column(name = "commentator_id", nullable = false)
+    @JoinColumn(name = "commentator_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     private User commentator;
 

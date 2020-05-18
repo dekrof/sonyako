@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Set;
 
@@ -21,7 +22,8 @@ import java.util.Set;
  * @since 1.0.0
  */
 @Data
-@Entity(name = "ROLE")
+@Entity
+@Table(name = "ROLE")
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -37,7 +39,7 @@ public class Role implements Serializable {
     @Column(name = "role_name")
     @Enumerated(EnumType.STRING)
     @NaturalId
-    private RoleName role;
+    private RoleName roleName;
 
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     private final Set<User> users = Set.of();

@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.2.5.RELEASE</version>
-        <relativePath /> <!-- lookup parent from repository -->
+        <relativePath />
     </parent>
 
     <groupId>com.makeit</groupId>
@@ -21,25 +19,65 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <skip.yarn.build>true</skip.yarn.build>
 
-        <java.version>13</java.version>
+        <skip.yarn.install>true</skip.yarn.install>
 
-        <jjwt.version>0.9.1</jjwt.version>
-        <freemarker.version>2.3.28</freemarker.version>
-        <spring-cloud.version>Hoxton.SR1</spring-cloud.version>
-        <swagger.version>2.9.2</swagger.version>
+        <version.freemarker>2.3.28</version.freemarker>
+        <version.java>13</version.java>
+        <version.jwt>0.9.1</version.jwt>
+        <version.orika>1.5.4</version.orika>
+        <version.spring.cloud>Hoxton.SR1</version.spring.cloud>
+        <version.swagger>2.9.2</version.swagger>
+        <version.typescript.generator>2.22.595</version.typescript.generator>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${version.spring.cloud}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
 
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>${version.jwt}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${version.swagger}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ma.glasnost.orika</groupId>
+            <artifactId>orika-core</artifactId>
+            <version>${version.orika}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>${version.freemarker}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
         <dependency>
@@ -52,8 +90,8 @@
             <artifactId>spring-boot-starter-jersey</artifactId>
             <exclusions>
                 <exclusion>
-                    <artifactId>javassist</artifactId>
                     <groupId>org.javassist</groupId>
+                    <artifactId>javassist</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -74,9 +112,8 @@
         </dependency>
 
         <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-            <version>0.9.1</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
         <dependency>
@@ -85,31 +122,14 @@
         </dependency>
 
         <dependency>
-            <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-core</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.springframework.session</groupId>
             <artifactId>spring-session-core</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>${swagger.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.freemarker</groupId>
-            <artifactId>freemarker</artifactId>
-            <version>${freemarker.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
             <optional>true</optional>
         </dependency>
 
@@ -120,10 +140,10 @@
         </dependency>
 
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
             <optional>true</optional>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -136,8 +156,8 @@
                     <artifactId>junit-vintage-engine</artifactId>
                 </exclusion>
                 <exclusion>
-                    <artifactId>asm</artifactId>
                     <groupId>org.ow2.asm</groupId>
+                    <artifactId>asm</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -149,25 +169,162 @@
         </dependency>
     </dependencies>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
     <build>
+        <finalName>make.it.app</finalName>
         <plugins>
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
+                <groupId>com.github.ekryd.sortpom</groupId>
+                <artifactId>sortpom-maven-plugin</artifactId>
+                <version>2.11.0</version>
+                <configuration>
+                    <predefinedSortOrder>recommended_2008_06</predefinedSortOrder>
+                    <lineSeparator>\n</lineSeparator>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <sortProperties>true</sortProperties>
+                    <keepBlankLines>true</keepBlankLines>
+                    <sortDependencies>scope,groupId,artifactId</sortDependencies>
+                    <sortPlugins>groupId,artifactId</sortPlugins>
+                    <nrOfIndentSpace>4</nrOfIndentSpace>
+                    <expandEmptyElements>false</expandEmptyElements>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>sort</goal>
+                        </goals>
+                        <phase>verify</phase>
+                    </execution>
+                </executions>
             </plugin>
 
+            <plugin>
+                <groupId>cz.habarta.typescript-generator</groupId>
+                <artifactId>typescript-generator-maven-plugin</artifactId>
+                <version>${version.typescript.generator}</version>
+                <configuration>
+                    <classPatterns>
+                        <pattern>com.makeit.api.controller.**</pattern>
+                        <pattern>com.makeit.api.model.**</pattern>
+                        <pattern>com.makeit.dao.model.**</pattern>
+                    </classPatterns>
+                    <excludeClassPatterns>
+                        <pattern>com.makeit.**Builder</pattern>
+                        <pattern>com.makeit.**BuilderImpl</pattern>
+                        <pattern>com.makeit.**Exception</pattern>
+                        <pattern>java.lang.Comparable</pattern>
+                        <pattern>java.io.Serializable</pattern>
+                        <pattern>com.makeit.dao.model.AbstractEntity</pattern>
+                        <pattern>com.makeit.security.JwtUserDetails</pattern>
+                        <pattern>org.springframework.security.authentication.UsernamePasswordAuthenticationToken</pattern>
+                    </excludeClassPatterns>
+                    <jsonLibrary>jackson2</jsonLibrary>
+                    <outputFile>src/main/node/com/makeit/web/client/api-client.ts</outputFile>
+                    <outputFileType>implementationFile</outputFileType>
+                    <outputKind>module</outputKind>
+                    <restNamespacing>perResource</restNamespacing>
+                    <scanSpringApplication>false</scanSpringApplication>
+                    <generateSpringApplicationClient>true</generateSpringApplicationClient>
+                    <mapDate>asDate</mapDate>
+                    <mapEnum>asEnum</mapEnum>
+                    <mapClasses>asClasses</mapClasses>
+                    <optionalPropertiesDeclaration>questionMark</optionalPropertiesDeclaration>
+                    <removeTypeNameSuffix>Controller</removeTypeNameSuffix>
+                    <sortTypeDeclarations>true</sortTypeDeclarations>
+                    <noEslintDisable>true</noEslintDisable>
+                    <noTslintDisable>true</noTslintDisable>
+                    <noFileComment>true</noFileComment>
+                    <tsNoCheck>true</tsNoCheck>
+                    <indentSize>4</indentSize>
+                    <lineLength>120</lineLength>
+                    <stringQuotes>doubleQuotes</stringQuotes>
+                    <extensions>
+                        <extension>cz.habarta.typescript.generator.ext.AxiosClientExtension</extension>
+                        <extension>cz.habarta.typescript.generator.ext.JsonDeserializationExtension</extension>
+                    </extensions>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>cz.habarta.typescript-generator</groupId>
+                        <artifactId>typescript-generator-spring</artifactId>
+                        <version>${version.typescript.generator}</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>generate</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <phase>process-classes</phase>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${version.java}</source>
+                    <target>${version.java}</target>
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <sources>
+                                <source>src/main/node</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <configuration>
+                    <workingDirectory>${basedir}/src/main/node</workingDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>run-yarn-install</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>initialize</phase>
+                        <configuration>
+                            <skip>${skip.yarn.install}</skip>
+                            <executable>yarn</executable>
+                            <arguments>
+                                <argument>install</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>run-yarn-build</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>process-resources</phase>
+                        <configuration>
+                            <executable>yarn</executable>
+                            <skip>${skip.yarn.build}</skip>
+                            <arguments>
+                                <argument>build</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
@@ -184,7 +341,10 @@
                     </dependency>
                 </dependencies>
             </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
         </plugins>
     </build>
-
 </project>

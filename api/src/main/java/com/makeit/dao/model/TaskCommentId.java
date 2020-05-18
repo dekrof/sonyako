@@ -20,9 +20,9 @@ public class TaskCommentId implements Serializable {
 
     private static final long serialVersionUID = 5756765817964913492L;
 
-    @Column(name = "task_id", table = "TASK_COMMENT", nullable = false)
+    @Column(name = "task_id", nullable = false)
     private Long taskId;
 
-    @Column(name = "comment_id", table = "TASK_COMMENT", nullable = false)
+    @Column(name = "comment_id", nullable = false)
     private Long commentId;
 }

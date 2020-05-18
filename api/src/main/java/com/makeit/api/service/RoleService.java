@@ -1,6 +1,7 @@
 package com.makeit.api.service;
 
 import com.makeit.dao.model.Role;
+import com.makeit.dao.model.RoleName;
 
 import java.util.Collection;
 
@@ -12,7 +13,15 @@ import java.util.Collection;
 public interface RoleService {
 
     /**
-     * Find all roles from the database
+     * Finds all roles from the database
      */
     Collection<Role> findAll();
+
+    /**
+     * Finds role by role name
+     *
+     * @param roleName the role name
+     * @return the requested role
+     */
+    Role findByRoleName(RoleName roleName);
 }

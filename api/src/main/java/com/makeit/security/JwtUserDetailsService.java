@@ -1,10 +1,10 @@
 package com.makeit.security;
 
-import com.makeit.api.model.security.UserDetailRequest;
 import com.makeit.dao.model.User;
 import com.makeit.dao.repository.UserRepository;
 import lombok.*;
 import lombok.extern.slf4j.*;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,8 +24,11 @@ import javax.transaction.Transactional;
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class JwtUserDetailsService implements UserDetailsService {
 
+    @Lazy
+    @Inject
+    private PasswordEncoder passwordEncoder;
+
     private final UserRepository repository;
-    private final PasswordEncoder passwordEncoder;
 
     /**
      * {@inheritDoc}
@@ -34,7 +37,7 @@ public class JwtUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) {
         return repository.findByUsername(username)
-            .map(UserDetailRequest::new)
+            .map(JwtUserDetails::new)
             .orElseThrow(() -> new UsernameNotFoundException(String.format("User not found with username: %s", username)));
     }
 
@@ -49,7 +52,7 @@ public class JwtUserDetailsService implements UserDetailsService {
         var user = repository.findById(id);
         LOGGER.info("Fetched user : {}, by {}", user, id);
         return user
-            .map(UserDetailRequest::new)
+            .map(JwtUserDetails::new)
             .orElseThrow(() -> new UsernameNotFoundException(String.format("User not found with id: %s", id)));
     }
 

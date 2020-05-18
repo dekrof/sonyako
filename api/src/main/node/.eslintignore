@@ -1,0 +1,3 @@
+**/webpack.config.js
+**/*-client.ts
+**/@types/gl-matrix/index.d.ts

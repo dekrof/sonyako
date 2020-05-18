@@ -1,7 +1,7 @@
 package com.makeit.security;
 
+import com.makeit.api.exception.InvalidTokenRequestException;
 import com.makeit.dao.model.User;
-import com.makeit.exception.InvalidTokenRequestException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;

@@ -1,8 +1,12 @@
 package com.makeit.api.service;
 
-import com.makeit.api.model.security.RegistrationRequest;
+import com.makeit.api.model.LogoutDto;
+import com.makeit.api.model.RegistrationDto;
+import com.makeit.dao.model.RoleName;
 import com.makeit.dao.model.User;
+import com.makeit.security.JwtUserDetails;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -22,6 +26,13 @@ public interface UserService {
     Optional<User> findById(Long id);
 
     /**
+     * Find a list of users by requested role.
+     *
+     * @param roleName the name of user's role
+     */
+    List<User> findAllByRoles(RoleName roleName);
+
+    /**
      * Save the user to the database
      */
     User save(User user);
@@ -39,5 +50,14 @@ public interface UserService {
     /**
      * Creates a new user from the registration request
      */
-    User createUser(RegistrationRequest registerRequest);
+    User createUser(RegistrationDto registerRequest);
+
+    /**
+     * Log the given user out and delete the refresh token associated with it. If no device
+     * id is found matching the database for the given user, throw a log out exception.
+     *
+     * @param currentUser the current user in system
+     * @param request     the logout request
+     */
+    void logoutUser(JwtUserDetails currentUser, LogoutDto request);
 }

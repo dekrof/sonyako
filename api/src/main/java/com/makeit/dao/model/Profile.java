@@ -1,6 +1,6 @@
 package com.makeit.dao.model;
 
-import com.makeit.validation.NullOrNotBlank;
+import com.makeit.supported.validation.NullOrNotBlank;
 import lombok.*;
 import lombok.experimental.*;
 import org.hibernate.annotations.NaturalId;
@@ -16,8 +16,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -51,7 +49,7 @@ public class Profile extends AbstractEntity {
     private String email;
 
     @Column(name = "phone_number", unique = true)
-    @Size(min = 13, max = 13, message = "User phone number should be exactly 13 digits")
+    @Size(min = 11, max = 13, message = "User phone number should be between 11 and 13 digits")
     @Pattern(regexp = "\\d+", message = "Only digits are applicable")
     @NotEmpty(message = "User phone number should not be null")
     private String phoneNumber;
@@ -68,7 +66,6 @@ public class Profile extends AbstractEntity {
     @NotEmpty(message = "Last name should not be blank")
     private String surname;
 
-    @Temporal(TemporalType.DATE)
     @Column(nullable = false)
     private LocalDate birthday;
 

@@ -14,8 +14,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -65,7 +63,6 @@ public class Task extends AbstractEntity {
     @Column(name = "progress_status", nullable = false)
     private Integer progressStatus;
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "stated_at")
     private LocalDateTime statedAt;
 

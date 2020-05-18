@@ -2,6 +2,7 @@ package com.makeit.api.service.impl;
 
 import com.makeit.api.service.RoleService;
 import com.makeit.dao.model.Role;
+import com.makeit.dao.model.RoleName;
 import com.makeit.dao.repository.RoleRepository;
 import lombok.*;
 import lombok.extern.slf4j.*;
@@ -28,5 +29,13 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public Collection<Role> findAll() {
         return repository.findAll();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Role findByRoleName(RoleName roleName) {
+        return repository.findByRoleName(roleName);
     }
 }

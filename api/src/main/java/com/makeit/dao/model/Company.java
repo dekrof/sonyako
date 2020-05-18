@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -49,7 +50,7 @@ public class Company extends AbstractEntity {
     private String logo;
 
     @Valid
-    @Column(name = "owner_id", nullable = false)
+    @JoinColumn(name = "owner_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     private User owner;
 

@@ -1,5 +1,6 @@
 HELP.md
 target/
+
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**
 !**/src/test/**
@@ -10,9 +11,16 @@ target/
 *.iml
 *.ipr
 
-### Propeject Preoperties ###
+### Project Properties ###
 /mvn.properties
 /src/main/resources/db/migration/dev.properties
 /src/main/resources/application-dev.properties
 
 .DS_Store
+
+### NODE
+.env
+.vscode/
+node_modules/
+yarn.lock
+package-lock.json

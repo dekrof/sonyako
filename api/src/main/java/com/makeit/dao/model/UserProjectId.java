@@ -16,14 +16,13 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Embeddable
-
 public class UserProjectId implements Serializable {
 
     private static final long serialVersionUID = 5756765817964913492L;
 
-    @Column(name = "user_id", table = "POJECT_SKILL", nullable = false)
+    @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @Column(name = "project_id", table = "PROJECT_SKILL", nullable = false)
+    @Column(name = "project_id", nullable = false)
     private Long skillId;
 }

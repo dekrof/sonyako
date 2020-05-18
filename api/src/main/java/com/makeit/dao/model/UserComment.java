@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
+import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
@@ -17,7 +18,8 @@ import java.io.Serializable;
  * @since 1.0.0
  */
 @Data
-@Entity(name = "USER_COMMENT")
+@Entity
+@Table(name = "USER_COMMENT")
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)

@@ -1,0 +1,109 @@
+@import "../antd-overrides";
+
+.signup {
+    z-index        : 99;
+    display        : flex;
+    align-items    : center;
+    justify-content: center;
+    height         : auto;
+
+    &-stack-container {
+        background-color: #fdfdfd;
+        border-left     : 1px solid #f0f0f0;
+        border-right    : 1px solid #f0f0f0;
+        width           : 100%;
+        max-width       : 70vw;
+        height          : auto;
+        min-height      : calc(100vh - 113px);
+
+        &-tabs {
+            width     : 100%;
+            height    : auto;
+            min-height: calc(100vh - 113px);
+
+            div[role=tablist] {
+                background-color: #ffffff;
+            }
+
+            div[role=tab] {
+                &:first-child svg {
+                    margin: 10px 0 0;
+                }
+
+                span {
+                    color                : @text-color;
+                    font-weight          : normal;
+                    font-size            : 14px;
+
+                    &:hover {
+                        color: @link-color;
+                    }
+                }
+            }
+
+            div[role=tabpanel] {
+                padding: 0;
+            }
+        }
+    }
+
+    &-form {
+        padding   : 20px !important;
+        height    : auto;
+        min-height: calc(100vh - 113px);
+
+        &-avatar-space {
+            .ant-space-item {
+                width: auto;
+            }
+        }
+    }
+
+    &-form.skills-form {
+        .ant-form-item-children-icon {
+            right: 10px;
+        }
+
+        .ant-btn-link {
+            z-index         : 100;
+            background-color: #ffffff;
+        }
+
+        .ant-empty {
+            margin-bottom: 20px;
+        }
+    }
+
+    .address-form {
+        .select-before {
+            width: 120px;
+            text-align: left;
+        }
+
+        .street-select {
+            .ant-select-selector {
+                border-radius: 0;
+            }
+        }
+
+        &-map-wrapper {
+            background-image: url("../../svg/map-empty.svg");
+            background-repeat: no-repeat;
+            background-size: 100px 100px;
+            background-position: center center;
+
+            padding: 0;
+
+            .mapboxgl-ctrl,
+            .mapboxgl-ctrl a {
+                display: none;
+            }
+        }
+
+        .ant-select-disabled.ant-select-single:not(.ant-select-customize-input) .ant-select-selector,
+        .ant-input-group-addon,
+        .ant-input[disabled] {
+            background-color: initial;
+        }
+    }
+}

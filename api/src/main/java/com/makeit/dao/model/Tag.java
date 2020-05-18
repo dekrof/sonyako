@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
@@ -20,7 +21,8 @@ import java.util.Set;
  * @since 1.0.0
  */
 @Data
-@Entity(name = "TAG")
+@Entity
+@Table(name = "TAG")
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)

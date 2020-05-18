@@ -1,6 +1,6 @@
 package com.makeit.api.service.impl;
 
-import com.makeit.api.model.mail.Mail;
+import com.makeit.api.mail.Mail;
 import com.makeit.api.service.MailService;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;

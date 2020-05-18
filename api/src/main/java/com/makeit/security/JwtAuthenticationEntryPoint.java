@@ -28,8 +28,9 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     private final ObjectMapper objectMapper;
 
+    @Inject
     @Qualifier("handlerExceptionResolver")
-    private final HandlerExceptionResolver resolver;
+    private HandlerExceptionResolver resolver;
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException ex) throws IOException {

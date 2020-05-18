@@ -20,9 +20,9 @@ public class ProjectCommentId implements Serializable {
 
     private static final long serialVersionUID = 5756765817964913492L;
 
-    @Column(name = "project_id", table = "PROJECT_COMMENT", nullable = false)
+    @Column(name = "project_id", nullable = false)
     private Long projectId;
 
-    @Column(name = "comment_id", table = "PROJECT_COMMENT", nullable = false)
+    @Column(name = "comment_id", nullable = false)
     private Long commentId;
 }

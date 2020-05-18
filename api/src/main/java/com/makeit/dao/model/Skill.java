@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -22,7 +23,8 @@ import java.util.Set;
  * @since 1.0.0
  */
 @Data
-@Entity(name = "SKILL")
+@Entity
+@Table(name = "SKILL")
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
