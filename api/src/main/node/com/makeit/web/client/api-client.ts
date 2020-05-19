@@ -518,20 +518,29 @@ export class PasswordResetLinkDto {
 }
 
 export class PasswordResetToken {
+    createdAt: Date;
+    updatedAt: Date;
+    createdBy: string;
+    updatedBy: string;
     id: number;
     token: string;
-    expiryDate: Date;
     user: User;
+    expiryDate: Date;
 
     static fromData(data: PasswordResetToken, target?: PasswordResetToken): PasswordResetToken {
         if (!data) {
             return data;
         }
         const instance = target || new PasswordResetToken();
+        super.fromData(data, instance);
+        instance.createdAt = data.createdAt;
+        instance.updatedAt = data.updatedAt;
+        instance.createdBy = data.createdBy;
+        instance.updatedBy = data.updatedBy;
         instance.id = data.id;
         instance.token = data.token;
-        instance.expiryDate = data.expiryDate;
         instance.user = User.fromData(data.user);
+        instance.expiryDate = data.expiryDate;
         return instance;
     }
 }
@@ -1020,8 +1029,8 @@ export class UserProject {
     user: User;
     project: Project;
     rating: number;
-    userCreator: boolean;
     userOwner: boolean;
+    userCreator: boolean;
 
     static fromData(data: UserProject, target?: UserProject): UserProject {
         if (!data) {
@@ -1032,8 +1041,8 @@ export class UserProject {
         instance.user = User.fromData(data.user);
         instance.project = Project.fromData(data.project);
         instance.rating = data.rating;
-        instance.userCreator = data.userCreator;
         instance.userOwner = data.userOwner;
+        instance.userCreator = data.userCreator;
         return instance;
     }
 }

@@ -55,6 +55,7 @@
         "html2canvas": "^1.0.0-rc.5",
         "inversify": "^5.0.1",
         "inversify-react": "^0.4.3",
+        "less": "^3.11.1",
         "mobx": "^5.15.4",
         "mobx-react": "^6.2.2",
         "mobx-task": "^2.0.0",

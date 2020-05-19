@@ -20,7 +20,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <skip.yarn.build>false</skip.yarn.build>
+        <skip.yarn.build>true</skip.yarn.build>
         <skip.yarn.install>true</skip.yarn.install>
 
         <version.freemarker>2.3.28</version.freemarker>
