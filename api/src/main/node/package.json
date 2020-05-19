@@ -47,6 +47,7 @@
         "antd": "^4.2.0",
         "axios": "^0.19.2",
         "dayjs": "^1.8.18",
+        "fingerprintjs2": "^2.1.0",
         "format-message": "^6.2.3",
         "formik": "^2.1.4",
         "formik-antd": "^2.0.1",

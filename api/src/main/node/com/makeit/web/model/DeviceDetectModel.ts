@@ -1,21 +1,94 @@
-import { isMobile, isTablet, isBrowser } from "react-device-detect";
+import { isAndroid, isBrowser, isIOS } from "react-device-detect";
+import { DeviceType } from "@client/api-client";
+import * as Fingerprint from "fingerprintjs2";
 
-enum DeviceType {
-    MOBILE, TABLET, DESKTOP
-}
+const hidden = Symbol();
 
-namespace DeviceType {
-    export function detectDevice(): DeviceType {
-        if (isMobile) {
-            return DeviceType.MOBILE;
+class Options {
+
+    private [hidden] = {};
+
+    get excludes() {
+        for (const exclude of excludes) {
+            this[hidden][exclude] = true;
         }
-        if (isTablet) {
-            return DeviceType.TABLET;
-        }
-        if (isBrowser) {
-            return DeviceType.DESKTOP;
-        }
+        return this[hidden];
+    }
+
+    set excludes(components: any) {
+        this[hidden] = components;
     }
 }
 
-export default DeviceType;
+const excludes = [
+    "webdriver",
+    "indexedDb",
+    "fonts",
+    "fontsFlash",
+    "sessionStorage",
+    "localStorage",
+    "openDatabase",
+    "addBehavior",
+    "plugins",
+    "doNotTrack",
+    "hasLiedLanguages",
+    "hasLiedResolution",
+    "hasLiedOs",
+    "hasLiedBrowser",
+    "adBlock",
+    "cpuClass",
+    "webgl",
+    "canvas"
+]
+
+export type FingerprintKey = "userAgent"
+    | "language"
+    | "colorDepth"
+    | "deviceMemory"
+    | "hardwareConcurrency"
+    | "screenResolution"
+    | "availableScreenResolution"
+    | "timezoneOffset"
+    | "timezone"
+    | "platform"
+    | "webglVendorAndRenderer"
+    | "touchSupport"
+    | "audio";
+
+export class Fingerprints {
+
+    constructor(private components: { [key: string]: {} }[]) {
+    }
+
+    public get(key: FingerprintKey): any {
+        return this.components.filter(component => component.key === key)[0].value;
+    }
+}
+
+async function fingerprintDevice(): Promise<Fingerprints> {
+    return new Promise<Fingerprints>((resolve, reject) => {
+        try {
+            const closer = setTimeout(() => Fingerprint.get(new Options, (components) => {
+                resolve(new Fingerprints(components));
+                clearInterval(closer);
+            }), 500);
+        } catch (ex) {
+            reject(ex);
+        }
+    });
+}
+
+function detectDevice(): DeviceType {
+    if (isAndroid) {
+        return DeviceType.DEVICE_TYPE_ANDROID;
+    }
+    if (isIOS) {
+        return DeviceType.DEVICE_TYPE_IOS;
+    }
+    if (isBrowser) {
+        return DeviceType.DEVICE_TYPE_PC_BOX;
+    }
+}
+
+export { fingerprintDevice, detectDevice };
+
