@@ -2,6 +2,7 @@
     "compilerOptions": {
         "sourceMap": true,
         "noImplicitAny": false,
+        "strictNullChecks": false,
         "module": "commonjs",
         "target": "es6",
         "lib": [
@@ -17,15 +18,33 @@
         "allowJs": true,
         "baseUrl": "./",
         "paths": {
-            "@translation/*": ["com/makeit/web/translation/*"],
-            "@component/*": ["com/makeit/web/component/*"],
-            "@client/*": ["com/makeit/web/client/*"],
-            "@model/*": ["com/makeit/web/model/*"],
-            "@page/*": ["com/makeit/web/page/*"],
-            "@ioc/*": ["com/makeit/web/ioc/*"],
-            "@css/*": ["com/makeit/web/asset/css/*"],
-            "@svg/*": ["com/makeit/web/asset/svg/*"],
-            "@png/*": ["com/makeit/web/asset/png/*"],
+            "@translation/*": [
+                "com/makeit/web/translation/*"
+            ],
+            "@component/*": [
+                "com/makeit/web/component/*"
+            ],
+            "@client/*": [
+                "com/makeit/web/client/*"
+            ],
+            "@model/*": [
+                "com/makeit/web/model/*"
+            ],
+            "@page/*": [
+                "com/makeit/web/page/*"
+            ],
+            "@ioc/*": [
+                "com/makeit/web/ioc/*"
+            ],
+            "@css/*": [
+                "com/makeit/web/asset/css/*"
+            ],
+            "@svg/*": [
+                "com/makeit/web/asset/svg/*"
+            ],
+            "@png/*": [
+                "com/makeit/web/asset/png/*"
+            ]
         },
         "types": [
             "reflect-metadata",

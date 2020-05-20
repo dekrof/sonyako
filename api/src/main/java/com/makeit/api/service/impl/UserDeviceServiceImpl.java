@@ -3,6 +3,7 @@ package com.makeit.api.service.impl;
 import com.makeit.api.exception.TokenRefreshException;
 import com.makeit.api.model.DeviceInfoDto;
 import com.makeit.dao.model.RefreshToken;
+import com.makeit.dao.model.User;
 import com.makeit.dao.model.UserDevice;
 import com.makeit.dao.repository.UserDeviceRepository;
 import lombok.*;
@@ -44,11 +45,12 @@ public class UserDeviceServiceImpl implements com.makeit.api.service.UserDeviceS
      * {@inheritDoc}
      */
     @Override
-    public UserDevice createUserDevice(DeviceInfoDto deviceInfo) {
+    public UserDevice createUserDevice(DeviceInfoDto deviceInfo, User user) {
         var userDevice = UserDevice.builder()
             .deviceId(deviceInfo.getDeviceId())
             .deviceType(deviceInfo.getDeviceType())
             .notificationToken(deviceInfo.getNotificationToken())
+            .user(user)
             .isRefreshActive(true)
             .build();
 

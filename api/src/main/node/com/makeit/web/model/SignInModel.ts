@@ -1,10 +1,16 @@
 import { AppModel } from "@model/AppModel";
 
-import { computed, observable } from "mobx";
+import { action, computed, observable } from "mobx";
 import { inject, injectable } from "inversify";
 import { Schema } from "morphism";
-import { AxiosAuthenticationClient, DeviceType } from "@client/api-client";
-import { task } from "mobx-task";
+import {
+    ApiResponse,
+    AxiosAuthenticationClient,
+    DeviceInfoDto,
+    DeviceType,
+    JwtAuthenticationDto,
+    LoginDto
+} from "@client/api-client";
 
 const schema: Schema = {
     avatar: "avatar",
@@ -41,11 +47,33 @@ export class SignInModel {
         return this.appModel.deviceType;
     }
 
-    @task
-    public async submitLogin() {
-        const language = this.appModel.deviceFingerPrint.get("language") as string;
-        console.log(this.client, language, this.appModel.deviceFingerPrint);
-        // need to create a valid login response
-        // return await this.client.authenticateUser(LoginDto.fromData(morphism(schema, this)));
+    @action
+    public async submitLogin(): Promise<ApiResponse<string>> {
+        const {deviceFingerPrint, deviceType} = this.appModel;
+        
+        const login = LoginDto.fromData({
+            email: this.username,
+            username: this.username,
+            password: this.password,
+            deviceInfo: DeviceInfoDto.fromData({
+                deviceType: deviceType,
+                deviceId: deviceFingerPrint.get("userAgent"),
+                notificationToken: deviceFingerPrint.encode()
+            })
+        });
+
+        try {
+            const response = await this.client.authenticateUser(login);
+            this.appModel.jwt = response.data as JwtAuthenticationDto;
+
+            return ApiResponse.fromData({
+                data: "User login successfully",
+                success: true
+            } as any, String);
+        } catch (ex) {
+            if (ex.response) {
+                return ex.response.data as ApiResponse<string>
+            }
+        }
     }
 }

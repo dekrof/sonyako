@@ -6,7 +6,7 @@ import { observer } from "mobx-react";
 import Avatars from "@dicebear/avatars";
 import human from "@dicebear/avatars-human-sprites";
 
-import { Button } from "antd";
+import { Button, notification } from "antd";
 import { Formik } from "formik";
 import { Form, FormItem, Input, SubmitButton } from "formik-antd";
 
@@ -47,7 +47,13 @@ class SignInPage extends React.Component<WrappedComponentProps> {
         if (!this.model.isOK) {
             console.log("nothing to login");
         } else {
-            await this.model.submitLogin();
+            const result = await this.model.submitLogin();
+            console.log(result);
+            if (!result.success) {
+                notification.warning({
+                    message: result.data
+                });
+            }
         }
     }
 

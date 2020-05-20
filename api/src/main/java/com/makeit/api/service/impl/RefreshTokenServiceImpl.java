@@ -2,6 +2,7 @@ package com.makeit.api.service.impl;
 
 import com.makeit.api.exception.TokenRefreshException;
 import com.makeit.dao.model.RefreshToken;
+import com.makeit.dao.model.UserDevice;
 import com.makeit.dao.repository.RefreshTokenRepository;
 import lombok.*;
 import lombok.extern.slf4j.*;
@@ -48,10 +49,11 @@ public class RefreshTokenServiceImpl implements com.makeit.api.service.RefreshTo
      * {@inheritDoc}
      */
     @Override
-    public RefreshToken createRefreshToken() {
+    public RefreshToken createRefreshToken(UserDevice userDevice) {
         var refreshToken = RefreshToken.builder()
             .token(UUID.randomUUID().toString())
             .expiryDate(Instant.now().plusMillis(refreshTokenDuration))
+            .userDevice(userDevice)
             .refreshCount(0L)
             .build();
 

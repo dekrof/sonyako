@@ -2,24 +2,6 @@ import { isAndroid, isBrowser, isIOS } from "react-device-detect";
 import { DeviceType } from "@client/api-client";
 import * as Fingerprint from "fingerprintjs2";
 
-const hidden = Symbol();
-
-class Options {
-
-    private [hidden] = {};
-
-    get excludes() {
-        for (const exclude of excludes) {
-            this[hidden][exclude] = true;
-        }
-        return this[hidden];
-    }
-
-    set excludes(components: any) {
-        this[hidden] = components;
-    }
-}
-
 const excludes = [
     "webdriver",
     "indexedDb",
@@ -55,6 +37,24 @@ export type FingerprintKey = "userAgent"
     | "touchSupport"
     | "audio";
 
+const hidden = Symbol();
+
+class Options {
+
+    private [hidden] = {};
+
+    get excludes() {
+        for (const exclude of excludes) {
+            this[hidden][exclude] = true;
+        }
+        return this[hidden];
+    }
+
+    set excludes(components: any) {
+        this[hidden] = components;
+    }
+}
+
 export class Fingerprints {
 
     constructor(private components: { [key: string]: {} }[]) {
@@ -62,6 +62,15 @@ export class Fingerprints {
 
     public get(key: FingerprintKey): any {
         return this.components.filter(component => component.key === key)[0].value;
+    }
+
+    public encode() {
+        const objJsonStr = JSON.stringify(this.components);
+        return btoa(objJsonStr);
+    }
+
+    static decode(hash: string) {
+        return new Fingerprints(JSON.parse(atob(hash)));
     }
 }
 

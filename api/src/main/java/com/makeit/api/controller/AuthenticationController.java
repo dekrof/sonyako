@@ -19,6 +19,7 @@ import com.makeit.app.event.RegenerateEmailVerificationEvent;
 import com.makeit.app.event.UserAccountChangeEvent;
 import com.makeit.app.event.UserRegistrationCompleteEvent;
 import com.makeit.dao.model.RefreshToken;
+import com.makeit.dao.model.User;
 import com.makeit.security.JwtTokenProvider;
 import com.makeit.security.JwtUserDetails;
 import io.swagger.annotations.Api;
@@ -109,7 +110,10 @@ public class AuthenticationController {
             () -> new UserLoginException(String.format("Couldn't login user [%s]", request))
         );
 
-        var userDetails = (JwtUserDetails) authentication.getPrincipal();
+        var principal = authentication.getPrincipal();
+        var userDetails = principal != null && principal instanceof JwtUserDetails
+            ? (JwtUserDetails) principal
+            : new JwtUserDetails((User) principal);
         var accessToken = authenticationService.generateToken(userDetails);
         LOGGER.info("Logged in User returned [API]: " + userDetails.getUsername());
 

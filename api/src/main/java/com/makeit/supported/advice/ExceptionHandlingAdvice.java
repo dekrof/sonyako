@@ -18,14 +18,15 @@ import lombok.extern.slf4j.*;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AccountStatusException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
@@ -42,7 +43,7 @@ import java.util.stream.Collectors;
  * @since 1.0.0
  */
 @Slf4j
-@RestControllerAdvice
+@ControllerAdvice
 public class ExceptionHandlingAdvice {
 
     private final MessageSource messageSource;
@@ -52,6 +53,16 @@ public class ExceptionHandlingAdvice {
         this.messageSource = messageSource;
     }
 
+    @ExceptionHandler(AccountStatusException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseBody
+    public ApiResponse<String> processAccountStatusError(AccountStatusException ex, WebRequest request) {
+        return ApiResponse.<String>error()
+            .cause(ex.getClass().getName())
+            .data(ex.getMessage())
+            .path(resolvePathFromWebRequest(request))
+            .build();
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -290,7 +301,7 @@ public class ExceptionHandlingAdvice {
                 .getAttribute("javax.servlet.forward.request_uri")
                 .toString();
         } catch (Exception ex) {
-            return null;
+            return ((ServletWebRequest) request).getRequest().getRequestURI();
         }
     }
 }

@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @SuperBuilder(toBuilder = true)
 public class BaseProfileDto implements Serializable {
 

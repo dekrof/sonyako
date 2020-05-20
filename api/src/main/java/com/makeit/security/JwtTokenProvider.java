@@ -1,5 +1,7 @@
 package com.makeit.security;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.makeit.api.exception.InvalidTokenRequestException;
 import com.makeit.dao.model.User;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -12,8 +14,10 @@ import lombok.extern.slf4j.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.inject.Inject;
 import java.time.Instant;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * @author sonnyako <Makydon Sofiia>
@@ -35,6 +39,9 @@ public class JwtTokenProvider {
     @Value("${app.jwt.claims.refresh.name}")
     private String jwtClaimRefreshName;
 
+    @Inject
+    private ObjectMapper objectMapper;
+
     /**
      * Generates a token from a principal object. Embed the refresh token in the JWT so that a new JWT can be created.
      *
@@ -48,6 +55,8 @@ public class JwtTokenProvider {
             .setSubject(Long.toString(user.getId()))
             .setIssuedAt(Date.from(now))
             .setExpiration(Date.from(expiryDate))
+            .setClaims(objectMapper.convertValue(user.getProfile(), new TypeReference<Map<String, Object>>() {
+            }))
             .signWith(SignatureAlgorithm.HS512, jwtSecret)
             .compact();
     }

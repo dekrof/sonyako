@@ -36,7 +36,11 @@ public class JwtUserDetailsService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) {
-        return repository.findByUsername(username)
+        var user = username.contains("@")
+            ? repository.findByProfileEmail(username)
+            : repository.findByUsername(username);
+
+        return user
             .map(JwtUserDetails::new)
             .orElseThrow(() -> new UsernameNotFoundException(String.format("User not found with username: %s", username)));
     }

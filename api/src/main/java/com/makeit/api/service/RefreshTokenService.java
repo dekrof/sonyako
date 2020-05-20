@@ -1,6 +1,7 @@
 package com.makeit.api.service;
 
 import com.makeit.dao.model.RefreshToken;
+import com.makeit.dao.model.UserDevice;
 
 import java.util.Optional;
 
@@ -23,7 +24,7 @@ public interface RefreshTokenService {
     /**
      * Creates and returns a new refresh token
      */
-    RefreshToken createRefreshToken();
+    RefreshToken createRefreshToken(UserDevice userDevice);
 
     /**
      * Verify whether the token provided has expired or not on the basis of the current

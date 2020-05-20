@@ -188,23 +188,18 @@ public class AuthenticationServiceImpl implements com.makeit.api.service.Authent
      */
     @Override
     public Optional<RefreshToken> createAndPersistRefreshTokenForDevice(Authentication authentication, LoginDto request) {
-        var currentUser = (User) authentication.getPrincipal();
+        var principal = authentication.getPrincipal();
+        var currentUser = principal != null && principal instanceof JwtUserDetails
+            ? ((JwtUserDetails) principal).getUser()
+            : (User) principal;
 
         userDeviceService.findByUserId(currentUser.getId())
             .map(UserDevice::getRefreshToken)
             .map(RefreshToken::getId)
             .ifPresent(refreshTokenService::deleteById);
 
-        var userDevice = userDeviceService.createUserDevice(request.getDeviceInfo());
-        var refreshToken = refreshTokenService.createRefreshToken();
-
-        var device = userDevice.toBuilder()
-            .user(currentUser)
-            .refreshToken(refreshToken)
-            .build();
-
-        refreshToken.setUserDevice(device);
-        return Optional.of(refreshTokenService.save(refreshToken));
+        var userDevice = userDeviceService.createUserDevice(request.getDeviceInfo(), currentUser);
+        return Optional.of(refreshTokenService.createRefreshToken(userDevice));
     }
 
     /**

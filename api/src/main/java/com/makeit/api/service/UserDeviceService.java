@@ -2,8 +2,10 @@ package com.makeit.api.service;
 
 import com.makeit.api.model.DeviceInfoDto;
 import com.makeit.dao.model.RefreshToken;
+import com.makeit.dao.model.User;
 import com.makeit.dao.model.UserDevice;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 /**
@@ -25,7 +27,8 @@ public interface UserDeviceService {
     /**
      * Creates a new user device and set the user to the current device
      */
-    UserDevice createUserDevice(DeviceInfoDto deviceInfo);
+    @Transactional
+    UserDevice createUserDevice(DeviceInfoDto deviceInfo, User user);
 
     /**
      * Check whether the user device corresponding to the token has refresh enabled and
