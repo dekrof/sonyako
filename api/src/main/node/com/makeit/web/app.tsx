@@ -1,19 +1,18 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
+import { observer, Provider } from "mobx-react";
+import { Button, PageHeader, Space } from "antd";
 
-import { Provider, observer } from "mobx-react";
-import { PageHeader, Button, Space } from "antd";
-
-import { MobxIntlProvider, LocaleStore, LocaleSwitcher } from "@translation/index";
+import { LocaleStore, LocaleSwitcher, MobxIntlProvider } from "@translation/index";
 import en from "@translation/locales/en";
 import uk from "@translation/locales/uk";
 import ru from "@translation/locales/ru";
 
-import TopCategoriesMenu from "@component/shared/TopCategoriesMenu";
-
-import { TitleTarget } from "@component/teleport";
 import { SignInPage, SignUpPage } from "@page/pages";
+
+import TopCategoriesMenu from "@component/shared/TopCategoriesMenu";
+import { TitleTarget } from "@component/teleport";
 
 import { module, resolve } from "@ioc/app-module-decorator";
 import { AppModule } from "@ioc/AppModule";
@@ -50,14 +49,14 @@ export default class App extends React.Component {
                                 <PageHeader
                                     className="app-header"
                                     title={<div className="app-logo"><Link to="/"><span>Make IT</span></Link></div>}
-                                    subTitle={<TitleTarget />}
+                                    subTitle={<TitleTarget/>}
                                     extra={extra}
-                                    onBack={() => window.history.back()} />
-                                <TopCategoriesMenu />
+                                    onBack={() => window.history.back()}/>
+                                <TopCategoriesMenu/>
                                 <Switch>
-                                    <Route path="/sign-in"><SignInPage /></Route>
-                                    <Route path={["/sign-up", "/sign-up/(user|owner)/:tab?"]} exact component={SignUpPage}/>
-                                    <Route path="/"><SignInPage /></Route>
+                                    <Route path={["/", "/sign-in"]} exact component={SignInPage}/>
+                                    <Route path={["/sign-up", "/sign-up/(user|owner)/:tab?"]} exact
+                                           component={SignUpPage}/>
                                 </Switch>
                             </main>
                         )} />

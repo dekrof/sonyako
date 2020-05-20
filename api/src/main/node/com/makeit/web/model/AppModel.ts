@@ -23,8 +23,6 @@ export class AppModel {
 
         observe(this, "jwt", (ev: IValueWillChange<JwtAuthenticationDto>) => {
             if (ev.newValue) {
-                console.log("Setup a new notification", ev.newValue);
-
                 const closer = setTimeout(() => {
                     notification.info({
                         message: "Session Expiration",

@@ -19,6 +19,7 @@ import { SignInModel } from "@model/SignInModel";
 
 import Disclaimer from "@svg/disclaimer.svg";
 import "@css/login/login-page.less";
+import { RouteComponentProps } from "react-router";
 
 const AVATAR_SIZE = 120;
 
@@ -38,7 +39,7 @@ const AvatarImage = (props: { src: string; size: number }) => <div className="lo
 </div>;
 
 @page(true) @module(SignInModule) @observer
-class SignInPage extends React.Component<WrappedComponentProps> {
+class SignInPage extends React.Component<WrappedComponentProps & RouteComponentProps> {
 
     @resolve
     private model: SignInModel;
@@ -48,11 +49,13 @@ class SignInPage extends React.Component<WrappedComponentProps> {
             console.log("nothing to login");
         } else {
             const result = await this.model.submitLogin();
-            console.log(result);
             if (!result.success) {
                 notification.warning({
-                    message: result.data
+                    message: result.data,
+                    icon: <Disclaimer width={30} height={30}/>
                 });
+            } else {
+                this.props.history.push("/sign-up");
             }
         }
     }
