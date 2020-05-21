@@ -2,7 +2,6 @@ import { AppModel } from "@model/AppModel";
 
 import { action, computed, observable } from "mobx";
 import { inject, injectable } from "inversify";
-import { Schema } from "morphism";
 import {
     ApiResponse,
     AxiosAuthenticationClient,
@@ -11,13 +10,6 @@ import {
     JwtAuthenticationDto,
     LoginDto
 } from "@client/api-client";
-
-const schema: Schema = {
-    avatar: "avatar",
-    username: "username",
-    password: "password",
-    deviceType: "deviceType"
-}
 
 @injectable()
 export class SignInModel {
@@ -50,7 +42,7 @@ export class SignInModel {
     @action
     public async submitLogin(): Promise<ApiResponse<string>> {
         const {deviceFingerPrint, deviceType} = this.appModel;
-        
+
         const login = LoginDto.fromData({
             email: this.username,
             username: this.username,

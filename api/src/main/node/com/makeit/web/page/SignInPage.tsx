@@ -1,13 +1,13 @@
 import * as React from "react";
+import { observer } from "mobx-react";
+import { RouteComponentProps } from "react-router";
 import { injectIntl, WrappedComponentProps } from "react-intl";
 
-import { observer } from "mobx-react";
-
-import Avatars from "@dicebear/avatars";
 import human from "@dicebear/avatars-human-sprites";
+import Avatars from "@dicebear/avatars";
 
-import { Button, notification } from "antd";
 import { Formik } from "formik";
+import { Button, notification } from "antd";
 import { Form, FormItem, Input, SubmitButton } from "formik-antd";
 
 import { page } from "@page/app-page-decorator";
@@ -19,7 +19,6 @@ import { SignInModel } from "@model/SignInModel";
 
 import Disclaimer from "@svg/disclaimer.svg";
 import "@css/login/login-page.less";
-import { RouteComponentProps } from "react-router";
 
 const AVATAR_SIZE = 120;
 
@@ -38,44 +37,16 @@ const AvatarImage = (props: { src: string; size: number }) => <div className="lo
         ref={avatarRef} width={props.size} height={props.size} src={props.src}/>
 </div>;
 
-@page(true) @module(SignInModule) @observer
+@page(false) @module(SignInModule) @observer
 class SignInPage extends React.Component<WrappedComponentProps & RouteComponentProps> {
 
     @resolve
     private model: SignInModel;
 
-    private async onSubmit() {
-        if (!this.model.isOK) {
-            console.log("nothing to login");
-        } else {
-            const result = await this.model.submitLogin();
-            if (!result.success) {
-                notification.warning({
-                    message: result.data,
-                    icon: <Disclaimer width={30} height={30}/>
-                });
-            } else {
-                this.props.history.push("/sign-up");
-            }
-        }
-    }
-
-    private validateUsername = (value: string | null) => {
-        return !value || !/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value)
-            ? this.props.intl.formatMessage({id: "login.username.placeholder"})
-            : undefined;
-    };
-
-    private validatePassword = (value: string | null) => {
-        return !value
-            ? this.props.intl.formatMessage({id: "login.password.placeholder"})
-            : undefined;
-    };
-
     public render() {
         const {username, isOK} = this.model;
         const t = (key: string) => this.props.intl.formatMessage({id: key});
-        this.model.avatar = new Avatars(human, avatarOptions).create(username);
+        this.model.avatar = new Avatars(human, avatarOptions).create(username || "makeit-avatars-seed-sdf");
 
         return <section className="login">
             <Title>{t("login.title")}</Title>
@@ -116,11 +87,39 @@ class SignInPage extends React.Component<WrappedComponentProps & RouteComponentP
                         <p>
                             <span>{t("login.sign-up.disclaimer")}</span>
                         </p>
-                        <Button>{t("login.sign-up")}</Button>
+                        <Button onClick={() => this.props.history.push("/sign-up")}>{t("login.sign-up")}</Button>
                     </div>
                 </Form>
             )}/>
         </section>
+    }
+
+    private async onSubmit() {
+        if (!this.model.isOK) {
+            console.log("nothing to login");
+        } else {
+            const result = await this.model.submitLogin();
+            if (!result.success) {
+                notification.warning({
+                    message: result.data,
+                    icon: <Disclaimer width={30} height={30}/>
+                });
+            } else {
+                this.props.history.push("/");
+            }
+        }
+    }
+
+    private validateUsername = (value: string | null) => {
+        return !value || !/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value)
+            ? this.props.intl.formatMessage({id: "login.username.placeholder"})
+            : undefined;
+    }
+
+    private validatePassword = (value: string | null) => {
+        return !value
+            ? this.props.intl.formatMessage({id: "login.password.placeholder"})
+            : undefined;
     }
 }
 

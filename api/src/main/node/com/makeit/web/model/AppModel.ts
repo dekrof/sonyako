@@ -1,8 +1,12 @@
 import { flow, IValueWillChange, observable, observe } from "mobx";
+import { persist } from "mobx-persist";
+import { inject } from "inversify";
+
 import { injectable } from "@ioc/app-module-decorator";
 import { DeviceType, JwtAuthenticationDto } from "@client/api-client";
+
+import { JwtHelper } from "@model/JwtHelper";
 import { detectDevice, fingerprintDevice, Fingerprints } from "@model/DeviceDetectModel";
-import { notification } from "antd";
 
 @injectable()
 export class AppModel {
@@ -11,26 +15,27 @@ export class AppModel {
 
     public deviceFingerPrint: Fingerprints;
 
-    @observable
+    @persist("object") @observable
     public jwt: JwtAuthenticationDto;
+
+    @observable
+    public isSecure: boolean = false;
 
     @observable
     public isLoading: boolean = false;
 
-    constructor() {
+    @observable
+
+
+    constructor(
+        @inject(JwtHelper) public helper: JwtHelper
+    ) {
         this.deviceType = detectDevice();
         this.fingerprint();
 
         observe(this, "jwt", (ev: IValueWillChange<JwtAuthenticationDto>) => {
             if (ev.newValue) {
-                const closer = setTimeout(() => {
-                    notification.info({
-                        message: "Session Expiration",
-                        description: "Your session will expire after 1 minute. Would you like to continue?",
-                        duration: 60 * 1000
-                    });
-                    clearInterval(closer);
-                }, ev.newValue.expiryDuration - 60 * 1000);
+                console.log("new JWT recieved");
             }
         });
     }

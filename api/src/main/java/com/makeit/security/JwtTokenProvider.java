@@ -29,6 +29,8 @@ import java.util.Map;
 public class JwtTokenProvider {
 
     private static final String TOKEN_TYPE = "JWT";
+    private static final TypeReference<Map<String, Object>> REF = new TypeReference<Map<String, Object>>() {
+    };
 
     @Value("${app.jwt.secret}")
     private String jwtSecret;
@@ -51,14 +53,15 @@ public class JwtTokenProvider {
     public String generateToken(User user) {
         var now = Instant.now();
         var expiryDate = now.plusMillis(jwtExpirationInMs);
-        return Jwts.builder()
+
+        var builder = Jwts.builder()
             .setSubject(Long.toString(user.getId()))
             .setIssuedAt(Date.from(now))
-            .setExpiration(Date.from(expiryDate))
-            .setClaims(objectMapper.convertValue(user.getProfile(), new TypeReference<Map<String, Object>>() {
-            }))
-            .signWith(SignatureAlgorithm.HS512, jwtSecret)
-            .compact();
+            .setExpiration(Date.from(expiryDate));
+
+        objectMapper.convertValue(user.getProfile(), REF).forEach(builder::claim);
+
+        return builder.signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
     }
 
     /**

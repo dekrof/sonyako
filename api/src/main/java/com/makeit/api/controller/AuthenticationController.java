@@ -115,8 +115,8 @@ public class AuthenticationController {
             ? (JwtUserDetails) principal
             : new JwtUserDetails((User) principal);
         var accessToken = authenticationService.generateToken(userDetails);
-        LOGGER.info("Logged in User returned [API]: " + userDetails.getUsername());
 
+        LOGGER.info("Logged in User returned [API]: " + userDetails.getUsername());
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         var response = authenticationService.createAndPersistRefreshTokenForDevice(authentication, request)

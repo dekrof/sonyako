@@ -1,4 +1,6 @@
 declare module '*.svg' {
-    const svg: {width: number; height: number} | any;
+    import { CSSProperties } from "react";
+
+    const svg: { width: number; height: number, style?: CSSProperties } | any;
     export default svg;
 }

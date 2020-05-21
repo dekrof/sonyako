@@ -4,7 +4,7 @@ import { injectIntl, WrappedComponentProps } from "react-intl";
 import { observer } from "mobx-react";
 
 import { Tabs } from "antd";
-import { UserPanel, SkillPanel, AddressPanel } from "@component/signup";
+import { AddressPanel, SkillPanel, UserPanel } from "@component/signup";
 import { Title } from "@component/teleport";
 import { page } from "@page/app-page-decorator";
 
@@ -22,7 +22,7 @@ const TabIcon = (props: { icon: any; title?: string }) => <>
     </div>
 </>;
 
-@page() @observer
+@page(true) @observer
 export class SignUpPage extends React.Component<WrappedComponentProps & RouteComponentProps> {
 
     public render() {

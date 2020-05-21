@@ -1,15 +1,15 @@
 import * as React from "react";
 import { observer } from "mobx-react";
 import { Link } from "react-router-dom";
-import { injectIntl, FormattedMessage, WrappedComponentProps } from "react-intl";
+import { FormattedMessage, injectIntl, WrappedComponentProps } from "react-intl";
 
 import Avatars from "@dicebear/avatars";
 import { Formik } from "formik";
 import { QuestionCircleTwoTone } from "@ant-design/icons";
-import { message, Divider, Space, Upload, Tooltip } from "antd";
-import { Form, FormItem, Input, Select, DatePicker } from "formik-antd";
+import { Divider, message, Space, Tooltip, Upload } from "antd";
+import { DatePicker, Form, FormItem, Input, Select } from "formik-antd";
 
-import { UserModel, Gender } from "@model/UserModel";
+import { Gender, UserModel } from "@model/UserModel";
 import { module, resolve } from "@ioc/app-module-decorator";
 import { UserModule } from "@ioc/UserModule";
 
@@ -103,7 +103,7 @@ export class UserPanel extends React.Component<WrappedComponentProps> {
         const hasSvgAvatar = Boolean(avatarUrl && avatarUrl.indexOf("image/svg") > 0);
 
         this.model.avatarUrl = hasSvgAvatar || !avatarUrl
-            ? new Avatars(Gender.getSprites(gender), avatarOptions).create(username)
+            ? new Avatars(Gender.getSprites(gender), avatarOptions).create(username || "makeit-avatars-seed-sdf")
             : avatarUrl;
 
         return <>
