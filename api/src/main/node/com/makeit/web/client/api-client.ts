@@ -15,7 +15,7 @@ export class AuthenticationClient<O> {
      * Java method: com.makeit.api.controller.AuthenticationController.checkEmailInUse
      */
     checkEmailInUse(queryParams: { email: string; }, options?: O): RestResponse<ApiResponse<boolean>> {
-        return this.httpClient.request({ method: "GET", url: uriEncoding`api/auth/check-email`, queryParams: queryParams, options: options });
+        return this.httpClient.request({method: "GET", url: uriEncoding`api/auth/check-email`, queryParams: queryParams, options: options});
     }
 
     /**
@@ -23,7 +23,12 @@ export class AuthenticationClient<O> {
      * Java method: com.makeit.api.controller.AuthenticationController.checkUsernameInUse
      */
     checkUsernameInUse(queryParams: { username: string; }, options?: O): RestResponse<ApiResponse<boolean>> {
-        return this.httpClient.request({ method: "GET", url: uriEncoding`api/auth/check-username`, queryParams: queryParams, options: options });
+        return this.httpClient.request({
+            method: "GET",
+            url: uriEncoding`api/auth/check-username`,
+            queryParams: queryParams,
+            options: options
+        });
     }
 
     /**
@@ -31,7 +36,7 @@ export class AuthenticationClient<O> {
      * Java method: com.makeit.api.controller.AuthenticationController.authenticateUser
      */
     authenticateUser(request: LoginDto, options?: O): RestResponse<JwtAuthenticationDto> {
-        return this.httpClient.request({ method: "POST", url: uriEncoding`api/auth/login`, data: request, options: options });
+        return this.httpClient.request({method: "POST", url: uriEncoding`api/auth/login`, data: request, options: options});
     }
 
     /**
@@ -39,7 +44,7 @@ export class AuthenticationClient<O> {
      * Java method: com.makeit.api.controller.AuthenticationController.resetPassword
      */
     resetPassword(request: PasswordResetDto, options?: O): RestResponse<ApiResponse<string>> {
-        return this.httpClient.request({ method: "POST", url: uriEncoding`api/auth/password/reset`, data: request, options: options });
+        return this.httpClient.request({method: "POST", url: uriEncoding`api/auth/password/reset`, data: request, options: options});
     }
 
     /**
@@ -47,7 +52,7 @@ export class AuthenticationClient<O> {
      * Java method: com.makeit.api.controller.AuthenticationController.resetLink
      */
     resetLink(request: PasswordResetLinkDto, options?: O): RestResponse<ApiResponse<string>> {
-        return this.httpClient.request({ method: "POST", url: uriEncoding`api/auth/password/reset-link`, data: request, options: options });
+        return this.httpClient.request({method: "POST", url: uriEncoding`api/auth/password/reset-link`, data: request, options: options});
     }
 
     /**
@@ -55,7 +60,7 @@ export class AuthenticationClient<O> {
      * Java method: com.makeit.api.controller.AuthenticationController.refreshJwtToken
      */
     refreshJwtToken(request: TokenRefreshDto, options?: O): RestResponse<JwtAuthenticationDto> {
-        return this.httpClient.request({ method: "POST", url: uriEncoding`api/auth/refresh`, data: request, options: options });
+        return this.httpClient.request({method: "POST", url: uriEncoding`api/auth/refresh`, data: request, options: options});
     }
 
     /**
@@ -63,7 +68,7 @@ export class AuthenticationClient<O> {
      * Java method: com.makeit.api.controller.AuthenticationController.registerUser
      */
     registerUser(request: RegistrationDto, options?: O): RestResponse<ApiResponse<string>> {
-        return this.httpClient.request({ method: "POST", url: uriEncoding`api/auth/register`, data: request, options: options });
+        return this.httpClient.request({method: "POST", url: uriEncoding`api/auth/register`, data: request, options: options});
     }
 
     /**
@@ -71,7 +76,12 @@ export class AuthenticationClient<O> {
      * Java method: com.makeit.api.controller.AuthenticationController.confirmRegistration
      */
     confirmRegistration(queryParams: { token: string; }, options?: O): RestResponse<ApiResponse<string>> {
-        return this.httpClient.request({ method: "GET", url: uriEncoding`api/auth/registration-confirmation`, queryParams: queryParams, options: options });
+        return this.httpClient.request({
+            method: "GET",
+            url: uriEncoding`api/auth/registration-confirmation`,
+            queryParams: queryParams,
+            options: options
+        });
     }
 
     /**
@@ -79,7 +89,12 @@ export class AuthenticationClient<O> {
      * Java method: com.makeit.api.controller.AuthenticationController.resendRegistrationToken
      */
     resendRegistrationToken(queryParams: { token: string; }, options?: O): RestResponse<ApiResponse<string>> {
-        return this.httpClient.request({ method: "GET", url: uriEncoding`api/auth/resend-registration-token`, queryParams: queryParams, options: options });
+        return this.httpClient.request({
+            method: "GET",
+            url: uriEncoding`api/auth/resend-registration-token`,
+            queryParams: queryParams,
+            options: options
+        });
     }
 }
 
@@ -93,7 +108,7 @@ export class UserClient<O> {
      * Java method: com.makeit.api.controller.UserController.getAllAdmins
      */
     getAllAdmins(options?: O): RestResponse<User[]> {
-        return this.httpClient.request({ method: "GET", url: uriEncoding`api/user/admins`, options: options });
+        return this.httpClient.request({method: "GET", url: uriEncoding`api/user/admins`, options: options});
     }
 
     /**
@@ -101,7 +116,7 @@ export class UserClient<O> {
      * Java method: com.makeit.api.controller.UserController.logoutUser
      */
     logoutUser(request: LogoutDto, options?: O): RestResponse<ApiResponse<string>> {
-        return this.httpClient.request({ method: "POST", url: uriEncoding`api/user/logout`, data: request, options: options });
+        return this.httpClient.request({method: "POST", url: uriEncoding`api/user/logout`, data: request, options: options});
     }
 
     /**
@@ -109,7 +124,7 @@ export class UserClient<O> {
      * Java method: com.makeit.api.controller.UserController.updateUserPassword
      */
     updateUserPassword(request: UpdatePasswordDto, options?: O): RestResponse<ApiResponse<string>> {
-        return this.httpClient.request({ method: "POST", url: uriEncoding`api/user/password/update`, data: request, options: options });
+        return this.httpClient.request({method: "POST", url: uriEncoding`api/user/password/update`, data: request, options: options});
     }
 
     /**
@@ -117,7 +132,7 @@ export class UserClient<O> {
      * Java method: com.makeit.api.controller.UserController.getUserProfile
      */
     getUserProfile(options?: O): RestResponse<User> {
-        return this.httpClient.request({ method: "GET", url: uriEncoding`api/user/profile`, options: options });
+        return this.httpClient.request({method: "GET", url: uriEncoding`api/user/profile`, options: options});
     }
 }
 
@@ -1029,8 +1044,8 @@ export class UserProject {
     user: User;
     project: Project;
     rating: number;
-    userOwner: boolean;
     userCreator: boolean;
+    userOwner: boolean;
 
     static fromData(data: UserProject, target?: UserProject): UserProject {
         if (!data) {
@@ -1041,8 +1056,8 @@ export class UserProject {
         instance.user = User.fromData(data.user);
         instance.project = Project.fromData(data.project);
         instance.rating = data.rating;
-        instance.userOwner = data.userOwner;
         instance.userCreator = data.userCreator;
+        instance.userOwner = data.userOwner;
         return instance;
     }
 }
@@ -1139,7 +1154,7 @@ function __identity<T>(): (value: T) => T {
 }
 
 
-// Added by 'AxiosClientExtension' extension
+// Added by "AxiosClientExtension" extension
 
 import axios from "axios";
 import * as Axios from "axios";

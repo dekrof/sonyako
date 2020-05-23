@@ -1,0 +1,163 @@
+@import "../../asset/css/antd-overrides";
+
+@signup-section-width: 998px;
+@signup-submit-button-wrapper-height: 73px;
+
+.signup {
+    z-index: 99;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: -@signup-submit-button-wrapper-height;
+
+    &-submit-button-wrapper {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 998px;
+        height: @signup-submit-button-wrapper-height;
+        margin: 0 calc((100vw - @signup-section-width) / 2);
+        border-left: 1px solid #f0f0f0;
+        border-right: 1px solid #f0f0f0;
+
+        @supports not (backdrop-filter: none) {
+            &-content {
+                background: rgba(255, 255, 255, 0.9);
+            }
+        }
+
+        &-content {
+            height: 100%;
+            border-top: 1px solid #f0f0f0;
+            border-left: 1px solid #f0f0f0;
+            border-right: 1px solid #f0f0f0;
+            width: calc(@signup-section-width - 2px - 102px);
+
+            background-color: rgba(255, 255, 255, .15);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            text-align: center;
+
+            padding: 0 20px;
+
+            &::before {
+                display: block;
+                content: "";
+                position: absolute;
+                left: 0;
+                top: -6px;
+                height: 6px;
+                width: calc(@signup-section-width - 2px - 102px);
+                background: linear-gradient(to top, rgba(73, 57, 76, 0.15) 0%, rgba(73, 57, 76, 0.04) 40%, rgba(0, 0, 0, 0)) 100%;
+            }
+
+            .ant-space {
+                height: 100%;
+
+                &-item {
+                    width: auto;
+                }
+            }
+        }
+    }
+
+    &-stack-container {
+        background-color: #fdfdfd;
+        border-left: 1px solid #f0f0f0;
+        border-right: 1px solid #f0f0f0;
+        width: 100%;
+        max-width: 70vw;
+        height: auto;
+        min-height: calc(100vh - 113px);
+
+        &-tabs {
+            width: 100%;
+            height: auto;
+            min-height: calc(100vh - 113px);
+
+            div[role=tablist] {
+                background-color: #ffffff;
+            }
+
+            div[role=tab] {
+                &:first-child svg {
+                    margin: 10px 0 0;
+                }
+
+                span {
+                    color: @text-color;
+                    font-weight: normal;
+                    font-size: 14px;
+
+                    &:hover {
+                        color: @link-color;
+                    }
+                }
+            }
+
+            div[role=tabpanel] {
+                padding: 0;
+            }
+        }
+    }
+
+    &-form {
+        padding: 20px 20px 83px !important;
+        height: auto;
+        min-height: calc(100vh - 113px);
+
+        &-avatar-space {
+            .ant-space-item {
+                width: auto;
+            }
+        }
+    }
+
+    &-form.skills-form {
+        .ant-form-item-children-icon {
+            right: 10px;
+        }
+
+        .ant-btn-link {
+            z-index: 100;
+            background-color: #ffffff;
+        }
+
+        .ant-empty {
+            margin-bottom: 20px;
+        }
+    }
+
+    .address-form {
+        .select-before {
+            width: 120px;
+            text-align: left;
+        }
+
+        .street-select {
+            .ant-select-selector {
+                border-radius: 0;
+            }
+        }
+
+        &-map-wrapper {
+            background-image: url("../../asset/svg/map-empty.svg");
+            background-repeat: no-repeat;
+            background-size: 100px 100px;
+            background-position: center center;
+
+            padding: 0;
+
+            .mapboxgl-ctrl,
+            .mapboxgl-ctrl a {
+                display: none;
+            }
+        }
+
+        .ant-select-disabled.ant-select-single:not(.ant-select-customize-input) .ant-select-selector,
+        .ant-input-group-addon,
+        .ant-input[disabled] {
+            background-color: initial;
+        }
+    }
+}

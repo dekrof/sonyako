@@ -1,15 +1,13 @@
-import DistrictSelect from "@component/address/DistrictSelect";
-import LocationInput from "@component/address/LocationInput";
-import PostalCodeSelect from "@component/address/PostalCodeSelect";
-import RegionSelect from "@component/address/RegionSelect";
-import SettlementSelect from "@component/address/SettlementSelect";
-import StreetSelect from "@component/address/StreetSelect";
+import PostalCodeSelect from "@component/address/postal-code-select";
+import SettlementSelect from "@component/address/settlement-select";
+import LocationInput from "@component/address/location-input";
+import RegionSelect from "@component/address/region-select";
+import StateSelect from "@component/address/state-select";
+import StreetSelect from "@component/address/street-select";
 
-export {
-    DistrictSelect,
-    LocationInput,
-    PostalCodeSelect,
-    RegionSelect,
-    SettlementSelect,
-    StreetSelect
-};
+import UserNavigator from "@svg/user-navigator.svg";
+import MapPointer from "@svg/map-pointer.svg";
+
+const Icons = {UserNavigator, MapPointer};
+
+export { StateSelect, LocationInput, PostalCodeSelect, RegionSelect, SettlementSelect, StreetSelect, Icons };

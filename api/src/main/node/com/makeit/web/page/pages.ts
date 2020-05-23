@@ -1,4 +1,4 @@
-import SignInPage from "@page/SignInPage";
-import SignUpPage from "@page/SignUpPage";
+import { SignInPage } from "@page/sign-in";
+import { SignUpPage } from "@page/sign-up";
 
 export { SignInPage, SignUpPage }

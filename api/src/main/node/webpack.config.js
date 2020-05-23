@@ -31,7 +31,6 @@ module.exports = (env) => {
                 "@client": path.resolve(__dirname, "./com/makeit/web/client/"),
                 "@model": path.resolve(__dirname, "./com/makeit/web/model/"),
                 "@page": path.resolve(__dirname, "./com/makeit/web/page/"),
-                "@ioc": path.resolve(__dirname, "./com/makeit/web/ioc/"),
                 "@css": path.resolve(__dirname, "./com/makeit/web/asset/css/"),
                 "@svg": path.resolve(__dirname, "./com/makeit/web/asset/svg/"),
                 "@png": path.resolve(__dirname, "./com/makeit/web/asset/png/"),

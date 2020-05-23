@@ -33,9 +33,6 @@
             "@page/*": [
                 "com/makeit/web/page/*"
             ],
-            "@ioc/*": [
-                "com/makeit/web/ioc/*"
-            ],
             "@css/*": [
                 "com/makeit/web/asset/css/*"
             ],
@@ -49,7 +46,7 @@
         "types": [
             "reflect-metadata",
             "node",
-            "./com/makeit/web/app-types"
+            "./com/makeit/web/types"
         ]
     },
     "include": [
