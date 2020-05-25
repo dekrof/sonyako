@@ -168,7 +168,7 @@ class SkillTab extends React.Component<SkillTabProps> {
 
 const SkillTabIntl = injectIntl(SkillTab);
 
-@context(SkillModule) @observer
+@observer
 class SkillPanel extends React.Component {
 
     @resolve

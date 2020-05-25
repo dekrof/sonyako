@@ -6,9 +6,13 @@ import { injectIntl, WrappedComponentProps } from "react-intl";
 
 import { Button, Checkbox, Space, Tabs } from "antd";
 
-import { AddressPanel, Icons, SignUpModule, SkillPanel, UserPanel, PaymentPanel } from "@page/sign-up";
-import { context, page } from "@page/decorator";
+import { AddressPanel, Icons, SignUpModule, SignUpModel, SkillPanel, UserPanel, PaymentPanel } from "@page/sign-up";
+import { resolve, context, page } from "@page/decorator";
 import { Title } from "@page/app-layout";
+
+import { AddressModule } from "@page/sign-up/tab/address";
+import { SkillModule } from "@page/sign-up/tab/skill";
+import { UserModule } from "@page/sign-up/tab/user";
 
 import "@page/sign-up/sign-up.less";
 
@@ -20,8 +24,11 @@ const TabIcon = (props: { icon: any; title?: string }) => <>
     </div>
 </>;
 
-@page(true) @context(SignUpModule) @observer
+@page(false) @context(SignUpModule, UserModule, SkillModule, AddressModule) @observer
 class SignUpPage extends React.Component<WrappedComponentProps & RouteComponentProps> {
+
+    @resolve
+    private model: SignUpModel;
 
     public render() {
         const {params} = this.props.match;
@@ -63,7 +70,11 @@ class SignUpPage extends React.Component<WrappedComponentProps & RouteComponentP
                 <footer className="signup-submit-button-wrapper">
                     <div className="signup-submit-button-wrapper-content">
                         <Space align="center" direction="horizontal" size={20}>
-                            <Button type="primary" htmlType="submit" style={{width: 126}}>
+                            <Button
+                                type="primary"
+                                htmlType="submit"
+                                style={{width: 126}}
+                                onClick={() => this.model.submitRegistration()}>
                                 Sign Up
                             </Button>
                             <Checkbox>

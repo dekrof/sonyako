@@ -64,7 +64,7 @@ const FormLabel = (props: { label: string; message: string }) => (
     </span>
 );
 
-@context(UserModule) @observer
+@observer
 class UserPanel extends React.Component<WrappedComponentProps> {
 
     @resolve

@@ -9,7 +9,7 @@ import { LocationInput, RegionSelect, SettlementSelect, StreetSelect, StateSelec
 import { AddressModel, AddressModule } from "@page/sign-up/tab/address";
 import { context, observer, resolve } from "@page/decorator";
 
-@context(AddressModule) @observer
+@observer
 class AddressPanel extends React.Component<WrappedComponentProps> {
 
     @resolve
