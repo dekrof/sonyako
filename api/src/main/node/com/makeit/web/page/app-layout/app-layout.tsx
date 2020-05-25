@@ -16,8 +16,9 @@ import { JwtAuthenticationDto } from "@client/api-client";
 
 import { LocaleProvider, LocaleSwitcher, TitleTarget } from "@page/app-layout";
 import { AppModel, AppModule, Icons, TopCategoriesMenu } from "@page/app-layout";
-import { SignInPage, SignUpPage } from "@page/pages";
 import { context, resolve } from "@page/decorator";
+
+import { HomePage, SignInPage, SignUpPage } from "@page/pages";
 
 import "@css/theme.less";
 
@@ -80,7 +81,8 @@ export default class AppLayout extends React.Component {
                                 onBack={() => window.history.back()}/>
                             <TopCategoriesMenu/>
                             <Switch>
-                                <Route path={["/", "/sign-in"]} exact component={SignInPage}/>
+                                <Route path={["/"]} exact component={HomePage}/>
+                                <Route path={["/sign-in"]} exact component={SignInPage}/>
                                 <Route path={["/sign-up", "/sign-up/(user|owner)/:tab?"]} exact component={SignUpPage}/>
                             </Switch>
                             <Drawer

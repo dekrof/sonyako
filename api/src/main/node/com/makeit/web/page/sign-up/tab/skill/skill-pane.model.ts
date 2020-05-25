@@ -18,3 +18,11 @@ export class SkillTabModel {
     @observable
     public errors: ValidateStatus[] = [];
 }
+
+
+@injectable()
+export class SkillModel {
+
+    @observable
+    public skills: Map<number, SkillTabModel> = new Map();
+}

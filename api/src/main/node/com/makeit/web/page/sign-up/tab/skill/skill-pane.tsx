@@ -2,14 +2,14 @@ import * as React from "react";
 import { injectIntl, WrappedComponentProps } from 'react-intl';
 
 import { Formik } from "formik";
-import { Form, Input, Select } from "formik-antd";
+import { Form, Select } from "formik-antd";
 import { Button, Divider, Empty, Form as AntForm, Tabs } from "antd";
 
 import { Selection, SkillSelection } from "@component/skill/skill-selection";
-import { SkillTabModel, SkillModule, Icons } from "@page/sign-up/tab/skill";
+import { SkillModule, SkillModel, SkillTabModel, Icons } from "@page/sign-up/tab/skill";
 import { context, observer, resolve, observable } from "@page/decorator";
 
-type SkillPane = {
+type SkillTabOption = {
     key: string;
     title: string | React.ReactNode;
     content: string | React.ReactNode;
@@ -57,8 +57,14 @@ const SkillCategorySelect = (props: { onChange: (val: any) => void }) => (
     </Select>
 );
 
+interface SkillTabProps extends WrappedComponentProps {
+    key?: string;
+    category: number;
+    onModelChange: (model: SkillTabModel) => void;
+}
+
 @observer
-class SkillTab extends React.Component<{ key?: string, category: number } & WrappedComponentProps> {
+class SkillTab extends React.Component<SkillTabProps> {
 
     @resolve("Factory<SkillTabModel>")
     private factory: (category: number) => SkillTabModel;
@@ -67,7 +73,7 @@ class SkillTab extends React.Component<{ key?: string, category: number } & Wrap
 
     public render() {
         this.model = this.model || this.factory(this.props.category);
-        const {errors, category} = this.model;
+        const { errors, category } = this.model;
 
         return (
             <>
@@ -156,13 +162,17 @@ class SkillTab extends React.Component<{ key?: string, category: number } & Wrap
                 this.model.errors[it] = experience ? "success" : "warning";
             }
         }
+        this.props.onModelChange(this.model);
     }
 }
 
-export const SkillTabIntl = injectIntl(SkillTab);
+const SkillTabIntl = injectIntl(SkillTab);
 
 @context(SkillModule) @observer
 class SkillPanel extends React.Component {
+
+    @resolve
+    private model: SkillModel;
 
     @observable
     private activeKey: string;
@@ -171,9 +181,10 @@ class SkillPanel extends React.Component {
     private categories: Set<number> = new Set();
 
     @observable
-    private skillPanes: SkillPane[] = [];
+    private skillTabs: SkillTabOption[] = [];
 
     public render() {
+
         return <>
             <Formik
                 initialValues={{}}
@@ -201,7 +212,7 @@ class SkillPanel extends React.Component {
                             tabBarExtraContent={<SkillCategorySelect onChange={val => this.addCategorySkillTab(val)} />}
                             className="skills-form-tabs">
                             {
-                                this.skillPanes.map(pane => (
+                                this.skillTabs.map(pane => (
                                     <Tabs.TabPane tab={pane.title} key={pane.key} closable={false}>
                                         {pane.content}
                                     </Tabs.TabPane>
@@ -221,11 +232,13 @@ class SkillPanel extends React.Component {
             const title = categories.filter(category => category.id === categoryId)[0].name;
             this.categories.add(categoryId);
 
-            this.skillPanes.push({
+            this.skillTabs.push({
                 key,
-                content: <SkillTabIntl category={categoryId} key={`pane-${key}`} />,
+                content: <SkillTabIntl
+                    category={categoryId} key={`pane-${key}`}
+                    onModelChange={(model) => this.handleSkillModelChange(model)}/>,
                 title: <span key={`title-${key}`}>
-                    <span key={`title-span-${key}`}>{title}</span>
+                    <span key={`title-inner-${key}`}>{title}</span>
                     &nbsp;
                     <span key={`title-close-${key}`} onClick={() => this.closeSkillTab(categoryId)}>
                         <Icons.ChipClose width={20} height={20} />
@@ -233,27 +246,32 @@ class SkillPanel extends React.Component {
                 </span>,
             });
         }
+
         this.activeKey = key;
     }
 
     private closeSkillTab(categoryId: number) {
-        const skillPane: SkillPane = this.skillPanes.filter(it => it.key === `category-${categoryId}`)[0];
-        const index = this.skillPanes.indexOf(skillPane);
+        const skillPane: SkillTabOption = this.skillTabs.filter(it => it.key === `category-${categoryId}`)[0];
+        const index = this.skillTabs.indexOf(skillPane);
 
         this.categories.delete(categoryId);
-        this.skillPanes.splice(index, 1);
+        this.skillTabs.splice(index, 1);
 
-        const pos = index > 0 && this.skillPanes.length > index
+        const pos = index > 0 && this.skillTabs.length > index
             ? index - 1
             : -1;
         if (pos >= 0) {
-            this.activeKey = this.skillPanes[pos].key;
+            this.activeKey = this.skillTabs[pos].key;
         }
     }
 
     private selectSkillTab(key: string) {
         this.activeKey = key;
         this.forceUpdate();
+    }
+
+    private handleSkillModelChange(model: SkillTabModel) {
+        this.model.skills.set(model.category, model);
     }
 }
 
