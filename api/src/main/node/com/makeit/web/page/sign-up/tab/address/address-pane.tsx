@@ -13,13 +13,13 @@ import { context, observer, resolve } from "@page/decorator";
 class AddressPanel extends React.Component<WrappedComponentProps> {
 
     @resolve
-    private vm: AddressModel;
+    private model: AddressModel;
 
     public render() {
         return (
             <>
                 <Formik
-                    initialValues={this.vm}
+                    initialValues={this.model}
                     onSubmit={() => {/* @ts-ignore */
                     }}
                     render={() => (
@@ -34,20 +34,20 @@ class AddressPanel extends React.Component<WrappedComponentProps> {
                                 <FormItem
                                     label="District"
                                     name="district">
-                                    <StateSelect region={this.vm.regionId}/>
+                                    <StateSelect region={this.model.regionId}/>
                                 </FormItem>
                             </Space>
                             <Space direction="horizontal" size={20}>
                                 <FormItem
                                     label="Settlement"
                                     name="settlement">
-                                    <SettlementSelect region={this.vm.regionId} district={this.vm.districtId}/>
+                                    <SettlementSelect region={this.model.regionId} district={this.model.districtId}/>
                                 </FormItem>
                                 <FormItem
                                     label="Street & House"
                                     name="street">
-                                    <StreetSelect region={this.vm.regionId} district={this.vm.districtId}
-                                                  city={this.vm.cityId}/>
+                                    <StreetSelect region={this.model.regionId} district={this.model.districtId}
+                                                  city={this.model.cityId}/>
                                 </FormItem>
                             </Space>
 
@@ -58,9 +58,9 @@ class AddressPanel extends React.Component<WrappedComponentProps> {
                                     <Input
                                         name="entranceAndAppparaments"
                                         style={{width: 282}}
-                                        disabled={!this.vm.houseNumber}
-                                        value={this.vm.entranceAndAppparaments}
-                                        onChange={ev => this.vm.entranceAndAppparaments = ev.currentTarget.value}/>
+                                        disabled={!this.model.houseNumber}
+                                        value={this.model.entranceAndAppparaments}
+                                        onChange={ev => this.model.entranceAndAppparaments = ev.currentTarget.value}/>
                                 </FormItem>
                                 <FormItem
                                     label="Postal Code"
@@ -68,16 +68,16 @@ class AddressPanel extends React.Component<WrappedComponentProps> {
                                     <Input
                                         name="postalCode"
                                         style={{width: 120}}
-                                        value={this.vm.postalCode}
-                                        disabled={!this.vm.houseNumber}
-                                        onChange={ev => this.vm.postalCode = ev.currentTarget.value}/>
+                                        value={this.model.postalCode}
+                                        disabled={!this.model.houseNumber}
+                                        onChange={ev => this.model.postalCode = ev.currentTarget.value}/>
                                 </FormItem>
                                 <div style={{width: 422}}/>
                             </Space>
                             <FormItem
                                 label="Location"
                                 name="map">
-                                <LocationInput postalCode={this.vm.postalCode}/>
+                                <LocationInput postalCode={this.model.postalCode}/>
                             </FormItem>
                         </Form>
                     )}/>
