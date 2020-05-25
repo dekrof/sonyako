@@ -6,7 +6,7 @@ import { injectIntl, WrappedComponentProps } from "react-intl";
 
 import { Button, Checkbox, Space, Tabs } from "antd";
 
-import { AddressPanel, Icons, SignUpModule, SkillPanel, UserPanel } from "@page/sign-up";
+import { AddressPanel, Icons, SignUpModule, SkillPanel, UserPanel, PaymentPanel } from "@page/sign-up";
 import { context, page } from "@page/decorator";
 import { Title } from "@page/app-layout";
 
@@ -55,7 +55,7 @@ class SignUpPage extends React.Component<WrappedComponentProps & RouteComponentP
                             <Tabs.TabPane
                                 key="user-payment"
                                 tab={<TabIcon icon={<Icons.UserPayment width={45} height={45}/>} title="Payment"/>}>
-                                Content of Tab 4
+                                <PaymentPanel />
                             </Tabs.TabPane>
                         </Tabs>
                     </div>

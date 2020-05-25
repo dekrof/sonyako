@@ -1,24 +1,25 @@
 @import "../../asset/css/antd-overrides";
 
-@signup-section-width: 998px;
+@signup-section-width               : 998px;
 @signup-submit-button-wrapper-height: 73px;
 
 .signup {
-    z-index: 99;
-    display: flex;
-    align-items: center;
+    z-index        : 99;
+    display        : flex;
+    align-items    : center;
     justify-content: center;
-    margin-bottom: -@signup-submit-button-wrapper-height;
+    margin-bottom  : -@signup-submit-button-wrapper-height;
 
     &-submit-button-wrapper {
-        position: fixed;
-        left: 0;
-        bottom: 0;
-        width: 998px;
-        height: @signup-submit-button-wrapper-height;
-        margin: 0 calc((100vw - @signup-section-width) / 2);
-        border-left: 1px solid #f0f0f0;
+        position    : fixed;
+        left        : 0;
+        bottom      : 0;
+        width       : 998px;
+        height      : @signup-submit-button-wrapper-height;
+        margin      : 0 calc((100vw - @signup-section-width) / 2);
+        border-left : 1px solid #f0f0f0;
         border-right: 1px solid #f0f0f0;
+        z-index     : 100;
 
         @supports not (backdrop-filter: none) {
             &-content {
@@ -27,28 +28,31 @@
         }
 
         &-content {
-            height: 100%;
-            border-top: 1px solid #f0f0f0;
-            border-left: 1px solid #f0f0f0;
+            height      : 100%;
+            border-top  : 1px solid #f0f0f0;
+            border-left : 1px solid #f0f0f0;
             border-right: 1px solid #f0f0f0;
-            width: calc(@signup-section-width - 2px - 102px);
+            width       : calc(@signup-section-width - 2px - 102px);
 
-            background-color: rgba(255, 255, 255, .15);
+            background-color       : rgba(255, 255, 255, .15);
             -webkit-backdrop-filter: blur(10px);
-            backdrop-filter: blur(10px);
-            text-align: center;
+            backdrop-filter        : blur(10px);
+            text-align             : center;
 
             padding: 0 20px;
 
             &::before {
-                display: block;
-                content: "";
+                display : block;
+                content : "";
                 position: absolute;
-                left: 0;
-                top: -6px;
-                height: 6px;
-                width: calc(@signup-section-width - 2px - 102px);
-                background: linear-gradient(to top, rgba(73, 57, 76, 0.15) 0%, rgba(73, 57, 76, 0.04) 40%, rgba(0, 0, 0, 0)) 100%;
+                left    : 0;
+                top     : -6px;
+                height  : 6px;
+                width   : calc(@signup-section-width - 2px - 102px);
+                background: linear-gradient(to top,
+                        rgba(73, 57, 76, 0.15) 0%,
+                        rgba(73, 57, 76, 0.04) 40%,
+                        rgba(0, 0, 0, 0)) 100%;
             }
 
             .ant-space {
@@ -63,16 +67,16 @@
 
     &-stack-container {
         background-color: #fdfdfd;
-        border-left: 1px solid #f0f0f0;
-        border-right: 1px solid #f0f0f0;
-        width: 100%;
-        max-width: 70vw;
-        height: auto;
-        min-height: calc(100vh - 113px);
+        border-left     : 1px solid #f0f0f0;
+        border-right    : 1px solid #f0f0f0;
+        width           : 100%;
+        max-width       : 70vw;
+        height          : auto;
+        min-height      : calc(100vh - 113px);
 
         &-tabs {
-            width: 100%;
-            height: auto;
+            width     : 100%;
+            height    : auto;
             min-height: calc(100vh - 113px);
 
             div[role=tablist] {
@@ -85,9 +89,9 @@
                 }
 
                 span {
-                    color: @text-color;
+                    color      : @text-color;
                     font-weight: normal;
-                    font-size: 14px;
+                    font-size  : 14px;
 
                     &:hover {
                         color: @link-color;
@@ -102,8 +106,8 @@
     }
 
     &-form {
-        padding: 20px 20px 83px !important;
-        height: auto;
+        padding   : 20px 20px 83px !important;
+        height    : auto;
         min-height: calc(100vh - 113px);
 
         &-avatar-space {
@@ -113,24 +117,101 @@
         }
     }
 
-    &-form.skills-form {
+    .skills-form {
         .ant-form-item-children-icon {
             right: 10px;
         }
 
         .ant-btn-link {
-            z-index: 100;
+            z-index         : 100;
             background-color: #ffffff;
         }
 
         .ant-empty {
             margin-bottom: 20px;
         }
+
+        .ant-tabs-extra-content {
+            float       : left !important;
+            line-height : initial !important;
+            padding     : 3px;
+            margin-right: 20px !important;
+        }
+
+        .ant-tabs-tab-next,
+        .ant-tabs-tab-prev {
+            svg {
+                vertical-align: 2px;
+            }
+        }
+
+        .ant-tabs-tab-prev {
+            &::after {
+                content   : '';
+                position  : absolute;
+                height    : 100%;
+                width     : 6px;
+                right     : 0;
+                z-index   : -1;
+                box-shadow: 6px 0 6px #fdfdfd;
+            }
+
+            &.ant-tabs-tab-btn-disabled::after {
+                box-shadow: none;
+            }
+        }
+
+        .ant-tabs-tab-next {
+            &::before {
+                content   : '';
+                position  : absolute;
+                height    : 100%;
+                width     : 6px;
+                left      : 2px;
+                z-index   : -1;
+                box-shadow: -6px 0 6px #fdfdfd;
+            }
+
+            &.ant-tabs-tab-btn-disabled::before {
+                box-shadow: none;
+            }
+        }
+
+        .ant-empty-normal {
+            margin-top: 0;
+        }
+
+        &-tabs {
+            div[role="tablist"] {
+                background-color: transparent;
+                border          : none;
+            }
+
+            div[role=tab] {
+                margin       : 3px 6px 6px 0 !important;
+                padding      : 3.5px 5px 3.5px 12px !important;
+                border-radius: 16px !important;
+                border       : 1px solid #d9d9d9 !important;
+
+                &[aria-selected=false] svg {
+                    filter: grayscale(100%) opacity(0.3);
+                }
+
+                &:first-child svg {
+                    margin: 0;
+                }
+
+                span>svg {
+                    display       : inline;
+                    vertical-align: -4.5px;
+                }
+            }
+        }
     }
 
     .address-form {
         .select-before {
-            width: 120px;
+            width     : 120px;
             text-align: left;
         }
 
@@ -141,9 +222,9 @@
         }
 
         &-map-wrapper {
-            background-image: url("../../asset/svg/map-empty.svg");
-            background-repeat: no-repeat;
-            background-size: 100px 100px;
+            background-image   : url("../../asset/svg/map-empty.svg");
+            background-repeat  : no-repeat;
+            background-size    : 100px 100px;
             background-position: center center;
 
             padding: 0;
@@ -160,4 +241,51 @@
             background-color: initial;
         }
     }
+
+    .payment-form {
+        .ant-space-item {
+            width: auto;
+        }
+
+        .card-space,
+        .card-space .ant-space-item {
+            width: 100%;
+
+            .ant-input-number-handler-wrap {
+                display: none;
+            }
+        }
+
+        dl {
+            display: table;
+            margin : 20px 0;
+
+            li {
+                display: table-row;
+
+                &>dd {
+                    padding-left: 10px;
+                    text-align  : left;
+                }
+
+                &>dt {
+                    text-align   : left;
+                    padding-right: 155px;
+                    border-right : 1px solid #f0f0f0;
+                }
+
+                &>dt,
+                &>dd {
+                    display: table-cell;
+                }
+            }
+        }
+    }
+}
+
+.ant-select-selection-item i,
+.ant-select-item-option-content i {
+    float       : right;
+    font-variant: all-small-caps;
+    font-style  : normal;
 }

@@ -1,13 +1,19 @@
 import * as React from "react";
-import { injectIntl } from "react-intl";
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 
 import { Formik } from "formik";
 import { Form, Input, Select } from "formik-antd";
-import { Button, Divider, Empty, Form as AntForm } from "antd";
+import { Button, Divider, Empty, Form as AntForm, Tabs } from "antd";
 
-import { context, observer, resolve } from "@page/decorator";
-import { Selection, SkillSelection } from "@component/skill/SkillSelection";
-import { SkillModel, SkillModule } from "@page/sign-up/tab/skill";
+import { Selection, SkillSelection } from "@component/skill/skill-selection";
+import { SkillTabModel, SkillModule, Icons } from "@page/sign-up/tab/skill";
+import { context, observer, resolve, observable } from "@page/decorator";
+
+type SkillPane = {
+    key: string;
+    title: string | React.ReactNode;
+    content: string | React.ReactNode;
+}
 
 const categories = [
     {
@@ -41,7 +47,7 @@ const SkillCategorySelect = (props: { onChange: (val: any) => void }) => (
         name="skill-category"
         placeholder="Please select category"
         onChange={val => props.onChange(val)}
-        style={{width: 200}}>
+        style={{ width: 260 }}>
         {
             categories.map((category, it) => <Select.Option
                 key={it}
@@ -51,21 +57,61 @@ const SkillCategorySelect = (props: { onChange: (val: any) => void }) => (
     </Select>
 );
 
-@context(SkillModule) @observer
-class SkillPanel extends React.Component {
+@observer
+class SkillTab extends React.Component<{ key?: string, category: number } & WrappedComponentProps> {
 
-    @resolve
-    private model: SkillModel;
+    @resolve("Factory<SkillTabModel>")
+    private factory: (category: number) => SkillTabModel;
 
-    private handleCategoryChange(category: number) {
-        if (this.model.category !== category) {
-            this.model.skills.forEach(skill => {
-                skill.category = category;
-                skill.skill = null;
-                skill.experience = null;
-            });
-        }
-        this.model.category = category;
+    private model: SkillTabModel;
+
+    public render() {
+        this.model = this.model || this.factory(this.props.category);
+        const {errors, category} = this.model;
+
+        return (
+            <>
+                <AntForm.List key={this.props.key} name={`skills-category-${category}`}>
+                    {
+                        (fields, { add, remove }) => <>
+                            {
+                                fields.length == 0
+                                    ? <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={
+                                        <span
+                                            style={{ color: "#aeb8c2" }}>No skills selected, please select skill category before</span>} />
+                                    : null
+                            }
+                            {
+                                fields.map((field, index) => (
+                                    <AntForm.Item
+                                        hasFeedback={!!errors[index]}
+                                        validateStatus={errors[index] || ""}
+                                        name={`skills[${index}]`}
+                                        key={`skills[${index}]`}>
+                                        <>
+                                            <SkillSelection
+                                                key={`skill-selection[${index}]`}
+                                                category={category}
+                                                onSelectionChange={(sel) => this.handleSelectionChange(sel, index)}
+                                                remove={
+                                                    fields.length === index + 1
+                                                        ? () => this.handleSelectionRemove(remove, field.name)
+                                                        : null
+                                                } />
+                                        </>
+                                    </AntForm.Item>
+                                ))
+                            }
+                            <AntForm.Item>
+                                <Button disabled={category < 0} type="default" style={{ width: 200 }} onClick={() => add()}>
+                                    Add your skill
+                                </Button>
+                            </AntForm.Item>
+                        </>
+                    }
+                </AntForm.List>
+            </>
+        );
     }
 
     private handleSelectionRemove(removeFn: Function, index: number) {
@@ -106,18 +152,32 @@ class SkillPanel extends React.Component {
                 });
             } else {
                 const it = arr[0];
-                const {experience} = this.model.skills[it];
+                const { experience } = this.model.skills[it];
                 this.model.errors[it] = experience ? "success" : "warning";
             }
         }
     }
+}
+
+export const SkillTabIntl = injectIntl(SkillTab);
+
+@context(SkillModule) @observer
+class SkillPanel extends React.Component {
+
+    @observable
+    private activeKey: string;
+
+    @observable
+    private categories: Set<number> = new Set();
+
+    @observable
+    private skillPanes: SkillPane[] = [];
 
     public render() {
         return <>
             <Formik
-                initialValues={this.model}
-                onSubmit={() => {/* @ts-ignore */
-                }}
+                initialValues={{}}
+                onSubmit={() => {/* @ts-ignore */ }}
                 render={() => (
                     <Form layout="vertical" className="signup-form skills-form">
                         <Divider orientation="left">Professional Skills</Divider>
@@ -131,56 +191,69 @@ class SkillPanel extends React.Component {
                             you can update the selected set whatever you like,
                             also you are able to update the experience level when you thought it has grown.
                         </p>
-                        <AntForm.Item>
-                            <Divider orientation="left">
-                                <SkillCategorySelect onChange={val => this.handleCategoryChange(val)}/>
-                            </Divider>
-                        </AntForm.Item>
-                        <AntForm.List name="skills">
+                        <Divider dashed />
+                        <Tabs
+                            hideAdd
+                            activeKey={this.activeKey}
+                            size="small"
+                            type="editable-card"
+                            onTabClick={(tab: string) => this.selectSkillTab(tab)}
+                            tabBarExtraContent={<SkillCategorySelect onChange={val => this.addCategorySkillTab(val)} />}
+                            className="skills-form-tabs">
                             {
-                                (fields, {add, remove}) => <>
-                                    {
-                                        fields.length == 0
-                                            ? <Empty description={
-                                                <span
-                                                    style={{color: "#aeb8c2"}}>No skills selected, please select skill category before</span>}/>
-                                            : null
-                                    }
-                                    {
-                                        fields.map((field, index) => (
-                                            <AntForm.Item
-                                                hasFeedback={!!this.model.errors[index]}
-                                                validateStatus={this.model.errors[index] || ""}
-                                                name={`skills[${index}]`}
-                                                key={`skills[${index}]`}>
-                                                <>
-                                                    <Input hidden={true} name={`skills[${index}]`} value={index}/>
-                                                    <SkillSelection
-                                                        key={`skill-selection[${index}]`}
-                                                        category={this.model.category}
-                                                        onSelectionChange={(sel) => this.handleSelectionChange(sel, index)}
-                                                        remove={
-                                                            fields.length === index + 1
-                                                                ? () => this.handleSelectionRemove(remove, field.name)
-                                                                : null
-                                                        }/>
-                                                </>
-                                            </AntForm.Item>
-                                        ))
-                                    }
-                                    <AntForm.Item>
-                                        <Button
-                                            disabled={this.model.category < 0}
-                                            type="default" style={{width: 200}} onClick={() => add()}>Add your
-                                            skill</Button>
-                                        <Button type="link">Add skill category</Button>
-                                    </AntForm.Item>
-                                </>
+                                this.skillPanes.map(pane => (
+                                    <Tabs.TabPane tab={pane.title} key={pane.key} closable={false}>
+                                        {pane.content}
+                                    </Tabs.TabPane>
+                                ))
                             }
-                        </AntForm.List>
+                        </Tabs>
                     </Form>
-                )}/>
+                )} />
         </>
+    }
+
+    private addCategorySkillTab(categoryId: number) {
+        const isNewTab = !this.categories.has(categoryId);
+        const key = `category-${categoryId}`;
+
+        if (isNewTab) {
+            const title = categories.filter(category => category.id === categoryId)[0].name;
+            this.categories.add(categoryId);
+
+            this.skillPanes.push({
+                key,
+                content: <SkillTabIntl category={categoryId} key={`pane-${key}`} />,
+                title: <span key={`title-${key}`}>
+                    <span key={`title-span-${key}`}>{title}</span>
+                    &nbsp;
+                    <span key={`title-close-${key}`} onClick={() => this.closeSkillTab(categoryId)}>
+                        <Icons.ChipClose width={20} height={20} />
+                    </span>
+                </span>,
+            });
+        }
+        this.activeKey = key;
+    }
+
+    private closeSkillTab(categoryId: number) {
+        const skillPane: SkillPane = this.skillPanes.filter(it => it.key === `category-${categoryId}`)[0];
+        const index = this.skillPanes.indexOf(skillPane);
+
+        this.categories.delete(categoryId);
+        this.skillPanes.splice(index, 1);
+
+        const pos = index > 0 && this.skillPanes.length > index
+            ? index - 1
+            : -1;
+        if (pos >= 0) {
+            this.activeKey = this.skillPanes[pos].key;
+        }
+    }
+
+    private selectSkillTab(key: string) {
+        this.activeKey = key;
+        this.forceUpdate();
     }
 }
 

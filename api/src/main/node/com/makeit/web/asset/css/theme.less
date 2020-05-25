@@ -5,6 +5,11 @@
 @app-width: 998px;
 @app-modal-vertical-boundary: 113px;
 
+body {
+    overscroll-behavior-y: none;
+    overscroll-behavior-x: none;
+}
+
 body::before {
     content: "";
     position: absolute;
@@ -18,7 +23,7 @@ body::before {
     background-position: 0 72px;
     background-repeat: no-repeat;
     background-size: cover;
-    filter: opacity(0.3) blur(20px);
+    filter: opacity(0.3) blur(40px);
 }
 
 main > section {

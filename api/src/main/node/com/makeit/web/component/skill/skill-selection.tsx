@@ -3,10 +3,8 @@ import * as React from "react";
 import { Button, Space } from "antd";
 import { MinusCircleOutlined } from "@ant-design/icons";
 
-import { TwoLineItem } from "@component/skill/TwoLineSelect";
-import { TwoLineSelect } from "@component/skill/TwoLineSelect";
-import { observer } from "mobx-react";
-import { observable } from "mobx";
+import { TwoLineItem, TwoLineSelect } from "@component/skill/two-line-select";
+import { observer, observable } from "@page/decorator";
 
 // todo: real API should get a list of skill regarding to category id;
 const skills = [
@@ -133,6 +131,7 @@ export class SkillSelection extends React.Component<SkillSelectionProps> {
     private experience: TwoLineItem & { level: number };
 
     private skillRef = React.createRef<TwoLineSelect>();
+
     private experienceRef = React.createRef<TwoLineSelect>();
 
     private onSkillChange = (skill) => {
@@ -153,20 +152,6 @@ export class SkillSelection extends React.Component<SkillSelectionProps> {
             skill: this.skill,
             experience: this.experience
         });
-    }
-
-    public UNSAFE_componentWillReceiveProps(nextProps: SkillSelectionProps) {
-        const {category} = nextProps;
-
-        if (this.category !== category) {
-            if (this.skillRef.current && this.experienceRef.current) {
-                this.skillRef.current.reset();
-                this.experienceRef.current.reset();
-            }
-            this.category = category;
-            this.experience = null;
-            this.skill = null;
-        }
     }
 
     public render() {

@@ -1,9 +1,14 @@
 import { ValidateStatus } from "antd/lib/form/FormItem";
+import { Selection } from "@component/skill/skill-selection";
 import { injectable, observable } from "@page/decorator";
-import { Selection } from "@component/skill/SkillSelection";
 
 @injectable()
-export class SkillModel {
+export class SkillTabModel {
+
+    constructor(category: number) {
+        this.category = category;
+    }
+
     @observable
     public category: number = -1;
 

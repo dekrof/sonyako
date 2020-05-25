@@ -1,6 +1,7 @@
 import * as React from "react";
 import { observable } from "mobx";
 import { observer } from "mobx-react";
+import { bind } from "helpful-decorators";
 import { FormattedMessage } from "react-intl";
 
 import { Menu, Dropdown } from "antd";
@@ -58,6 +59,7 @@ export class TwoLineSelect extends React.Component<TwoLineSelectProps> {
     @observable
     private selection: TwoLineItem;
 
+    @bind
     private handleMenuItem(param: ClickParam) {
         const { data, onSelectionChange } = this.props;
         const selection = data[Number(param.key)];
@@ -66,10 +68,6 @@ export class TwoLineSelect extends React.Component<TwoLineSelectProps> {
         if (onSelectionChange) {
             onSelectionChange(selection);
         }
-    }
-
-    public reset() {
-        this.selection = null;
     }
 
     public render() {
