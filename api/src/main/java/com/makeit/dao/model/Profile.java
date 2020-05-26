@@ -4,7 +4,6 @@ import com.makeit.supported.validation.NullOrNotBlank;
 import lombok.*;
 import lombok.experimental.*;
 import org.hibernate.annotations.NaturalId;
-import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -70,7 +69,6 @@ public class Profile extends AbstractEntity {
     private LocalDate birthday;
 
     @Column(name = "avatar_url")
-    @URL(message = "The user avatar should be the URL to external or file system resource")
     private String avatarUrl;
 
     @Valid

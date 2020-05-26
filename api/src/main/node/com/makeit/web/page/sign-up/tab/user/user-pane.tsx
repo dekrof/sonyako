@@ -1,8 +1,9 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import { FormattedMessage, injectIntl, WrappedComponentProps } from "react-intl";
-import { parsePhoneNumberFromString } from "libphonenumber-js";
+
 import Avatars from "@dicebear/avatars";
+
 import { Formik } from "formik";
 import { QuestionCircleTwoTone } from "@ant-design/icons";
 import { Divider, message, Space, Tooltip, Upload } from "antd";
@@ -10,7 +11,8 @@ import { DatePicker, Form, FormItem, Input, Select } from "formik-antd";
 import { FrownOutlined, PhoneOutlined, MailOutlined } from "@ant-design/icons"
 
 import { observer, resolve, observable } from "@page/decorator";
-import { Gender, UserModel } from "@page/sign-up/tab/user";
+import { Gender, PhoneNumberResult, UserModel } from "@page/sign-up/tab/user";
+import { bind } from "helpful-decorators";
 
 function getBase64(img: Blob | any, callback: Function) {
     const reader = new FileReader();
@@ -85,68 +87,73 @@ class UserPanel extends React.Component<WrappedComponentProps> {
             : avatarUrl;
 
         return <>
-            <Formik
-                initialValues={this.model}
-                onSubmit={() => { /*@ts-ignore*/ }}
-                render={() => (
-                    <Form layout="vertical" className="signup-form">
-                        <Divider orientation="left">Contact Information</Divider>
-                        <Space direction="horizontal" align="start" size={20} className="signup-form-avatar-space">
-                            <div className="signup-form-user-avatar">
-                                <Upload
-                                    name="avatar"
-                                    listType="picture-card"
-                                    className="ant-uploader"
-                                    showUploadList={false}
-                                    beforeUpload={beforeUpload}
-                                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                                    onChange={this.handleChange}>
-                                    <UploadButton loading={loading} avatarUrl={this.model.avatarUrl} />
-                                </Upload>
-                            </div>
-                            <div>
-                                <p>
-                                    <Link to="/">Make IT</Link> doing the best to provide a quality avatar picture for
+            <Formik initialValues={this.model} onSubmit={(_values, helpers) => helpers.setSubmitting(false)} >
+                {
+                    (props) => (
+                        <Form layout="vertical" className="signup-form profile-form">
+                            {
+                                (() => {
+                                    // the workaraout to fix the bag of formik
+                                    this.model.form = props;
+                                    return null;
+                                })()
+                            }
+                            <Divider orientation="left">Contact Information</Divider>
+                            <Space direction="horizontal" align="start" size={20} className="signup-form-avatar-space">
+                                <div className="signup-form-user-avatar">
+                                    <Upload
+                                        name="avatar"
+                                        listType="picture-card"
+                                        className="ant-uploader"
+                                        showUploadList={false}
+                                        beforeUpload={beforeUpload}
+                                        onChange={this.handleChange}>
+                                        <UploadButton loading={loading} avatarUrl={this.model.avatarUrl} />
+                                    </Upload>
+                                </div>
+                                <div>
+                                    <p>
+                                        <Link to="/">Make IT</Link> doing the best to provide a quality avatar picture for
                                     your profile.
                                     Every time, while you entering the new username the new unique avatar will be
                                     immediately ready for your choice.
                                 </p>
-                                <Divider />
-                                <p>
-                                    Click on picture to upload your own avatar, or <span>
-                                        <a onClick={ev => this.resetAvatar(ev)}>
-                                            reset
+                                    <Divider />
+                                    <p>
+                                        Click on picture to upload your own avatar, or <span>
+                                            <a onClick={ev => this.resetAvatar(ev)}>
+                                                reset
                                         </a> to generate a new one.
                                     </span>
-                                </p>
-                            </div>
-                        </Space>
-                        <FormItem
-                            name="username"
-                            validate={value => this.validateUsername(value)}
-                            label={
-                                <FormLabel
-                                    label={t("login.username")}
-                                    message={
-                                        `The username should have length between 6 and 12 symbols,
-                                        without special characters and <b>@</b> symbol`
-                                    } />
-                            }>
-                            <Input
-                                style={{ width: "calc(50% - 10px)" }}
-                                name="username"
-                                placeholder={t("login.username.placeholder")}
-                                onChange={ev => this.model.username = ev.currentTarget.value} />
-                        </FormItem>
-                        <Space direction="horizontal" align="center" size={20}>
+                                    </p>
+                                </div>
+                            </Space>
                             <FormItem
-                                name="primaryPassword"
-                                validate={value => this.validatePrimaryPassword(value)}
+                                name="username"
+                                validate={value => this.model.validateUsername(value)?.toString()}
                                 label={
                                     <FormLabel
-                                        label="Password"
+                                        label={t("login.username")}
                                         message={
-                                            `Password should contains at least 2 uppercase letters and digits and not have size less than 8 symbols.
+                                            `The username should have length between 6 and 12 symbols,
+                                        without special characters and <b>@</b> symbol`
+                                        } />
+                                }>
+                                <Input
+                                    style={{ width: "calc(50% - 10px)" }}
+                                    name="username"
+                                    placeholder={t("login.username.placeholder")}
+                                    onChange={ev => this.model.username = ev.currentTarget.value} />
+                            </FormItem>
+                            <Space direction="horizontal" align="center" size={20}>
+                                <FormItem
+                                    name="primaryPassword"
+                                    validate={value => this.model.validatePrimaryPassword(value)}
+                                    label={
+                                        <FormLabel
+                                            label="Password"
+                                            message={
+                                                `Password should contains at least 2 uppercase letters and digits and not have size less than 8 symbols.
                                             <hr/>
                                             <table>
                                                 <tr>
@@ -158,107 +165,105 @@ class UserPanel extends React.Component<WrappedComponentProps> {
                                                     <td><s>qwerty12345</s></td>
                                                 </tr>
                                             </table>`
-                                        } />
-                                }>
-                                <Input.Password
-                                    name="primaryPassword"
-                                    onChange={(ev) => this.model.primaryPassword = ev.currentTarget.value}
-                                    placeholder="Please enter your password" />
-                            </FormItem>
-                            <FormItem
-                                name="confirmPassword"
-                                label="Confirm Password">
-                                <Input.Password
+                                            } />
+                                    }>
+                                    <Input.Password
+                                        name="primaryPassword"
+                                        onChange={(ev) => this.model.primaryPassword = ev.currentTarget.value}
+                                        placeholder="Please enter your password" />
+                                </FormItem>
+                                <FormItem
                                     name="confirmPassword"
-                                    onChange={(ev) => this.model.confirmPassword = ev.currentTarget.value}
-                                    placeholder="Type password again to confirm" />
-                            </FormItem>
-                        </Space>
-
-                        <Space direction="horizontal" align="center" size={20}>
-                            <FormItem
-                                name="email"
-                                validate={value => this.validateEmail(value)}
-                                label="E-mail">
-                                <Input
+                                    label="Confirm Password">
+                                    <Input.Password
+                                        name="confirmPassword"
+                                        onChange={(ev) => this.model.confirmPassword = ev.currentTarget.value}
+                                        placeholder="Type password again to confirm" />
+                                </FormItem>
+                            </Space>
+                            <Space direction="horizontal" align="center" size={20}>
+                                <FormItem
                                     name="email"
-                                    suffix={<MailOutlined />}
-                                    onChange={(ev) => this.model.email = ev.currentTarget.value}
-                                    placeholder="Enter your e-mail" />
-                            </FormItem>
-                            <FormItem
-                                name="phoneNumber"
-                                validate={value => this.validatatePhoneNumber(value)}
-                                label={
-                                    <FormLabel
-                                        label="Phone number"
-                                        message={
-                                            `The phone number should contains 11 or 13 digits regarding to your operator
+                                    validate={value => this.model.validateEmail(value)}
+                                    label="E-mail">
+                                    <Input
+                                        name="email"
+                                        suffix={<MailOutlined />}
+                                        onChange={(ev) => this.model.email = ev.currentTarget.value}
+                                        placeholder="Enter your e-mail" />
+                                </FormItem>
+                                <FormItem
+                                    name="phoneNumber"
+                                    validate={value => this.model.validatatePhoneNumber(value, this.handlePhoneValidation)}
+                                    label={
+                                        <FormLabel
+                                            label="Phone number"
+                                            message={
+                                                `The phone number should contains 11 or 13 digits regarding to your operator
                                             and includes the country code.
                                             <hr />
                                             <b>Preferable format</b>: +38 (066) 123-45-67`
-                                        } />
-                                }>
-                                <Input
-                                    name="phoneNumber"
-                                    suffix={this.phoneNumberSuffix}
-                                    onChange={(ev) => this.model.phoneNumber = ev.currentTarget.value}
-                                    placeholder="Enter your phone number" />
-                            </FormItem>
-                        </Space>
-
-                        <Divider orientation="left">Personal Information</Divider>
-                        <Space direction="horizontal" align="center" size={20}>
-                            <FormItem
-                                name="name"
-                                label="First Name">
-                                <Input
+                                            } />
+                                    }>
+                                    <Input
+                                        name="phoneNumber"
+                                        suffix={this.phoneNumberSuffix}
+                                        onChange={(ev) => this.model.phoneNumber = ev.currentTarget.value}
+                                        placeholder="Enter your phone number" />
+                                </FormItem>
+                            </Space>
+                            <Divider orientation="left">Personal Information</Divider>
+                            <Space direction="horizontal" align="center" size={20}>
+                                <FormItem
                                     name="name"
-                                    validate={value => this.validateNames(value, "name")}
-                                    onChange={(ev) => this.model.name = ev.currentTarget.value} />
-                            </FormItem>
-                            <FormItem
-                                name="surname"
-                                label="Last Name">
-                                <Input
+                                    label="First Name">
+                                    <Input
+                                        name="name"
+                                        validate={value => this.model.validateNames(value, "name")}
+                                        onChange={(ev) => this.model.name = ev.currentTarget.value} />
+                                </FormItem>
+                                <FormItem
                                     name="surname"
-                                    validate={value => this.validateNames(value, "last name")}
-                                    onChange={(ev) => this.model.surname = ev.currentTarget.value} />
-                            </FormItem>
-                        </Space>
-
-                        <Space direction="horizontal" align="center" size={20}>
-                            <FormItem
-                                name="gender"
-                                label="Gender">
-                                <Select
+                                    label="Last Name">
+                                    <Input
+                                        name="surname"
+                                        validate={value => this.model.validateNames(value, "last name")}
+                                        onChange={(ev) => this.model.surname = ev.currentTarget.value} />
+                                </FormItem>
+                            </Space>
+                            <Space direction="horizontal" align="center" size={20}>
+                                <FormItem
                                     name="gender"
-                                    placeholder="Please select your gender"
-                                    defaultValue={this.model.gender}
-                                    onSelect={(_ev, el) => this.model.gender = el.value}>
-                                    <Select.Option value={Gender.MALE}>Male</Select.Option>
-                                    <Select.Option value={Gender.FEMALE}>Female</Select.Option>
-                                    <Select.Option value={Gender.HUMAN}>Human</Select.Option>
-                                </Select>
-                            </FormItem>
-                            <FormItem
-                                name="birthday"
-                                label="Birthday">
-                                <DatePicker
+                                    label="Gender">
+                                    <Select
+                                        name="gender"
+                                        placeholder="Please select your gender"
+                                        defaultValue={this.model.gender}
+                                        onSelect={(_ev, el) => this.model.gender = el.value}>
+                                        <Select.Option value={Gender.MALE}>Male</Select.Option>
+                                        <Select.Option value={Gender.FEMALE}>Female</Select.Option>
+                                        <Select.Option value={Gender.HUMAN}>Human</Select.Option>
+                                    </Select>
+                                </FormItem>
+                                <FormItem
                                     name="birthday"
-                                    showTime={false}
-                                    style={{ width: "100%" }}
-                                    disabledDate={(moment) => moment.year() > new Date().getFullYear() - 10}
-                                    onChange={(ev) => this.model.birthday = ev.startOf("day").toDate()} />
-                            </FormItem>
-                        </Space>
-                    </Form>
-                )
-                } />
+                                    label="Birthday">
+                                    <DatePicker
+                                        name="birthday"
+                                        showTime={false}
+                                        style={{ width: "100%" }}
+                                        disabledDate={(moment) => moment.year() > new Date().getFullYear() - 10}
+                                        onChange={(ev) => this.model.birthday = ev.startOf("day").toDate()} />
+                                </FormItem>
+                            </Space>
+                        </Form>
+                    )
+                }
+            </Formik>
         </>;
     }
 
-    private handleChange = info => {
+    private handleChange(info) {
         if (info.file.status === "uploading") {
             this.model.loading = true;
             return;
@@ -270,86 +275,25 @@ class UserPanel extends React.Component<WrappedComponentProps> {
                 this.model.loading = false;
             });
         }
-    };
+    }
+
+    @bind
+    private handlePhoneValidation(result: PhoneNumberResult) {
+        switch (result) {
+            case PhoneNumberResult.EMPTY: this.phoneNumberSuffix = <FrownOutlined />; break;
+            case PhoneNumberResult.NOT_VALID: this.phoneNumberSuffix = <FrownOutlined />; break;
+            case PhoneNumberResult.SUCCESS: this.phoneNumberSuffix = <span>{this.model.phoneNumberCountry}</span>; break;
+            default: this.phoneNumberSuffix = <PhoneOutlined />;
+        }
+    }
 
     private resetAvatar(ev: React.MouseEvent) {
         ev.preventDefault();
         const { gender, username } = this.model;
-
         // force to update;
         this.model.loading = true;
         this.model.avatarUrl = new Avatars(Gender.getSprites(gender), avatarOptions).create(username);
         this.model.loading = false;
-    }
-
-    private validateUsername(value: string) {
-        let error: string = null;
-        if (!value) {
-            error = "Username should not be empty";
-        } else if (value.trim().length > 12 || value.trim().length < 6) {
-            error = "Username should has length between 6 and 12 symbols inclusively";
-        } else if (/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?\s]+/.test(value.trim())) {
-            error = "Username should not contains special characters or whitespaces";
-        }
-        return error;
-    }
-
-    private validatePrimaryPassword(value: string) {
-        let error: string = null;
-        if (!value) {
-            error = "Password should not be empty";
-        } else if (value.trim().length < 8) {
-            error = "Password should has length greater than 8 symbols inclusively";
-        } else if (/[!%^&*()_+\-=\[\]{};':"\\|,.<>\/?\s]+/.test(value.trim())) {
-            error = "Password contains whitespaces or deined symbols";
-        } else if (value.replace(/\D+/g, "").length < 2 || value.replace(/[^A-Z]+/g, "").length < 2) {
-            error = "Password should has at least 2 digits and 2 uppercase letters";
-        } else if (value.trim() !== this.model.confirmPassword) {
-            error = "Password is not confirmed";
-        }
-        return error;
-    }
-
-    private validateEmail(value: string) {
-        let error: string = null;
-        if (!value) {
-            error = "Email should not be empty";
-        } else if (!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value.toLowerCase())) {
-            error = "Email address is not valid";
-        }
-        return error;
-    }
-
-    private validatatePhoneNumber(value: string) {
-        let error: string = null;
-        if (!value) {
-            error = "Phone number should not be empty";
-            this.phoneNumberSuffix = <FrownOutlined />;
-        } else {
-            let normalized = value.trim();
-            if (value.startsWith("0")) {
-                normalized = `+38${value}`;
-            } else if (value.charAt(0) !== "+") {
-                normalized = `+${value}`;
-            }
-            const result = parsePhoneNumberFromString(normalized);
-            if (!result || !result.isPossible() || !result.isValid()) {
-                this.phoneNumberSuffix = <FrownOutlined />;
-                error = "Phone number is not valid";
-            } else {
-                this.phoneNumberSuffix = <span>{result.country || "UA"}</span>;
-            }
-        }
-        return error;
-    }
-
-    validateNames(value: string, name: string) {
-        let error: string = null;
-        if (!value) {
-            name = name.replace(/(\b[a-z](?!\s))/g, (char) => char.toUpperCase());
-            error = `${name} should not be empty`;
-        }
-        return error;
     }
 }
 

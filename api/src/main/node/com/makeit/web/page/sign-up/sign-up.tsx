@@ -4,39 +4,65 @@ import { Link } from "react-router-dom";
 import { RouteComponentProps } from "react-router";
 import { injectIntl, WrappedComponentProps } from "react-intl";
 
-import { Button, Checkbox, Space, Tabs } from "antd";
+import { Button, Checkbox, Space, Tabs, Badge, Popover, List } from "antd";
 
 import { AddressPanel, Icons, SignUpModule, SignUpModel, SkillPanel, UserPanel, PaymentPanel } from "@page/sign-up";
-import { resolve, context, page } from "@page/decorator";
-import { Title } from "@page/app-layout";
 
+import { PaymentModule } from "@page/sign-up/tab/payment";
 import { AddressModule } from "@page/sign-up/tab/address";
 import { SkillModule } from "@page/sign-up/tab/skill";
 import { UserModule } from "@page/sign-up/tab/user";
+import { Title } from "@page/app-layout";
+
+import { resolve, context, page } from "@page/decorator";
 
 import "@page/sign-up/sign-up.less";
 
-const TabIcon = (props: { icon: any; title?: string }) => <>
+const TabIcon = (props: { icon?: any; title?: string; errors?: any; showErrors?: boolean; }) => (<>
     <div>
-        {props.icon}
-        <br/>
+        {
+            !props.showErrors ? props.icon : <Popover
+                title={"Errors"}
+                placement="bottom"
+                content={
+                    <List
+                        size="small"
+                        bordered={false}
+                        dataSource={Object.values(props.errors || {})}
+                        renderItem={(item, it) => (
+                            <List.Item>{it + 1}.&nbsp;{item}</List.Item>
+                        )}
+                    />
+                }>
+                <Badge count={Object.getOwnPropertyNames(props.errors).length} showZero={false}>
+                    {props.icon}
+                </Badge>
+            </Popover>
+        }
+        <br />
         <span>{props.title}</span>
     </div>
-</>;
+</>);
 
-@page(false) @context(SignUpModule, UserModule, SkillModule, AddressModule) @observer
+@page(false)
+@context(SignUpModule, UserModule, SkillModule, AddressModule, PaymentModule)
+@observer
 class SignUpPage extends React.Component<WrappedComponentProps & RouteComponentProps> {
 
     @resolve
     private model: SignUpModel;
 
     public render() {
-        const {params} = this.props.match;
+        const { params } = this.props.match;
         const key = params["0"]
             ? `${params["0"]}-${params["tab"] || "profile"}`
             : "user-profile";
 
-        const t = (key: string) => this.props.intl.formatMessage({id: key});
+        const t = (key: string) => this.props.intl.formatMessage({ id: key });
+
+        const { profileErrors, hasProfileErrors } = this.model;
+        const { addressErrors, hasAddressErrors } = this.model;
+        const { skillErrors  , hasSkillErrors   } = this.model;
 
         return (
             <>
@@ -46,22 +72,34 @@ class SignUpPage extends React.Component<WrappedComponentProps & RouteComponentP
                         <Tabs tabPosition="right" className="signup-stack-container-tabs" defaultActiveKey={key}>
                             <Tabs.TabPane
                                 key="user-profile"
-                                tab={<TabIcon icon={<Icons.UserContact width={45} height={45}/>} title="Profile"/>}>
-                                <UserPanel/>
-                            </Tabs.TabPane>
-                            <Tabs.TabPane
-                                key="user-skills"
-                                tab={<TabIcon icon={<Icons.UserSkills width={45} height={45}/>} title="Skills"/>}>
-                                <SkillPanel/>
+                                tab={<TabIcon
+                                    errors={profileErrors}
+                                    showErrors={hasProfileErrors}
+                                    icon={<Icons.UserContact width={45} height={45} />}
+                                    title="Profile" />}>
+                                <UserPanel />
                             </Tabs.TabPane>
                             <Tabs.TabPane
                                 key="user-address"
-                                tab={<TabIcon icon={<Icons.UserAddress width={45} height={45}/>} title="Address"/>}>
-                                <AddressPanel/>
+                                tab={<TabIcon
+                                    errors={addressErrors}
+                                    showErrors={hasAddressErrors}
+                                    icon={<Icons.UserAddress width={45} height={45} />}
+                                    title="Address" />}>
+                                <AddressPanel />
+                            </Tabs.TabPane>
+                            <Tabs.TabPane
+                                key="user-skills"
+                                tab={<TabIcon
+                                    errors={skillErrors}
+                                    showErrors={hasSkillErrors}
+                                    icon={<Icons.UserSkills width={45} height={45} />}
+                                    title="Skills" />}>
+                                <SkillPanel />
                             </Tabs.TabPane>
                             <Tabs.TabPane
                                 key="user-payment"
-                                tab={<TabIcon icon={<Icons.UserPayment width={45} height={45}/>} title="Payment"/>}>
+                                tab={<TabIcon icon={<Icons.UserPayment width={45} height={45} />} title="Payment" />}>
                                 <PaymentPanel />
                             </Tabs.TabPane>
                         </Tabs>
@@ -73,7 +111,7 @@ class SignUpPage extends React.Component<WrappedComponentProps & RouteComponentP
                             <Button
                                 type="primary"
                                 htmlType="submit"
-                                style={{width: 126}}
+                                style={{ width: 126 }}
                                 onClick={() => this.model.submitRegistration()}>
                                 Sign Up
                             </Button>

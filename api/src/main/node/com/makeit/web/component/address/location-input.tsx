@@ -27,6 +27,8 @@ type Viewport = {
     zoom: number;
 } & any & Coords;
 
+// dynamic layer to draw buildings with adjustable height according to current map zoom
+// it's a bit GPU expensive layer, activate on your choice, just follow comments below
 const buildingLayer = {
     "id": "3d-buildings",
     "source": "composite",
@@ -80,7 +82,7 @@ class LocationInput extends React.Component<LocationInputProps> {
     private viewport: Viewport = {
         longitude: Number(process.env.LON),
         latitude: Number(process.env.LAT),
-        pitch: 25,
+        pitch: 0, // 25 to show building perspective;
         zoom: 12
     }
 
@@ -96,71 +98,6 @@ class LocationInput extends React.Component<LocationInputProps> {
         }
     }
 
-    private updateViewport(closer: any) {
-        const {coords} = this.props;
-        if (coords) {
-            const {latitude, longitude} = coords;
-            this.viewport.longitude = longitude;
-            this.viewport.latitude = latitude;
-            this.marker = this.viewport;
-
-            clearInterval(closer);
-        }
-    }
-
-    private receiveLocation = flow(function* () {
-        const {intl} = this.props;
-        if (this.model.postalCode) {
-            const text = `${this.model.postalCode}, ${this.model.city}, ${this.model.street} ${this.model.houseNumber}`;
-            const location: Location = yield this.visicom.getLocation(intl.locale, text);
-            if (location) {
-                this.viewport.latitude = location.latitude;
-                this.viewport.longitude = location.longitude;
-                this.viewport.zoom = 17;
-
-                this.marker = this.viewport;
-            }
-        }
-    }.bind(this));
-
-    private handleMarkerDragEnd = (event: DragEvent) => {
-        const [longitude, latitude] = event.lngLat;
-        this.marker.longitude = longitude;
-        this.marker.latitude = latitude;
-
-        this.popLocationConfirm();
-    };
-
-    @once
-    private configureMap(ev: { target: any }) {
-        const map = ev.target;
-        const layers = map.getStyle().layers;
-
-        let labelLayerId: string;
-
-        for (let i = 0; i < layers.length; i++) {
-            if (layers[i].type === "symbol" && layers[i].layout["text-field"]) {
-                labelLayerId = layers[i].id;
-                break;
-            }
-        }
-
-        map.addLayer(buildingLayer, labelLayerId);
-    }
-
-    @delay(300)
-    private popLocationConfirm() {
-        this.showLocationConfirm = true;
-    }
-
-    private confirmLocation() {
-        this.showLocationConfirm = false;
-    }
-
-    private declineLocation() {
-        this.showLocationConfirm = false;
-    }
-
     public UNSAFE_componentWillReceiveProps(nextProps: LocationInputProps) {
         if (nextProps.postalCode && this.props.postalCode !== nextProps.postalCode) {
             this.receiveLocation();
@@ -172,10 +109,11 @@ class LocationInput extends React.Component<LocationInputProps> {
             <div className="address-form-map-wrapper ant-input">
                 <MapGL {...this.viewport}
                        width="100%"
-                       height="calc(100vh / 2)"
+                       height="calc(100vh / 2 - 160px)"
                        maxPitch={85}
                        mapStyle={process.env.MAP_STYLE}
-                       onLoad={ev => this.configureMap(ev)}
+                       // enable to activate 3d buildings;
+                       // onLoad={ev => this.configureMap(ev)}
                        onViewportChange={(vieport: Viewport) => {
                            this.viewport = vieport;
                            this.showLocationConfirm = false;
@@ -205,6 +143,74 @@ class LocationInput extends React.Component<LocationInputProps> {
                 </MapGL>
             </div>
         );
+    }
+
+    private updateViewport(closer: any) {
+        const {coords} = this.props;
+        if (coords) {
+            const {latitude, longitude} = coords;
+            this.viewport.longitude = longitude;
+            this.viewport.latitude = latitude;
+            this.marker = this.viewport;
+
+            this.model.location = [latitude, longitude];
+            clearInterval(closer);
+        }
+    }
+
+    private receiveLocation = flow(function* () {
+        const {intl} = this.props;
+        if (this.model.postalCode) {
+            const text = `${this.model.postalCode}, ${this.model.city}, ${this.model.street} ${this.model.houseNumber}`;
+            const location: Location = yield this.visicom.getLocation(intl.locale, text);
+            if (location) {
+                this.viewport.latitude = location.latitude;
+                this.viewport.longitude = location.longitude;
+                this.viewport.zoom = 17;
+
+                this.marker = this.viewport;
+                this.model.location = [location.latitude, location.longitude];
+            }
+        }
+    }.bind(this));
+
+    private handleMarkerDragEnd = (event: DragEvent) => {
+        const [longitude, latitude] = event.lngLat;
+        this.marker.longitude = longitude;
+        this.marker.latitude = latitude;
+
+        this.popLocationConfirm();
+    };
+
+    @once
+    private configureMap(ev: { target: any }) {
+        const map = ev.target;
+        const layers = map.getStyle().layers;
+
+        let labelLayerId: string;
+        for (let i = 0; i < layers.length; i++) {
+            if (layers[i].type === "symbol" && layers[i].layout["text-field"]) {
+                labelLayerId = layers[i].id;
+                break;
+            }
+        }
+
+        map.addLayer(buildingLayer, labelLayerId);
+    }
+
+    @delay(300)
+    private popLocationConfirm() {
+        this.showLocationConfirm = true;
+    }
+
+    private confirmLocation() {
+        const {latitude, longitude} = this.marker;
+        this.model.location = [latitude, longitude];
+        this.showLocationConfirm = false;
+    }
+
+    private declineLocation() {
+        this.showLocationConfirm = false;
     }
 }
 

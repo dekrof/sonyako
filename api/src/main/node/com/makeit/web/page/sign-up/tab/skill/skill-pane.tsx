@@ -6,8 +6,8 @@ import { Form, Select } from "formik-antd";
 import { Button, Divider, Empty, Form as AntForm, Tabs } from "antd";
 
 import { Selection, SkillSelection } from "@component/skill/skill-selection";
-import { SkillModule, SkillModel, SkillTabModel, Icons } from "@page/sign-up/tab/skill";
-import { context, observer, resolve, observable } from "@page/decorator";
+import { SkillModel, SkillTabModel, Icons } from "@page/sign-up/tab/skill";
+import { observer, resolve, observable } from "@page/decorator";
 
 type SkillTabOption = {
     key: string;
@@ -187,40 +187,50 @@ class SkillPanel extends React.Component {
 
         return <>
             <Formik
-                initialValues={{}}
-                onSubmit={() => {/* @ts-ignore */ }}
-                render={() => (
-                    <Form layout="vertical" className="signup-form skills-form">
-                        <Divider orientation="left">Professional Skills</Divider>
-                        <p>
-                            Please enter your top skills regarding to the category you choose.
-                            That will help to find out the best job you are matched with.
-                            Add your experience to each skill, the average skill level will represent you in our system.
-                        </p>
-                        <p>
-                            No more than 10 skills should be selected. No worry about those skills,
-                            you can update the selected set whatever you like,
-                            also you are able to update the experience level when you thought it has grown.
-                        </p>
-                        <Divider dashed />
-                        <Tabs
-                            hideAdd
-                            activeKey={this.activeKey}
-                            size="small"
-                            type="editable-card"
-                            onTabClick={(tab: string) => this.selectSkillTab(tab)}
-                            tabBarExtraContent={<SkillCategorySelect onChange={val => this.addCategorySkillTab(val)} />}
-                            className="skills-form-tabs">
+                validate={() => this.model.validateSkills()}
+                initialValues={this.model} onSubmit={(_values, helpers) => helpers.setSubmitting(false)}>
+                {
+                    (props) => (
+                        <Form layout="vertical" className="signup-form skills-form">
                             {
-                                this.skillTabs.map(pane => (
-                                    <Tabs.TabPane tab={pane.title} key={pane.key} closable={false}>
-                                        {pane.content}
-                                    </Tabs.TabPane>
-                                ))
+                                (() => {
+                                    // the workaraout to fix the bag of formik
+                                    this.model.form = props;
+                                    return null;
+                                })()
                             }
-                        </Tabs>
-                    </Form>
-                )} />
+                            <Divider orientation="left">Professional Skills</Divider>
+                            <p>
+                                Please enter your top skills regarding to the category you choose.
+                                That will help to find out the best job you are matched with.
+                                Add your experience to each skill, the average skill level will represent you in our system.
+                        </p>
+                            <p>
+                                No more than 10 skills should be selected. No worry about those skills,
+                                you can update the selected set whatever you like,
+                                also you are able to update the experience level when you thought it has grown.
+                        </p>
+                            <Divider dashed />
+                            <Tabs
+                                hideAdd
+                                activeKey={this.activeKey}
+                                size="small"
+                                type="editable-card"
+                                onTabClick={(tab: string) => this.selectSkillTab(tab)}
+                                tabBarExtraContent={<SkillCategorySelect onChange={val => this.addCategorySkillTab(val)} />}
+                                className="skills-form-tabs">
+                                {
+                                    this.skillTabs.map(pane => (
+                                        <Tabs.TabPane tab={pane.title} key={pane.key} closable={false}>
+                                            {pane.content}
+                                        </Tabs.TabPane>
+                                    ))
+                                }
+                            </Tabs>
+                        </Form>
+                    )
+                }
+            </Formik>
         </>
     }
 
@@ -236,7 +246,7 @@ class SkillPanel extends React.Component {
                 key,
                 content: <SkillTabIntl
                     category={categoryId} key={`pane-${key}`}
-                    onModelChange={(model) => this.handleSkillModelChange(model)}/>,
+                    onModelChange={(model) => this.handleSkillModelChange(model)} />,
                 title: <span key={`title-${key}`}>
                     <span key={`title-inner-${key}`}>{title}</span>
                     &nbsp;

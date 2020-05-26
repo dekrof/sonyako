@@ -9,6 +9,6 @@ export const SignInModule: Context = {
         ctx.bind(AxiosAuthenticationClient).toConstantValue(new AxiosAuthenticationClient(
             process.env.API_BASE_URL,
             axios.create()
-        ))
+        ));
     }
 }
