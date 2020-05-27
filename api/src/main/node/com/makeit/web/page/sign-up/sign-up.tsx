@@ -6,7 +6,8 @@ import { injectIntl, WrappedComponentProps } from "react-intl";
 
 import { Button, Checkbox, Space, Tabs, Badge, Popover, List } from "antd";
 
-import { AddressPanel, Icons, SignUpModule, SignUpModel, SkillPanel, UserPanel, PaymentPanel } from "@page/sign-up";
+import { Icons, SignUpModule, SignUpModel } from "@page/sign-up";
+import { AddressPanel, SkillPanel, UserPanel, PaymentPanel } from "@page/sign-up";
 
 import { PaymentModule } from "@page/sign-up/tab/payment";
 import { AddressModule } from "@page/sign-up/tab/address";
@@ -21,8 +22,8 @@ import "@page/sign-up/sign-up.less";
 const TabIcon = (props: { icon?: any; title?: string; errors?: any; showErrors?: boolean; }) => (<>
     <div>
         {
-            !props.showErrors ? props.icon : <Popover
-                title={"Errors"}
+            !props.showErrors ? null : <Popover
+                title="Errors"
                 placement="bottom"
                 content={
                     <List
@@ -35,9 +36,12 @@ const TabIcon = (props: { icon?: any; title?: string; errors?: any; showErrors?:
                     />
                 }>
                 <Badge count={Object.getOwnPropertyNames(props.errors).length} showZero={false}>
-                    {props.icon}
+                    <i />
                 </Badge>
             </Popover>
+        }
+        {
+            props.icon
         }
         <br />
         <span>{props.title}</span>
@@ -45,7 +49,7 @@ const TabIcon = (props: { icon?: any; title?: string; errors?: any; showErrors?:
 </>);
 
 @page(false)
-@context(SignUpModule, UserModule, SkillModule, AddressModule, PaymentModule)
+@context(PaymentModule, SignUpModule, UserModule, SkillModule, AddressModule)
 @observer
 class SignUpPage extends React.Component<WrappedComponentProps & RouteComponentProps> {
 
@@ -62,7 +66,8 @@ class SignUpPage extends React.Component<WrappedComponentProps & RouteComponentP
 
         const { profileErrors, hasProfileErrors } = this.model;
         const { addressErrors, hasAddressErrors } = this.model;
-        const { skillErrors  , hasSkillErrors   } = this.model;
+        const { paymentErrors, hasPaymentErrors } = this.model;
+        const { skillErrors, hasSkillErrors } = this.model;
 
         return (
             <>
@@ -89,6 +94,15 @@ class SignUpPage extends React.Component<WrappedComponentProps & RouteComponentP
                                 <AddressPanel />
                             </Tabs.TabPane>
                             <Tabs.TabPane
+                                key="user-payment"
+                                tab={<TabIcon
+                                    errors={paymentErrors}
+                                    showErrors={hasPaymentErrors}
+                                    icon={<Icons.UserPayment width={45} height={45} />}
+                                    title="Payment" />}>
+                                <PaymentPanel />
+                            </Tabs.TabPane>
+                            <Tabs.TabPane
                                 key="user-skills"
                                 tab={<TabIcon
                                     errors={skillErrors}
@@ -97,30 +111,28 @@ class SignUpPage extends React.Component<WrappedComponentProps & RouteComponentP
                                     title="Skills" />}>
                                 <SkillPanel />
                             </Tabs.TabPane>
-                            <Tabs.TabPane
-                                key="user-payment"
-                                tab={<TabIcon icon={<Icons.UserPayment width={45} height={45} />} title="Payment" />}>
-                                <PaymentPanel />
-                            </Tabs.TabPane>
                         </Tabs>
                     </div>
-                </section>
-                <footer className="signup-submit-button-wrapper">
-                    <div className="signup-submit-button-wrapper-content">
-                        <Space align="center" direction="horizontal" size={20}>
-                            <Button
-                                type="primary"
-                                htmlType="submit"
-                                style={{ width: 126 }}
-                                onClick={() => this.model.submitRegistration()}>
-                                Sign Up
+                    <footer className="signup-submit-button-wrapper">
+                        <div className="signup-submit-button-wrapper-content">
+                            <Space align="center" direction="horizontal" size={20}>
+                                <Button
+                                    loading={this.model.isLoading}
+                                    type="primary"
+                                    htmlType="submit"
+                                    style={{ width: 126 }}
+                                    disabled={!this.model.isTermAndConditionAccepted}
+                                    onClick={() => this.model.submitRegistration()}>
+                                    Sign Up
                             </Button>
-                            <Checkbox>
-                                I agree with <a>Terms and Conditions</a> of <Link to="/">Make IT</Link> company.
-                            </Checkbox>
-                        </Space>
-                    </div>
-                </footer>
+                                <Checkbox
+                                    onChange={ev => this.model.isTermAndConditionAccepted = ev.target.checked}>
+                                    I agree with <a>Terms and Conditions</a> of <Link to="/">Make IT</Link> company.
+                                </Checkbox>
+                            </Space>
+                        </div>
+                    </footer>
+                </section>
             </>
         );
     }

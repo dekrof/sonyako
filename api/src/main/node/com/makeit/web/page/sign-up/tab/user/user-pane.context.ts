@@ -1,5 +1,5 @@
-import { Context } from "@page/decorator/context-decorator";
-import { UserModel } from "@page/sign-up/tab/user/user-pane.model";
+import { UserModel } from "@page/sign-up/tab/user";
+import { Context } from "@page/decorator";
 
 export const UserModule: Context = {
     bootstrap: (ctx) => {

@@ -1,6 +1,6 @@
 import { FormikProps } from "formik";
-
 import { ValidateStatus } from "antd/lib/form/FormItem";
+
 import { Selection } from "@component/skill/skill-selection";
 import { injectable, observable } from "@page/decorator";
 

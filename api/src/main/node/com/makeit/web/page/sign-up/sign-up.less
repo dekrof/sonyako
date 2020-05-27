@@ -12,13 +12,10 @@
 
     &-submit-button-wrapper {
         position    : fixed;
-        left        : 0;
         bottom      : 0;
-        width       : 998px;
         height      : @signup-submit-button-wrapper-height;
+        width       : 100%;
         margin      : 0 calc((100vw - @signup-section-width) / 2);
-        border-left : 1px solid #f0f0f0;
-        border-right: 1px solid #f0f0f0;
         z-index     : 100;
 
         @supports not (backdrop-filter: none) {
@@ -32,8 +29,8 @@
             border-top  : 1px solid #f0f0f0;
             border-left : 1px solid #f0f0f0;
             border-right: 1px solid #f0f0f0;
-            width       : calc(@signup-section-width - 2px - 102px);
 
+            width       : calc(@signup-section-width - 2px - 102px);
             background-color       : rgba(255, 255, 255, .15);
             -webkit-backdrop-filter: blur(10px);
             backdrop-filter        : blur(10px);
@@ -48,7 +45,7 @@
                 left    : 0;
                 top     : -6px;
                 height  : 6px;
-                width   : calc(@signup-section-width - 2px - 102px);
+                width   : calc(@signup-section-width - 4px - 102px);
                 background: linear-gradient(to top,
                         rgba(73, 57, 76, 0.15) 0%,
                         rgba(73, 57, 76, 0.04) 40%,
@@ -283,12 +280,14 @@
     }
     .ant-tabs-tab {
         .ant-badge {
+            top: -40px;
+            left: 45px;
             sup {
-                top: 10px;
                 height: 16px;
                 min-width: 16px;
                 line-height: 16px;
                 border-radius: 8px;
+                background-color: #ee3a3b;
                 span {
                     color: #ffffff;
                     font-size: 10px;

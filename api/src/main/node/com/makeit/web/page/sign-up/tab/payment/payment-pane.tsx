@@ -2,13 +2,14 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import { WrappedComponentProps, injectIntl } from "react-intl";
 
-import Cards, { Focused } from "react-credit-cards";
 import { Divider, Space, Typography } from "antd";
-import { Formik } from "formik";
-import { Form, FormItem, Input, InputNumber, DatePicker, Checkbox, Select } from 'formik-antd';
+import Cards, { Focused } from "react-credit-cards";
 
-import { PaymentModel, AllowedCurrency } from "@page/sign-up/tab/payment";
+import { Formik } from "formik";
+import { Form, FormItem, Input, InputNumber, DatePicker, Checkbox, Select } from "formik-antd";
+
 import { observer, observable, resolve } from "@page/decorator";
+import { PaymentModel, AllowedCurrency } from '@page/sign-up/tab/payment';
 
 import "@css/credit-cards.less";
 
@@ -20,15 +21,6 @@ class PaymentPanel extends React.Component<WrappedComponentProps> {
 
     @observable
     private focused: Focused = "number";
-
-    @observable
-    private cardHolder: string = "";
-
-    @observable
-    private cardExpireDate: string = "";
-
-    @observable
-    private cardNumber: string = "";
 
     public render() {
         return (
@@ -53,27 +45,29 @@ class PaymentPanel extends React.Component<WrappedComponentProps> {
                                             preview={true}
                                             focused={this.focused}
                                             acceptedCards={["visa", "visaelectron", "mastercard", "maestro", "discover"]}
-                                            number={this.cardNumber}
-                                            expiry={this.cardExpireDate}
-                                            name={this.cardHolder} />
+                                            number={this.model.cardNumber || ""}
+                                            expiry={this.model.cardExpireDate || ""}
+                                            name={this.model.cardHolder || ""} />
 
                                     </div>
                                     <div style={{ width: 533 }}>
                                         <Space direction="vertical" className="card-space" size={0}>
                                             <FormItem
                                                 name="cardNumber"
+                                                validate={value => this.model.validateCardNumber(value)}
                                                 label="Card Number">
                                                 <InputNumber
                                                     size="large"
                                                     style={{ width: "100%" }}
                                                     name="cardNumber"
                                                     onFocus={() => this.focused = "number"}
-                                                    onChange={(ev) => this.model.cardNumber = ev.toString().trim().replace(/\D/g, "")}
+                                                    onChange={(ev) => this.model.cardNumber = ev?.toString().trim().replace(/\D/g, "")}
                                                     formatter={value => this.formatCardNumber(value)} />
                                             </FormItem>
                                             <Space direction="horizontal" size={20}>
                                                 <FormItem
                                                     name="cardHolder"
+                                                    validate={value => this.model.validateCardHolder(value)}
                                                     label="Card Holder">
                                                     <Input
                                                         onFocus={() => this.focused = "name"}
@@ -82,10 +76,12 @@ class PaymentPanel extends React.Component<WrappedComponentProps> {
                                                 </FormItem>
                                                 <FormItem
                                                     name="cardExpireDate"
+                                                    validateTrigger={["change", "blur", "focus"]}
+                                                    validate={() => this.model.validateCardExpireDate()}
                                                     label="Valid Thru">
                                                     <DatePicker
                                                         onFocus={() => this.focused = "expiry"}
-                                                        onChange={(ev) => this.model.cardExpireDate = ev.toDate()}
+                                                        onChange={(ev) => this.model.cardExpireDate = ev.format("YYMM")}
                                                         name="ExpireDate" picker="month" format="YY/MM" />
                                                 </FormItem>
                                             </Space>
@@ -95,6 +91,7 @@ class PaymentPanel extends React.Component<WrappedComponentProps> {
                                 <Divider orientation="left" type="horizontal">Tax Information</Divider>
                                 <FormItem
                                     label="Legal Name of Business"
+                                    validate={value => this.model.validateBeneficiaryName(value)}
                                     name="beneficiaryName">
                                     <Input
                                         name="beneficiaryName"
@@ -116,6 +113,7 @@ class PaymentPanel extends React.Component<WrappedComponentProps> {
                                 </FormItem>
                                 <FormItem
                                     label="Base Rate"
+                                    validate={value => this.model.validateRate(value)}
                                     name="rate">
                                     <InputNumber
                                         name="rate"
@@ -158,6 +156,7 @@ class PaymentPanel extends React.Component<WrappedComponentProps> {
 
                                 <Divider orientation="left" type="horizontal" dashed />
                                 <FormItem
+                                    validate={value => this.model.validateAttestation(value)}
                                     name="attestation">
                                     <Checkbox
                                         name="attestation"
@@ -174,7 +173,7 @@ class PaymentPanel extends React.Component<WrappedComponentProps> {
     }
 
     private formatCardNumber(value: React.ReactText) {
-        const groups = value.toString().replace(/\D/g, "").substring(0, 16).match(/.{1,4}/g) || [];
+        const groups = value?.toString().replace(/\D/g, "").substring(0, 16).match(/.{1,4}/g) || [];
         return groups.join(" ");
     }
 }

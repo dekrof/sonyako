@@ -1,7 +1,8 @@
 import axios from "axios";
-import { Context } from "@page/decorator/context-decorator";
-import { SignInModel } from "@page/sign-in/sign-in.model";
 import { AxiosAuthenticationClient } from "@client/api-client";
+
+import { SignInModel } from "@page/sign-in";
+import { Context } from "@page/decorator";
 
 export const SignInModule: Context = {
     bootstrap: (ctx) => {

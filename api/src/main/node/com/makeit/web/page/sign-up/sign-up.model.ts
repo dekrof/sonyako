@@ -8,6 +8,7 @@ import { UserModel } from "@page/sign-up/tab/user";
 import { SkillModel } from "@page/sign-up/tab/skill";
 import { AddressModel } from "@page/sign-up/tab/address";
 import { FormikProps } from 'formik';
+import { PaymentModel } from '@page/sign-up/tab/payment';
 
 @injectable()
 export class SignUpModel {
@@ -17,6 +18,7 @@ export class SignUpModel {
         @inject(UserModel) private userModel: UserModel,
         @inject(SkillModel) private skillModel: SkillModel,
         @inject(AddressModel) private addressModel: AddressModel,
+        @inject(PaymentModel) private paymentModel: PaymentModel,
         @inject(AxiosAuthenticationClient) private client: AxiosAuthenticationClient
     ) {
     }
@@ -39,19 +41,32 @@ export class SignUpModel {
     @observable
     public hasSkillErrors: boolean = false;
 
+    @observable
+    public paymentErrors: any = {};
+
+    @observable
+    public hasPaymentErrors: boolean = false;
+
+    @observable
+    public isTermAndConditionAccepted = false;
+
+    @observable
+    public isLoading = false;
+
     @action
     public async submitRegistration() {
         this.hasProfileErrors = await this.submitModel(this.userModel,    "profile", (errors) => this.profileErrors = errors);
         this.hasAddressErrors = await this.submitModel(this.addressModel, "address", (errors) => this.addressErrors = errors);
+        this.hasPaymentErrors = await this.submitModel(this.paymentModel, "payment", (errors) => this.paymentErrors = errors);
         this.hasSkillErrors   = await this.submitSkills();
 
-        if (!this.profileErrors && !this.addressErrors) {
-            const address = this.addressModel.toAddress();
-            const registration = this.userModel.toRegistration();
+        if (!(this.profileErrors && this.addressErrors && this.hasPaymentErrors && this.hasSkillErrors)) {
+            const address = this.addressModel.getAddress();
+            const payment = this.paymentModel.getPayment();
 
-            if (registration && registration.profile) {
-                registration.profile.address = address as any;
-            }
+            const registration = this.userModel.getRegistration();
+            Object.assign(registration.profile, {address, payment});
+
             console.log(registration);
         }
     }

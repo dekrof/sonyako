@@ -1,6 +1,5 @@
+import { PaymentModel, AllowedCurrency } from "@page/sign-up/tab/payment/payment-pane.model";
+import { PaymentModule } from "@page/sign-up/tab/payment/payment-pane.context";
 import PaymentPanel from "@page/sign-up/tab/payment/payment-pane";
-import { PaymentModel, AllowedCurrency } from './payment-pane.model';
-import { PaymentModule } from './payment-pane.context';
 
-
-export { PaymentPanel, PaymentModel, AllowedCurrency, PaymentModule };
+export { AllowedCurrency, PaymentPanel, PaymentModule, PaymentModel };

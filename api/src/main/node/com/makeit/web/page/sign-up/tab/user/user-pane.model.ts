@@ -155,7 +155,7 @@ export class UserModel {
         return error;
     }
 
-    public toRegistration(): RegistrationDto {
+    public getRegistration(): RegistrationDto {
         const profile = {
             avatarUrl: this.avatarUrl,
             birthday: this.birthday,

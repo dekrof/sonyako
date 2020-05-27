@@ -23,7 +23,7 @@ import { HomePage, SignInPage, SignUpPage } from "@page/pages";
 import "@css/theme.less";
 
 const store = {
-    locale: new LocaleStore("uk", {uk, en, ru})
+    locale: new LocaleStore("uk", { uk, en, ru })
 };
 
 enum SessionStatus {
@@ -72,47 +72,52 @@ export default class AppLayout extends React.Component {
             <Provider {...store}>
                 <LocaleProvider>
                     <Router>
-                        <main className="app">
-                            <PageHeader
-                                className="app-header"
-                                title={<div className="app-logo"><Link to="/"><span>Make IT</span></Link></div>}
-                                subTitle={<TitleTarget/>}
-                                extra={this.renderExtraContent()}
-                                onBack={() => window.history.back()}/>
-                            <TopCategoriesMenu/>
-                            <Switch>
-                                <Route path={["/"]} exact component={HomePage}/>
-                                <Route path={["/sign-in"]} exact component={SignInPage}/>
-                                <Route path={["/sign-up", "/sign-up/(user|owner)/:tab?"]} exact component={SignUpPage}/>
-                            </Switch>
-                            <Drawer
-                                width={520}
-                                closable={false}
-                                maskClosable={true}
-                                visible={this.isUserDrawerOpen}
-                                onClose={() => this.isUserDrawerOpen = false}
-                                title={this.renderUserDrawerTitle()}>
-                                test
+                        <>
+                            <main className="app">
+                                <PageHeader
+                                    className="app-header"
+                                    title={<div className="app-logo"><Link to="/"><span>Make IT</span></Link></div>}
+                                    subTitle={<TitleTarget />}
+                                    extra={this.renderExtraContent()}
+                                    onBack={() => window.history.back()} />
+                                <TopCategoriesMenu />
+                                <Switch>
+                                    <Route path={["/"]} exact component={HomePage} />
+                                    <Route path={["/sign-in"]} exact component={SignInPage} />
+                                    <Route path={["/sign-up", "/sign-up/(user|owner)/:tab?"]} exact component={SignUpPage} />
+                                </Switch>
+                                <Drawer
+                                    width={520}
+                                    closable={false}
+                                    maskClosable={true}
+                                    visible={this.isUserDrawerOpen}
+                                    onClose={() => this.isUserDrawerOpen = false}
+                                    title={this.renderUserDrawerTitle()}>
+                                    test
                             </Drawer>
-                            <Modal
-                                visible={this.model.isSecure && this.sessionStatus != SessionStatus.LIVE}
-                                centered={true}
-                                closable={false}
-                                transitionName="fade"
-                                title="Session Expiration"
-                                footer={this.renderModalFooter()}>
-                                <div>
-                                    <Space align="center" direction="horizontal" size={10}>
-                                        <Icons.SessionExpiration width={90} height={90}/>
-                                        {
-                                            this.isSessionShouldBeExtended
-                                                ? this.renderExtendSessionForm()
-                                                : sessionExpiredSoon
-                                        }
-                                    </Space>
-                                </div>
-                            </Modal>
-                        </main>
+                                <Modal
+                                    visible={this.model.isSecure && this.sessionStatus != SessionStatus.LIVE}
+                                    centered={true}
+                                    closable={false}
+                                    transitionName="fade"
+                                    title="Session Expiration"
+                                    footer={this.renderModalFooter()}>
+                                    <div>
+                                        <Space align="center" direction="horizontal" size={10}>
+                                            <Icons.SessionExpiration width={90} height={90} />
+                                            {
+                                                this.isSessionShouldBeExtended
+                                                    ? this.renderExtendSessionForm()
+                                                    : sessionExpiredSoon
+                                            }
+                                        </Space>
+                                    </div>
+                                </Modal>
+                            </main>
+                            <footer className="app-footer">
+
+                            </footer>
+                        </>
                     </Router>
                 </LocaleProvider>
             </Provider>
@@ -131,11 +136,11 @@ export default class AppLayout extends React.Component {
     private renderExtendSessionForm() {
         return (
             <>
-                <Form layout="vertical" style={{width: 385}}>
+                <Form layout="vertical" style={{ width: 385 }}>
                     <Form.Item
                         label="Password"
                         help="Confirm your identity to extend current session">
-                        <Input.Password name="password"/>
+                        <Input.Password name="password" />
                     </Form.Item>
                 </Form>
             </>
@@ -143,24 +148,24 @@ export default class AppLayout extends React.Component {
     }
 
     private renderExtraContent() {
-        const {jwt, helper} = this.model;
+        const { jwt, helper } = this.model;
         return (
             <>
                 <Space size={24}>
-                    <Link to="/sign-in"><FormattedMessage id="app.header.sign-in"/></Link>
-                    <Link to="/sign-up"><FormattedMessage id="app.header.sign-up"/></Link>
-                    <Button type="primary"><FormattedMessage id="app.header.post-job"/></Button>
-                    <LocaleSwitcher/>
+                    <Link to="/sign-in"><FormattedMessage id="app.header.sign-in" /></Link>
+                    <Link to="/sign-up"><FormattedMessage id="app.header.sign-up" /></Link>
+                    <Button type="primary"><FormattedMessage id="app.header.post-job" /></Button>
+                    <LocaleSwitcher />
                     {
                         !jwt ? null : <div onClick={() => this.isUserDrawerOpen = true}>
-                            <Badge showZero={false} count={42} style={{marginRight: 9}}>
+                            <Badge showZero={false} count={42} style={{ marginRight: 9 }}>
                                 <Avatar size={32}>
                                     {
                                         !!helper.decodeToken(jwt.accessToken).avatar
                                             ? <img src={helper.decodeToken(jwt.accessToken).avatar}
-                                                   width={32}
-                                                   height={32}/>
-                                            : <Icons.UserAnonymous width={32} height={32}/>
+                                                width={32}
+                                                height={32} />
+                                            : <Icons.UserAnonymous width={32} height={32} />
                                     }
                                 </Avatar>
                             </Badge>
@@ -175,9 +180,9 @@ export default class AppLayout extends React.Component {
         return (
             <div>
                 <span
-                    style={{display: "inline", float: "left"}}
+                    style={{ display: "inline", float: "left" }}
                     onClick={() => this.isUserDrawerOpen = false}>
-                    <Icons.ModalClose width={24} height={24}/>
+                    <Icons.ModalClose width={24} height={24} />
                 </span>
                 <Radio.Group defaultValue={DrawerView.TODAY}>
                     <Radio.Button value={DrawerView.TODAY}>Today</Radio.Button>
@@ -191,7 +196,7 @@ export default class AppLayout extends React.Component {
     private computeSessionStatus(token: string) {
         const soon = 60 * 1000, now = Date.now();
 
-        let {exp} = this.model.helper.decodeToken(token);
+        let { exp } = this.model.helper.decodeToken(token);
         exp = exp * 1000;
 
         if (now >= exp) {

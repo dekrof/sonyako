@@ -132,7 +132,7 @@ export class AddressModel {
             : "Location is not selected";
     }
 
-    public toAddress(): Address {
+    public getAddress(): Address {
         return {
             id: this.id,
             countryCode: this.countryCode || "UA",
