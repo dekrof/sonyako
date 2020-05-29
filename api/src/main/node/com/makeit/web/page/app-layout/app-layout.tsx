@@ -19,6 +19,7 @@ import { AppModel, AppModule, Icons, TopCategoriesMenu } from "@page/app-layout"
 import { context, resolve } from "@page/decorator";
 
 import { HomePage, SignInPage, SignUpPage } from "@page/pages";
+import { EmailConfirmation, EmailVerification } from "@page/pages";
 
 import "@css/theme.less";
 
@@ -85,6 +86,8 @@ export default class AppLayout extends React.Component {
                                     <Route path={["/"]} exact component={HomePage} />
                                     <Route path={["/sign-in"]} exact component={SignInPage} />
                                     <Route path={["/sign-up", "/sign-up/(user|owner)/:tab?"]} exact component={SignUpPage} />
+                                    <Route path={["/email-confirmation"]} exact component={EmailConfirmation} />
+                                    <Route path={["/email-verification"]} exact component={EmailVerification} />
                                 </Switch>
                                 <Drawer
                                     width={520}
@@ -159,12 +162,12 @@ export default class AppLayout extends React.Component {
                     {
                         !jwt ? null : <div onClick={() => this.isUserDrawerOpen = true}>
                             <Badge showZero={false} count={42} style={{ marginRight: 9 }}>
-                                <Avatar size={32}>
+                                <Avatar
+                                    style={{background: "#f0f0f0"}}
+                                    size={32} src={helper.decodeToken(jwt.accessToken)?.avatarUrl}>
                                     {
-                                        !!helper.decodeToken(jwt.accessToken).avatar
-                                            ? <img src={helper.decodeToken(jwt.accessToken).avatar}
-                                                width={32}
-                                                height={32} />
+                                        !!helper.decodeToken(jwt.accessToken).avatarUrl
+                                            ? null
                                             : <Icons.UserAnonymous width={32} height={32} />
                                     }
                                 </Avatar>

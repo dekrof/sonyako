@@ -2,7 +2,7 @@
 -- Version: 4.0.0
 -- Author: sonnyako <Makydon Sofiia>
 -- Project: MySQL DB for Job Promoter Application "Make IT"
--- Description: User comments migration
+-- Description: Setup tokens
 
 SET @OLD_UNIQUE_CHECKS = @@UNIQUE_CHECKS, UNIQUE_CHECKS = 0;
 SET @OLD_FOREIGN_KEY_CHECKS = @@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS = 0;

@@ -1,7 +1,94 @@
 .home {
-    padding: 20px;
     display        : flex;
+    flex-direction : column;
     align-items    : center;
-    justify-content: center;
-    height         : calc(100vh - 113px);
+    justify-content: start;
+    width          : 100%;
+    min-height     : calc(100vh - 113px);
+
+    border-left     : 1px solid #f0f0f0;
+    border-right    : 1px solid #f0f0f0;
+    background-color: #ffffff;
+    padding         : 0 0 20px;
+
+    &-working-together {
+        background: linear-gradient(340deg, rgb(255,255,255) 0%, rgba(255, 251, 254, 0.7) 35%, rgba(254, 249, 242, 0.6) 100%);
+        text-align: right;
+        padding: 20px 20px 0 20px;
+
+        h1 {
+            color: #9a2c80 !important;
+        }
+
+        &-title {
+            float     : left;
+            word-break: break-word;
+            width     : 600px;
+            text-align: left;
+            z-index   : 100;
+
+            button > span {
+                text-transform: uppercase;
+            }
+        }
+
+        svg {
+            z-index   : 99;
+            margin-top: -100px;
+        }
+    }
+    &-perspectives {
+        background-color: #faf5f9;
+        padding: 0 20px;
+        margin-top: -6px;
+        z-index: 98;
+        &-head, &-item {
+            margin: 20px 0;
+            h1 {
+                font-size: 1.7em !important;
+            }
+        }
+        &-item {
+            padding-left: 20px;
+            h1 {
+                font-size: 1.3em !important;
+            }
+            border-left: 3px solid  #9a2c80;
+        }
+    }
+}
+
+.home-top-developers {
+    h1 {
+        padding: 40px 20px 0 !important;
+        margin-bottom: 0 !important;
+        color: #048298 !important;
+    }
+
+    .top-developers-carousel {
+        width: 998px;
+        height: 370px;
+
+        .ant-space {
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .top-developer {
+            height: 300px;
+            border: 1px solid #d9d9d9;
+            border-radius: 6px;
+            &:hover {
+                border: 2px solid #048298;
+                box-shadow:
+                    0 3px 6px -4px rgba(0, 0, 0, 0.12),
+                    0 6px 16px 0 rgba(0, 0, 0, 0.08),
+                    0 9px 28px 8px rgba(0, 0, 0, 0.05);
+            }
+        }
+
+        li > button {
+            background-color: #048298 !important;
+        }
+    }
 }

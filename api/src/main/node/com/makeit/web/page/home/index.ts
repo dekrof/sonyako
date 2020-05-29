@@ -1,3 +1,6 @@
 import HomePage from "@page/home/home";
+import HomeWorkingTogether from "@svg/home-working-together.svg";
 
-export { HomePage };
+const Pictures = {HomeWorkingTogether};
+
+export { HomePage, Pictures };

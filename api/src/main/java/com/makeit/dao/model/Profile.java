@@ -1,6 +1,5 @@
 package com.makeit.dao.model;
 
-import com.makeit.supported.validation.NullOrNotBlank;
 import lombok.*;
 import lombok.experimental.*;
 import org.hibernate.annotations.NaturalId;
@@ -58,7 +57,6 @@ public class Profile extends AbstractEntity {
     private String name;
 
     @Column(name = "patronymic_name")
-    @NullOrNotBlank(message = "The patronymic name should not be blank")
     private String patronymicName;
 
     @Column(nullable = false)

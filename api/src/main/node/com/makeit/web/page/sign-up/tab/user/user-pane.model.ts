@@ -13,6 +13,10 @@ enum Gender {
     MALE, FEMALE, HUMAN
 }
 
+export enum UserType {
+    FREELANCER, OWNER, ADMIN
+}
+
 namespace Gender {
     export function getSprites(gender: Gender): SpriteCollection {
         // @formatter:off;
@@ -52,6 +56,9 @@ export class UserModel {
 
     @observable
     public username: string;
+
+    @observable
+    public userType: UserType;
 
     @observable
     public primaryPassword: string;
@@ -167,12 +174,19 @@ export class UserModel {
             phoneNumber: this.phoneNumber,
         } as Profile;
 
-        return {
+        const registration = {
             email: this.email,
             username: this.username,
             password: this.primaryPassword,
             registerAsFreelancer: true,
             profile,
         } as RegistrationDto;
+
+        switch(this.userType) {
+            case UserType.FREELANCER: registration.registerAsFreelancer = true; break;
+            case UserType.OWNER     : registration.registerAsOwner = true     ; break;
+        }
+
+        return registration;
     }
 }

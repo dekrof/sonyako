@@ -54,7 +54,7 @@ export class SignUpModel {
     public isLoading = false;
 
     @action
-    public async submitRegistration() {
+    public async submitRegistration(history) {
         this.hasProfileErrors = await this.submitModel(this.userModel,    "profile", (errors) => this.profileErrors = errors);
         this.hasAddressErrors = await this.submitModel(this.addressModel, "address", (errors) => this.addressErrors = errors);
         this.hasPaymentErrors = await this.submitModel(this.paymentModel, "payment", (errors) => this.paymentErrors = errors);
@@ -67,7 +67,16 @@ export class SignUpModel {
             const registration = this.userModel.getRegistration();
             Object.assign(registration.profile, {address, payment});
 
-            console.log(registration);
+            try {
+                const result = await this.client.registerUser(registration);
+                if (result.data.success) {
+                    history.push("/email-verification");
+                } else {
+                    console.log("something went wrong", result);
+                }
+            } catch (ex) {
+                console.log(ex.data);
+            }
         }
     }
 

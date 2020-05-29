@@ -28,6 +28,8 @@ import io.swagger.annotations.ApiParam;
 import lombok.*;
 import lombok.extern.slf4j.*;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,6 +42,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.Optional;
 
 /**
@@ -145,7 +148,7 @@ public class AuthenticationController {
         @ApiParam(value = "The RegistrationRequest payload") @Valid @RequestBody RegistrationDto request
     ) {
 
-        var urlBuilder = ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/auth/registrationConfirmation");
+        var urlBuilder = ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/auth/registration-confirmation");
 
         var response = authenticationService.registerUser(request).map(user -> {
             eventPublisher.publishEvent(UserRegistrationCompleteEvent.builder()
@@ -238,19 +241,27 @@ public class AuthenticationController {
     @ApiOperation(
         value = "Confirms the email verification token that has been generated for the user during registration"
     )
-    public ResponseEntity<ApiResponse<String>> confirmRegistration(
+    public ResponseEntity<Void> confirmRegistration(
         @ApiParam(value = "the token that was sent to the user email") @RequestParam("token") String token
+
     ) {
         var response = authenticationService.confirmEmailRegistration(token).map(user -> ApiResponse.<String>data()
             .data("User verified successfully")
             .build()
         );
 
-        return response.map(ResponseEntity::ok).orElseThrow(() -> new InvalidTokenRequestException(
+        if (response.isPresent() && response.get().getSuccess()) {
+            var headers = new HttpHeaders();
+            // todo: set config value;
+            headers.setLocation(URI.create("http://localhost:9090/email-confirmation"));
+            return new ResponseEntity<>(headers, HttpStatus.TEMPORARY_REDIRECT);
+        }
+
+        throw new InvalidTokenRequestException(
             "Email Verification Token",
             token,
             "Failed to confirm. Please generate a new email verification request"
-        ));
+        );
     }
 
     /**

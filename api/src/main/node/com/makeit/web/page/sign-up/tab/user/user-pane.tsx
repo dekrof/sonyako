@@ -11,7 +11,7 @@ import { DatePicker, Form, FormItem, Input, Select } from "formik-antd";
 import { FrownOutlined, PhoneOutlined, MailOutlined } from "@ant-design/icons"
 
 import { observer, resolve, observable } from "@page/decorator";
-import { Gender, PhoneNumberResult, UserModel } from "@page/sign-up/tab/user";
+import { Gender, UserType, PhoneNumberResult, UserModel } from "@page/sign-up/tab/user";
 import { bind } from "helpful-decorators";
 
 function getBase64(img: Blob | any, callback: Function) {
@@ -128,23 +128,35 @@ class UserPanel extends React.Component<WrappedComponentProps> {
                                     </p>
                                 </div>
                             </Space>
-                            <FormItem
-                                name="username"
-                                validate={value => this.model.validateUsername(value)?.toString()}
-                                label={
-                                    <FormLabel
-                                        label={t("login.username")}
-                                        message={
-                                            `The username should have length between 6 and 12 symbols,
-                                        without special characters and <b>@</b> symbol`
-                                        } />
-                                }>
-                                <Input
-                                    style={{ width: "calc(50% - 10px)" }}
+                            <Space direction="horizontal" align="center" size={20}>
+                                <FormItem
                                     name="username"
-                                    placeholder={t("login.username.placeholder")}
-                                    onChange={ev => this.model.username = ev.currentTarget.value} />
-                            </FormItem>
+                                    validate={value => this.model.validateUsername(value)?.toString()}
+                                    label={
+                                        <FormLabel
+                                            label={t("login.username")}
+                                            message={
+                                                `The username should have length between 6 and 12 symbols,
+                                        without special characters and <b>@</b> symbol`
+                                            } />
+                                    }>
+                                    <Input
+                                        name="username"
+                                        placeholder={t("login.username.placeholder")}
+                                        onChange={ev => this.model.username = ev.currentTarget.value} />
+                                </FormItem>
+                                <FormItem
+                                    label="Account Role"
+                                    name="userType">
+                                    <Select
+                                        name="userType"
+                                        defaultValue={UserType.FREELANCER}
+                                        onChange={(ev) => this.model.userType = ev}>
+                                        <Select.Option value={UserType.FREELANCER}>Freelancer</Select.Option>
+                                        <Select.Option value={UserType.OWNER}>Owner</Select.Option>
+                                    </Select>
+                                </FormItem>
+                            </Space>
                             <Space direction="horizontal" align="center" size={20}>
                                 <FormItem
                                     name="primaryPassword"

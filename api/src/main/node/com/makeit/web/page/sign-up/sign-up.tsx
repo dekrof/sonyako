@@ -122,7 +122,7 @@ class SignUpPage extends React.Component<WrappedComponentProps & RouteComponentP
                                     htmlType="submit"
                                     style={{ width: 126 }}
                                     disabled={!this.model.isTermAndConditionAccepted}
-                                    onClick={() => this.model.submitRegistration()}>
+                                    onClick={() => this.model.submitRegistration(this.props.history)}>
                                     Sign Up
                             </Button>
                                 <Checkbox
