@@ -7,7 +7,7 @@ import human from "@dicebear/avatars-human-sprites";
 import male from "@dicebear/avatars-male-sprites";
 
 import { injectable, observable } from "@page/decorator";
-import { RegistrationDto, Profile } from "@client/api-client";
+import { Profile, RegistrationDto } from "@client/api-client";
 
 enum Gender {
     MALE, FEMALE, HUMAN
@@ -38,7 +38,6 @@ class Matchers {
     static ONLY_CAPITALS = /[^A-Z]+/g;
     static EMAIL = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     static NAME = /(\b[a-z](?!\s))/g;
-
 }
 
 export enum PhoneNumberResult {
@@ -182,9 +181,13 @@ export class UserModel {
             profile,
         } as RegistrationDto;
 
-        switch(this.userType) {
-            case UserType.FREELANCER: registration.registerAsFreelancer = true; break;
-            case UserType.OWNER     : registration.registerAsOwner = true     ; break;
+        switch (this.userType) {
+            case UserType.FREELANCER:
+                registration.registerAsFreelancer = true;
+                break;
+            case UserType.OWNER     :
+                registration.registerAsOwner = true;
+                break;
         }
 
         return registration;

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { WrappedComponentProps, injectIntl } from "react-intl";
-import { Carousel, Space } from 'antd';
+import { Carousel, Space } from "antd";
 
 import { TopDeveloper } from "@component/home";
 
