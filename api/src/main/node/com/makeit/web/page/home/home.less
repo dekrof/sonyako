@@ -127,6 +127,8 @@
 
         .top-developer,
         .top-developer-focused {
+            cursor       : text;
+            user-select  : none;
             border       : 1px solid #d9d9d9;
             border-radius: 6px;
             z-index      : 100;
@@ -175,6 +177,7 @@
                 li>span,
                 li>span>a:not(.ant-btn) {
                     color: #000 !important;
+
                     &:hover {
                         color: #00adc0 !important;
                     }
@@ -200,24 +203,49 @@
     .incoming-projects-carousel {
         width  : 998px;
         z-index: 99;
+        height : 510px;
 
-        .ant-space {
+        .slick-list {
+            padding-bottom: 6px;
+        }
+
+        &>.ant-space {
             padding      : 20px;
             margin-bottom: 20px;
         }
 
+        .ant-space-item:first-child {
+
+            .incoming-project,
+            .incoming-project-focused {
+                margin-right: 0;
+            }
+        }
+
+        .ant-space-item:last-child {
+
+            .incoming-project,
+            .incoming-project-focused {
+                margin-left: 0;
+            }
+        }
+
         .incoming-project,
         .incoming-project-focused {
+            cursor       : text;
+            user-select  : none;
             border       : 1px solid #d9d9d9;
             border-radius: 6px;
             z-index      : 100;
+            height       : 450px;
+            margin       : 20px;
 
             &:hover {
                 border: 1px solid #344a9d;
                 box-shadow:
-                    0 3px 6px -4px rgba(52, 74, 157, 0.12),
-                    0 6px 16px 0 rgba(52, 74, 157, 0.08),
-                    0 9px 28px 8px rgba(52, 74, 157, 0.05);
+                    0 3px 6px -4px rgba(23, 102, 192, 0.12),
+                    0 6px 16px 0 rgba(23, 102, 192, 0.08),
+                    0 9px 28px 8px rgba(23, 102, 192, 0.05);
             }
 
             &-tags {
@@ -229,6 +257,8 @@
                 color        : #3751ad;
                 font-weight  : 500;
                 margin-bottom: 0;
+                text-align   : left !important;
+                min-width    : 56px;
             }
 
             .ant-tag-has-color {
@@ -237,12 +267,41 @@
 
             .ant-divider {
                 border-color: #d9d9d9;
-                margin      : 0;
+                margin      : 20px 0 10px;
             }
 
-            .ant-space {
-                padding      : 0;
-                margin-bottom: 20px;
+            .ant-space-item .ant-space-item {
+                width     : auto !important;
+                text-align: justify;
+            }
+
+            &-overview {
+                &-budjet {
+                    color: #a6a6a9;
+                    text-align: left;
+                    padding: 18px 0 0;
+                    font-size: 1em;
+                    span {
+                        font-size: 1.3em;
+                        color: #4d68cc;
+                    }
+                }
+
+                .ant-space-item {
+                    width: auto !important;
+                }
+            }
+
+            div.ant-typography {
+                text-align     : justify !important;
+                text-align-last: left;
+                hyphens        : auto;
+                overflow       : hidden;
+                margin         : 0;
+
+                a {
+                    color: #344a9d;
+                }
             }
 
             .ant-card-actions {

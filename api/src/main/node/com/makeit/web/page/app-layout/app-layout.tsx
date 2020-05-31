@@ -14,7 +14,7 @@ import { Avatar, Input, Radio } from "antd";
 
 import { JwtAuthenticationDto } from "@client/api-client";
 
-import { LocaleProvider, LocaleSwitcher, TitleTarget } from "@page/app-layout";
+import { LocaleProvider, LocaleSwitcher, TitleTarget, FooterTarget } from "@page/app-layout";
 import { AppModel, AppModule, Icons, TopCategoriesMenu } from "@page/app-layout";
 import { context, resolve } from "@page/decorator";
 
@@ -117,9 +117,7 @@ export default class AppLayout extends React.Component {
                                     </div>
                                 </Modal>
                             </main>
-                            <footer className="app-footer">
-
-                            </footer>
+                            <FooterTarget />
                         </>
                     </Router>
                 </LocaleProvider>

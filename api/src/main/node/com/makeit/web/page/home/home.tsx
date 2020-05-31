@@ -3,7 +3,7 @@ import { WrappedComponentProps, injectIntl } from "react-intl";
 import { RouteComponentProps } from "react-router";
 
 import { page, observer } from "@page/decorator";
-import { Title } from "@page/app-layout";
+import { Title, Footer } from "@page/app-layout";
 import { Pictures } from "@page/home";
 
 import { Typography, Space, Button, Avatar } from "antd";
@@ -103,6 +103,7 @@ class HomePage extends React.Component<WrappedComponentProps & RouteComponentPro
                         <IncomingProjectCarousel />
                     </article>
                 </section>
+                <Footer />
             </>
         );
     }
