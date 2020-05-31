@@ -1,8 +1,25 @@
 export default {
+    // app-layout
     "app.header.sign-in": "ВВІЙТИ",
     "app.header.sign-up": "РЕЄСТРАЦІЯ",
     "app.header.post-job": "ПОДАТИ ЗАЯВКУ",
 
+    "app.footer.warranty-head": `
+    Інформація, що надається Make IT, призначена лише для загальних інформаційних цілей.
+    Вся інформація надана Make IT не реальна, а створена лише для освітніх цілей,
+    таким чином, ми не несемо жодних представлень чи гарантій, явних чи явних,
+    щодо точності, адекватності, обгрунтованості, надійності, доступності,
+    або повноти будь-якої інформації в додатку Make IT.
+    `,
+    "app.footer.warranty-text": `
+    Ні за яких обставин ми не несемо жодної відповідальності перед вами за будь-яку втрату чи шкоду
+    виникли в результаті викори-стання цього додатка залежно від будь-якої інформації
+    надані на сайті.
+    Використання веб-сайту та будь-якої інформації на сайті є виключно на Ваш власний ризик.
+    `,
+    "app.footer.copy-right": "Copyright © 2020<br />Всі права належать Макидон Софії",
+
+    // sign-in page
     "login.empty.disclaimer": "Ви не ввели інформацію для входу. Для продовження заповніть всі поля форми.",
     "login.title": "Авторизація",
     "login.username": "Ім'я користувача",
@@ -15,5 +32,28 @@ export default {
     "login.sign-up": "Реєстрація",
     "login.sign-up.disclaimer": "Відкрийте для себе найкращих світових розробників та креативів",
 
+    // sign-up page
     "sign-up.title": "Реєстрація",
+
+    // home page
+    "com.makeit.web.page.home.title": "Головна строрінка",
+    "com.makeit.web.page.home.find-developers": "Знайдіть відомих фрілансерів<br /> та агентства<br /> для вашого проекту",
+    "com.makeit.web.page.home.get-started": "Розпочати роботу",
+    "com.makeit.web.page.home.perspectives-head": "Наймайте на будь-який обсяг робіт:",
+    "com.makeit.web.page.home.perspectives-items-0-head": "Швидкі завдання",
+    "com.makeit.web.page.home.perspectives-items-0-text": "Створіть пул різноманітних експертів для разових завдань",
+    "com.makeit.web.page.home.perspectives-items-1-head": "Повторювані проекти",
+    "com.makeit.web.page.home.perspectives-items-1-text": "Створіть команду з спеціалізованими навичками",
+    "com.makeit.web.page.home.perspectives-items-2-head": "На постійній основі",
+    "com.makeit.web.page.home.perspectives-items-2-text": "Розширте свій персонал спеціалізованою командою розробників",
+    "com.makeit.web.page.home.top-developers": "Перегляньте наших найкращих розробників",
+    "com.makeit.web.page.home.how-it-works-item-0-head": "Опублікуйте роботу (безкоштовно)",
+    "com.makeit.web.page.home.how-it-works-item-0-text": "Розкажіть про свій проект. Make&nbsp;ІТ з'єднає Вас з найкращи-ми спеціалістами з усього світу або поблизу Вас для втілення Ваших ідей.",
+    "com.makeit.web.page.home.how-it-works-item-1-head": "Фрілансери звернуться до Вас",
+    "com.makeit.web.page.home.how-it-works-item-1-text": "Отримайте кваліфіковані пропозиції протягом 24 го-дин. Порівняйте заявки та проведіть інтерв'ю вибраних і найміть найкращих.",
+    "com.makeit.web.page.home.how-it-works-item-2-head": "Співпрацювати дуже легко",
+    "com.makeit.web.page.home.how-it-works-item-2-text": "Використовуйте Make&nbsp;ІТ для спілкування в чаті, обміну файлами та відстеження етапів проекту зі свого робо-чого столу чи телефону.",
+    "com.makeit.web.page.home.how-it-works-item-3-head": "Проста оплата праці",
+    "com.makeit.web.page.home.how-it-works-item-3-text": "Оплачуйте погодинну або фіксовану ціну та отримуйте рахунки через Make&nbsp;ІТ. Платіть за роботу, яку Ви авторизуєте.",
+    "com.makeit.web.page.home.incoming-projects": "Дізнайтеся про нові проекти",
 };

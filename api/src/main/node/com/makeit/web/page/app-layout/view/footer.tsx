@@ -4,6 +4,8 @@ import { WrappedComponentProps, injectIntl } from "react-intl";
 import { createTeleporter } from "react-teleporter";
 import { Space, Typography, Divider } from "antd";
 
+import { FormattedHTMLMessage } from "@page/app-layout/lang";
+
 const View = createTeleporter();
 
 // todo: replace on real API call;
@@ -45,17 +47,9 @@ class Footer extends React.Component<WrappedComponentProps> {
                             <Typography.Title>Make IT Warranty</Typography.Title>
                             <Divider plain />
                             <Typography.Paragraph>
-                                The information provided by Make IT is for general informational purposes only.
-                                All information on the Make IT is not real and created for educational purposes only,
-                                thus we make no representation or warranty of any kind, express or implied,
-                                regarding the accuracy, adequacy, validity, reliability, availability,
-                                or completeness of any information on the Make IT application.
+                               <FormattedHTMLMessage tagName="div" id="app.footer.warranty-head" />
                             <br />
-                                Under no circumstance shall we have any liability to you for any loss or damage of any kind
-                                incurred as a result of the use of this application reliance on any information
-                                provided on the site.
-                                Your use of the site and your reliance on any information
-                                on the site is solely at your own risk.
+                                <FormattedHTMLMessage tagName="div" id="app.footer.warranty-text" />
                             </Typography.Paragraph>
                         </div>
                         <div>
@@ -74,11 +68,7 @@ class Footer extends React.Component<WrappedComponentProps> {
                             </Typography.Paragraph>
                             <Divider plain />
                             <Typography.Paragraph>
-                                <span>
-                                    Copy Right © 2020
-                                    &#10;
-                                    All rights belong to Makydon Sofiia
-                                </span>
+                                <FormattedHTMLMessage tagName="span" id="app.footer.copy-right" />
                             </Typography.Paragraph>
                         </div>
                     </Space>
