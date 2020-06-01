@@ -45,7 +45,7 @@ export default {
     "com.makeit.web.page.home.perspectives-items-1-head": "Повторювані проекти",
     "com.makeit.web.page.home.perspectives-items-1-text": "Створіть команду з спеціалізованими навичками",
     "com.makeit.web.page.home.perspectives-items-2-head": "На постійній основі",
-    "com.makeit.web.page.home.perspectives-items-2-text": "Розширте свій персонал спеціалізованою командою розробників",
+    "com.makeit.web.page.home.perspectives-items-2-text": "Розширте свій персонал кваліфікованою командою розробників",
     "com.makeit.web.page.home.top-developers": "Перегляньте наших найкращих розробників",
     "com.makeit.web.page.home.how-it-works-item-0-head": "Опублікуйте роботу (безкоштовно)",
     "com.makeit.web.page.home.how-it-works-item-0-text": "Розкажіть про свій проект. Make&nbsp;ІТ з'єднає Вас з найкращи-ми спеціалістами з усього світу або поблизу Вас для втілення Ваших ідей.",

@@ -2,20 +2,21 @@ import * as React from "react";
 import { WrappedComponentProps, FormattedMessage, injectIntl } from "react-intl";
 import { RouteComponentProps } from "react-router";
 
+import { resolve } from "inversify-react";
+import { page, observer, context } from '@page/decorator';
 import { FormattedHTMLMessage } from "@page/app-layout/lang";
-import { page, observer } from "@page/decorator";
+import { HomeModule, Pictures, HomeModel } from '@page/home';
 import { Title, Footer } from "@page/app-layout";
-import { Pictures } from "@page/home";
 
 import { Typography, Space, Button, Avatar } from "antd";
 import { TopDeveloperCarousel, IncomingProjectCarousel } from "@component/home";
 
 import "@page/home/home.less";
 
-@page(false) @observer
+@page(false) @context(HomeModule) @observer
 class HomePage extends React.Component<WrappedComponentProps & RouteComponentProps> {
 
-    render() {
+    public render() {
         return (
             <>
                 <Title>

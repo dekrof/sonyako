@@ -21,7 +21,10 @@ export function context(...modules: Array<Context>) {
 
             public UNSAFE_componentWillMount(): void {
                 modules.forEach((context: Context) => {
-                    context.bootstrap(this._container);
+                        if (!context) {
+                            console.warn("Bad Context, probably you forgot set up type in bind function: ctx.bind<T>(T)");
+                        }
+                        context?.bootstrap(this._container);
                 })
             }
 

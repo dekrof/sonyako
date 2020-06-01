@@ -3,6 +3,7 @@ package com.makeit.dao.repository;
 import com.makeit.dao.model.Role;
 import com.makeit.dao.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -53,4 +54,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @param email the email of user to be search for
      */
     boolean existsByProfileEmail(String email);
+
+    @Query(
+        nativeQuery = true,
+        value = "SELECT * FROM USER user WHERE user.user_type = 0 LIMIT 9"
+    )
+    List<User> findTopNineFreelancers();
 }

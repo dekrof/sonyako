@@ -3,15 +3,17 @@ import { observable } from "mobx";
 import { observer } from "mobx-react";
 import { WrappedComponentProps, injectIntl } from "react-intl";
 import { Card, Avatar, Rate, Space, Typography, Divider, Tag } from "antd";
+import { TopDeveloperDto } from "@client/api-client";
 
 @observer
-class TopDeveloper extends React.Component<WrappedComponentProps> {
+class TopDeveloper extends React.Component<WrappedComponentProps & { developer?: TopDeveloperDto }> {
 
     @observable
     private isFocused: boolean;
 
     public render() {
         const viewProfileAction = this.renderViewProfileAction();
+        const { developer } = this.props;
         return (
             <>
                 <Card
@@ -21,12 +23,12 @@ class TopDeveloper extends React.Component<WrappedComponentProps> {
                         viewProfileAction
                     ]}>
                     <Space direction="horizontal" align="start" size={20}>
-                        <Avatar size={120} shape="square" />
+                        <Avatar size={120} shape="square" src={developer?.avatarUrl} />
                         <Space direction="vertical" size={20}>
                             <Rate defaultValue={3.5} allowHalf style={{ fontSize: 14 }} />
                             <Typography.Paragraph>
                                 <h4>$37/hr</h4>
-                                <span>Chernivtci, UA</span>
+                                <span>{`${developer.address.city}, ${developer.address.countryCode}`}</span>
                             </Typography.Paragraph>
                         </Space>
                     </Space>
@@ -37,10 +39,10 @@ class TopDeveloper extends React.Component<WrappedComponentProps> {
                         <Tag color="#f0f0f0">Kafka Streams</Tag>
                         <Tag color="#f0f0f0">DataDog</Tag>
                     </div>
-                    <Divider plain style={{marginBottom: 20}}/>
+                    <Divider plain style={{ marginBottom: 20 }} />
                     <Card.Meta
-                        title="Best Developer"
-                        description="Expert Joomla Web Developer " />
+                        title={`${developer.firstName} ${developer.lastName}`}
+                        description="Expert Joomla Web Developer" />
                 </Card>
             </>
         )

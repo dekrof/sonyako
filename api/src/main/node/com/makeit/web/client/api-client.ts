@@ -70,7 +70,7 @@ export class AuthenticationClient<O> {
      * HTTP GET /api/auth/registration-confirmation
      * Java method: com.makeit.api.controller.AuthenticationController.confirmRegistration
      */
-    confirmRegistration(queryParams: { token: string; }, options?: O): RestResponse<ApiResponse<string>> {
+    confirmRegistration(queryParams: { token: string; }, options?: O): RestResponse<void> {
         return this.httpClient.request({ method: "GET", url: uriEncoding`api/auth/registration-confirmation`, queryParams: queryParams, options: options });
     }
 
@@ -80,6 +80,20 @@ export class AuthenticationClient<O> {
      */
     resendRegistrationToken(queryParams: { token: string; }, options?: O): RestResponse<ApiResponse<string>> {
         return this.httpClient.request({ method: "GET", url: uriEncoding`api/auth/resend-registration-token`, queryParams: queryParams, options: options });
+    }
+}
+
+export class FreelancerClient<O> {
+
+    constructor(protected httpClient: HttpClient<O>) {
+    }
+
+    /**
+     * HTTP GET /api/freelancer/get/top/nine/freelancers
+     * Java method: com.makeit.api.controller.FreelancerController.getTopNineFreelancers
+     */
+    getTopNineFreelancers(options?: O): RestResponse<TopDeveloperDto[]> {
+        return this.httpClient.request({ method: "GET", url: uriEncoding`api/freelancer/get/top/nine/freelancers`, options: options });
     }
 }
 
@@ -810,6 +824,23 @@ export class Tag {
     }
 }
 
+export class TagDto {
+    id: number;
+    name: string;
+    description: string;
+
+    static fromData(data: TagDto, target?: TagDto): TagDto {
+        if (!data) {
+            return data;
+        }
+        const instance = target || new TagDto();
+        instance.id = data.id;
+        instance.name = data.name;
+        instance.description = data.description;
+        return instance;
+    }
+}
+
 export class Task {
     createdAt: Date;
     updatedAt: Date;
@@ -895,6 +926,29 @@ export class TokenRefreshDto {
         }
         const instance = target || new TokenRefreshDto();
         instance.refreshToken = data.refreshToken;
+        return instance;
+    }
+}
+
+export class TopDeveloperDto {
+    id: number;
+    firstName: string;
+    lastName: string;
+    avatarUrl: string;
+    tags: TagDto[];
+    address: AddressDto;
+
+    static fromData(data: TopDeveloperDto, target?: TopDeveloperDto): TopDeveloperDto {
+        if (!data) {
+            return data;
+        }
+        const instance = target || new TopDeveloperDto();
+        instance.id = data.id;
+        instance.firstName = data.firstName;
+        instance.lastName = data.lastName;
+        instance.avatarUrl = data.avatarUrl;
+        instance.tags = __getCopyArrayFn(TagDto.fromData)(data.tags);
+        instance.address = AddressDto.fromData(data.address);
         return instance;
     }
 }
@@ -1187,6 +1241,14 @@ class AxiosHttpClient implements HttpClient<Axios.AxiosRequestConfig> {
 }
 
 export class AxiosAuthenticationClient extends AuthenticationClient<Axios.AxiosRequestConfig> {
+
+    constructor(baseURL: string, axiosInstance: Axios.AxiosInstance = axios.create()) {
+        axiosInstance.defaults.baseURL = baseURL;
+        super(new AxiosHttpClient(axiosInstance));
+    }
+}
+
+export class AxiosFreelancerClient extends FreelancerClient<Axios.AxiosRequestConfig> {
 
     constructor(baseURL: string, axiosInstance: Axios.AxiosInstance = axios.create()) {
         axiosInstance.defaults.baseURL = baseURL;
