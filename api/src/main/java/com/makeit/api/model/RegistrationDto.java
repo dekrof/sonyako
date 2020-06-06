@@ -1,6 +1,5 @@
 package com.makeit.api.model;
 
-import com.makeit.dao.model.Payment;
 import com.makeit.dao.model.Profile;
 import com.makeit.supported.validation.NullOrNotBlank;
 import io.swagger.annotations.ApiModel;
@@ -51,13 +50,6 @@ public class RegistrationDto {
         required = true
     )
     private Profile profile;
-
-    @NotNull(message = "Payment should not be null")
-    @ApiModelProperty(
-        value = "Payment of new registered user",
-        required = true
-    )
-    private Payment payment;
 
     @ApiModelProperty(
         value = "Flag denoting whether the user is an admin or not", required = true,

@@ -13,21 +13,21 @@ SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE =
 CREATE TABLE IF NOT EXISTS `make_it`.`PAYMENT`
 (
     -- Columns
-    `id`               INT UNSIGNED   NOT NULL,
-    `card_number`      VARCHAR(20)    NOT NULL,
-    `card_holder`      VARCHAR(48)    NOT NULL,
-    `card_expire_date` VARCHAR(5)     NOT NULL,
-    `beneficiary_name` VARCHAR(128)   NOT NULL,
-    `remittance_info`  VARCHAR(20)    NULL DEFAULT '',
-    `currency`         TINYINT        NOT NULL,
-    `rate`             DECIMAL(19, 2) NOT NULL,
-    `attestation`      BOOLEAN        NULL DEFAULT false,
+    `id`               INT UNSIGNED AUTO_INCREMENT NOT NULL,
+    `card_number`      VARCHAR(20)                 NOT NULL,
+    `card_holder`      VARCHAR(48)                 NOT NULL,
+    `card_expire_date` VARCHAR(5)                  NOT NULL,
+    `beneficiary_name` VARCHAR(128)                NOT NULL,
+    `remittance_info`  VARCHAR(255)                NULL DEFAULT '',
+    `currency`         TINYINT                     NOT NULL,
+    `rate`             DECIMAL(19, 2)              NOT NULL,
+    `attestation`      BOOLEAN                     NULL DEFAULT false,
 
     -- Audit
-    `created_at`       TIMESTAMP      NOT NULL,
-    `updated_at`       TIMESTAMP      NOT NULL,
-    `created_by`       VARCHAR(64)    NOT NULL,
-    `updated_by`       VARCHAR(64)    NOT NULL,
+    `created_at`       TIMESTAMP                   NOT NULL,
+    `updated_at`       TIMESTAMP                   NOT NULL,
+    `created_by`       VARCHAR(64)                 NOT NULL,
+    `updated_by`       VARCHAR(64)                 NOT NULL,
 
     -- ID
     PRIMARY KEY (`id`),
