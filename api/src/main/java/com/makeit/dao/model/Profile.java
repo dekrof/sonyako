@@ -69,8 +69,16 @@ public class Profile extends AbstractEntity {
     @Column(name = "avatar_url")
     private String avatarUrl;
 
+    @Column(name = "description")
+    private String description;
+
     @Valid
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
+
+    @Valid
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @JoinColumn(name = "payment_id", referencedColumnName = "id")
+    private Payment payment;
 }

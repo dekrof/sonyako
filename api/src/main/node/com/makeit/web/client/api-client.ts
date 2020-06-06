@@ -559,6 +559,59 @@ export class PasswordResetToken {
     }
 }
 
+export class Payment {
+    createdAt: Date;
+    updatedAt: Date;
+    createdBy: string;
+    updatedBy: string;
+    id: number;
+    cardNumber: string;
+    cardHolder: string;
+    validThru: Date;
+    nameOfBusiness: string;
+    remittanceInformation: string;
+    currency: CurrencyType;
+    baseRate: number;
+    cardOwner: boolean;
+
+    static fromData(data: Payment, target?: Payment): Payment {
+        if (!data) {
+            return data;
+        }
+        const instance = target || new Payment();
+        super.fromData(data, instance);
+        instance.createdAt = data.createdAt;
+        instance.updatedAt = data.updatedAt;
+        instance.createdBy = data.createdBy;
+        instance.updatedBy = data.updatedBy;
+        instance.id = data.id;
+        instance.cardNumber = data.cardNumber;
+        instance.cardHolder = data.cardHolder;
+        instance.validThru = data.validThru;
+        instance.nameOfBusiness = data.nameOfBusiness;
+        instance.remittanceInformation = data.remittanceInformation;
+        instance.currency = data.currency;
+        instance.baseRate = data.baseRate;
+        instance.cardOwner = data.cardOwner;
+        return instance;
+    }
+}
+
+export class PaymentDto {
+    currency: string;
+    baseRate: number;
+
+    static fromData(data: PaymentDto, target?: PaymentDto): PaymentDto {
+        if (!data) {
+            return data;
+        }
+        const instance = target || new PaymentDto();
+        instance.currency = data.currency;
+        instance.baseRate = data.baseRate;
+        return instance;
+    }
+}
+
 export class Profile {
     createdAt: Date;
     updatedAt: Date;
@@ -572,7 +625,9 @@ export class Profile {
     surname: string;
     birthday: Date;
     avatarUrl: string;
+    description: string;
     address: Address;
+    payment: Payment;
 
     static fromData(data: Profile, target?: Profile): Profile {
         if (!data) {
@@ -592,7 +647,9 @@ export class Profile {
         instance.surname = data.surname;
         instance.birthday = data.birthday;
         instance.avatarUrl = data.avatarUrl;
+        instance.description = data.description;
         instance.address = Address.fromData(data.address);
+        instance.payment = Payment.fromData(data.payment);
         return instance;
     }
 }
@@ -937,6 +994,7 @@ export class TopDeveloperDto {
     avatarUrl: string;
     tags: TagDto[];
     address: AddressDto;
+    payment: PaymentDto;
 
     static fromData(data: TopDeveloperDto, target?: TopDeveloperDto): TopDeveloperDto {
         if (!data) {
@@ -949,6 +1007,7 @@ export class TopDeveloperDto {
         instance.avatarUrl = data.avatarUrl;
         instance.tags = __getCopyArrayFn(TagDto.fromData)(data.tags);
         instance.address = AddressDto.fromData(data.address);
+        instance.payment = PaymentDto.fromData(data.payment);
         return instance;
     }
 }
@@ -1083,8 +1142,8 @@ export class UserProject {
     user: User;
     project: Project;
     rating: number;
-    userCreator: boolean;
     userOwner: boolean;
+    userCreator: boolean;
 
     static fromData(data: UserProject, target?: UserProject): UserProject {
         if (!data) {
@@ -1095,8 +1154,8 @@ export class UserProject {
         instance.user = User.fromData(data.user);
         instance.project = Project.fromData(data.project);
         instance.rating = data.rating;
-        instance.userCreator = data.userCreator;
         instance.userOwner = data.userOwner;
+        instance.userCreator = data.userCreator;
         return instance;
     }
 }
@@ -1123,6 +1182,13 @@ export const enum CityType {
     TOWN = "TOWN",
     TOWNSHIP = "TOWNSHIP",
     VILLAGE = "VILLAGE",
+}
+
+export const enum CurrencyType {
+    UAH = "UAH",
+    USD = "USD",
+    EUR = "EUR",
+    GBP = "GBP",
 }
 
 export const enum DeviceType {

@@ -1,5 +1,6 @@
 package com.makeit.api.model;
 
+import com.makeit.dao.model.Payment;
 import io.swagger.annotations.ApiModel;
 import lombok.*;
 
@@ -23,4 +24,5 @@ public class TopDeveloperDto {
     private String avatarUrl;
     private Set<TagDto> tags;
     private AddressDto address;
+    private PaymentDto payment;
 }
