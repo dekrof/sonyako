@@ -24,4 +24,5 @@ public class TopDeveloperDto {
     private Set<TagDto> tags;
     private AddressDto address;
     private RateDto rate;
+
 }

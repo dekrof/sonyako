@@ -1,9 +1,9 @@
 import * as React from "react";
-import { observable } from "mobx";
-import { observer } from "mobx-react";
-import { WrappedComponentProps, injectIntl } from "react-intl";
-import { Card, Avatar, Rate, Space, Typography, Divider, Tag } from "antd";
-import { TopDeveloperDto } from "@client/api-client";
+import {observable} from "mobx";
+import {observer} from "mobx-react";
+import {WrappedComponentProps, injectIntl} from "react-intl";
+import {Card, Avatar, Rate, Space, Typography, Divider, Tag} from "antd";
+import {CurrencyType, TopDeveloperDto} from "@client/api-client";
 
 @observer
 class TopDeveloper extends React.Component<WrappedComponentProps & { developer?: TopDeveloperDto }> {
@@ -13,7 +13,9 @@ class TopDeveloper extends React.Component<WrappedComponentProps & { developer?:
 
     public render() {
         const viewProfileAction = this.renderViewProfileAction();
-        const { developer } = this.props;
+        const {developer} = this.props;
+        const {rate, currency} = developer.rate;
+        const {city, countryCode} = developer.address;
         return (
             <>
                 <Card
@@ -23,26 +25,26 @@ class TopDeveloper extends React.Component<WrappedComponentProps & { developer?:
                         viewProfileAction
                     ]}>
                     <Space direction="horizontal" align="start" size={20}>
-                        <Avatar size={120} shape="square" src={developer?.avatarUrl} />
+                        <Avatar size={120} shape="square" src={developer?.avatarUrl}/>
                         <Space direction="vertical" size={20}>
-                            <Rate defaultValue={3.5} allowHalf style={{ fontSize: 14 }} />
+                            <Rate defaultValue={3.5} allowHalf style={{fontSize: 14}}/>
                             <Typography.Paragraph>
-                                <h4>$37/hr</h4>
-                                <span>{`${developer.address.city}, ${developer.address.countryCode}`}</span>
+                                <h4>{`${rate}${this.getCurrencySign(currency)}`}/hr</h4>
+                                <span>{`${city}, ${countryCode}`}</span>
                             </Typography.Paragraph>
                         </Space>
                     </Space>
-                    <Divider plain />
+                    <Divider plain/>
                     <div className="top-developer-tags">
                         <Tag color="#f0f0f0">Java</Tag>
                         <Tag color="#f0f0f0">TypeScript</Tag>
                         <Tag color="#f0f0f0">Kafka Streams</Tag>
                         <Tag color="#f0f0f0">DataDog</Tag>
                     </div>
-                    <Divider plain style={{ marginBottom: 20 }} />
+                    <Divider plain style={{marginBottom: 20}}/>
                     <Card.Meta
                         title={`${developer.firstName} ${developer.lastName}`}
-                        description="Expert Joomla Web Developer" />
+                        description="Expert Joomla Web Developer"/>
                 </Card>
             </>
         )
@@ -54,6 +56,17 @@ class TopDeveloper extends React.Component<WrappedComponentProps & { developer?:
                 <a onClick={() => this.isFocused = !this.isFocused}>View Profile</a>
             </>
         )
+    }
+
+    private getCurrencySign(currency: CurrencyType): string {
+        switch (currency) {
+            // @formatter:off
+            case CurrencyType.EUR: return "€";
+            case CurrencyType.GBP: return "£";
+            case CurrencyType.UAH: return "₴";
+            case CurrencyType.USD: return "$";
+            // @formatter:on
+        }
     }
 }
 

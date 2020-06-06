@@ -716,8 +716,8 @@ export class ProjectCommentId {
 }
 
 export class RateDto {
-    currency: string;
-    baseRate: number;
+    currency: CurrencyType;
+    rate: number;
 
     static fromData(data: RateDto, target?: RateDto): RateDto {
         if (!data) {
@@ -725,7 +725,7 @@ export class RateDto {
         }
         const instance = target || new RateDto();
         instance.currency = data.currency;
-        instance.baseRate = data.baseRate;
+        instance.rate = data.rate;
         return instance;
     }
 }
@@ -768,6 +768,7 @@ export class RegistrationDto {
     email: string;
     password: string;
     profile: Profile;
+    payment: Payment;
     registerAsAdmin: boolean;
     registerAsFreelancer: boolean;
     registerAsOwner: boolean;
@@ -781,6 +782,7 @@ export class RegistrationDto {
         instance.email = data.email;
         instance.password = data.password;
         instance.profile = Profile.fromData(data.profile);
+        instance.payment = Payment.fromData(data.payment);
         instance.registerAsAdmin = data.registerAsAdmin;
         instance.registerAsFreelancer = data.registerAsFreelancer;
         instance.registerAsOwner = data.registerAsOwner;

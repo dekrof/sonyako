@@ -1,5 +1,6 @@
 package com.makeit.api.model;
 
+import com.makeit.dao.model.CurrencyType;
 import lombok.*;
 
 /**
@@ -13,6 +14,6 @@ import lombok.*;
 @Builder(toBuilder = true)
 public class RateDto {
 
-    private String currency;
-    private Long baseRate;
+    private CurrencyType currency;
+    private Double rate;
 }
