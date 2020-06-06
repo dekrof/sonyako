@@ -1,6 +1,6 @@
 package com.makeit.dao.repository;
 
-import com.makeit.dao.model.Address;
+import com.makeit.dao.model.Payment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
  * @since 1.0.0
  */
 @Repository
-public interface PaymentRepository extends JpaRepository<Address, Long> {
+public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
 }

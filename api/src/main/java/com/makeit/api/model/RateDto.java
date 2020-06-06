@@ -11,7 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(toBuilder = true)
-public class PaymentDto {
+public class RateDto {
 
     private String currency;
     private Long baseRate;

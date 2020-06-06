@@ -567,12 +567,12 @@ export class Payment {
     id: number;
     cardNumber: string;
     cardHolder: string;
-    validThru: Date;
-    nameOfBusiness: string;
-    remittanceInformation: string;
+    cardExpireDate: string;
+    beneficiaryName: string;
+    remittanceInfo: string;
     currency: CurrencyType;
-    baseRate: number;
-    cardOwner: boolean;
+    rate: number;
+    attestation: boolean;
 
     static fromData(data: Payment, target?: Payment): Payment {
         if (!data) {
@@ -587,27 +587,12 @@ export class Payment {
         instance.id = data.id;
         instance.cardNumber = data.cardNumber;
         instance.cardHolder = data.cardHolder;
-        instance.validThru = data.validThru;
-        instance.nameOfBusiness = data.nameOfBusiness;
-        instance.remittanceInformation = data.remittanceInformation;
+        instance.cardExpireDate = data.cardExpireDate;
+        instance.beneficiaryName = data.beneficiaryName;
+        instance.remittanceInfo = data.remittanceInfo;
         instance.currency = data.currency;
-        instance.baseRate = data.baseRate;
-        instance.cardOwner = data.cardOwner;
-        return instance;
-    }
-}
-
-export class PaymentDto {
-    currency: string;
-    baseRate: number;
-
-    static fromData(data: PaymentDto, target?: PaymentDto): PaymentDto {
-        if (!data) {
-            return data;
-        }
-        const instance = target || new PaymentDto();
-        instance.currency = data.currency;
-        instance.baseRate = data.baseRate;
+        instance.rate = data.rate;
+        instance.attestation = data.attestation;
         return instance;
     }
 }
@@ -726,6 +711,21 @@ export class ProjectCommentId {
         const instance = target || new ProjectCommentId();
         instance.projectId = data.projectId;
         instance.commentId = data.commentId;
+        return instance;
+    }
+}
+
+export class RateDto {
+    currency: string;
+    baseRate: number;
+
+    static fromData(data: RateDto, target?: RateDto): RateDto {
+        if (!data) {
+            return data;
+        }
+        const instance = target || new RateDto();
+        instance.currency = data.currency;
+        instance.baseRate = data.baseRate;
         return instance;
     }
 }
@@ -994,7 +994,7 @@ export class TopDeveloperDto {
     avatarUrl: string;
     tags: TagDto[];
     address: AddressDto;
-    payment: PaymentDto;
+    rate: RateDto;
 
     static fromData(data: TopDeveloperDto, target?: TopDeveloperDto): TopDeveloperDto {
         if (!data) {
@@ -1007,7 +1007,7 @@ export class TopDeveloperDto {
         instance.avatarUrl = data.avatarUrl;
         instance.tags = __getCopyArrayFn(TagDto.fromData)(data.tags);
         instance.address = AddressDto.fromData(data.address);
-        instance.payment = PaymentDto.fromData(data.payment);
+        instance.rate = RateDto.fromData(data.rate);
         return instance;
     }
 }
@@ -1142,8 +1142,8 @@ export class UserProject {
     user: User;
     project: Project;
     rating: number;
-    userOwner: boolean;
     userCreator: boolean;
+    userOwner: boolean;
 
     static fromData(data: UserProject, target?: UserProject): UserProject {
         if (!data) {
@@ -1154,8 +1154,8 @@ export class UserProject {
         instance.user = User.fromData(data.user);
         instance.project = Project.fromData(data.project);
         instance.rating = data.rating;
-        instance.userOwner = data.userOwner;
         instance.userCreator = data.userCreator;
+        instance.userOwner = data.userOwner;
         return instance;
     }
 }

@@ -108,6 +108,7 @@ public class UserServiceImpl implements UserService {
             .profile(request.getProfile().toBuilder()
                 .email(request.getEmail())
                 .phoneNumber(request.getProfile().getPhoneNumber().replaceAll("\\D+", ""))
+                .payment(request.getPayment())
                 .build())
             .active(true)
             .emailVerified(false)

@@ -11,9 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 
 /**
  * @author sonnyako <Makydon Sofiia>
@@ -28,33 +25,34 @@ import java.time.LocalDate;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Payment extends AbstractEntity {
 
+    private static final long serialVersionUID = 1300641046506404528L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "card_number")
     private String cardNumber;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "card_holder")
     private String cardHolder;
 
-    @Column(nullable = false)
-    private LocalDate validThru;
+    @Column(nullable = false, name = "card_expire_date")
+    private String cardExpireDate;
 
-    @Column(nullable = false)
-    private String nameOfBusiness;
+    @Column(nullable = false, name = "beneficiary_name")
+    private String beneficiaryName;
 
-    @Column
-    private String remittanceInformation;
-
-    @Column(nullable = false)
-    private boolean isCardOwner;
+    @Column(name = "remittance_info")
+    private String remittanceInfo;
 
     @Enumerated(EnumType.ORDINAL)
-    @Column(nullable = false)
+    @Column(nullable = false, name = "currency")
     private CurrencyType currency;
 
-    @Column(nullable = false)
-    private Long baseRate;
+    @Column(nullable = false, name = "rate")
+    private Double rate;
 
+    @Column(name = "attestation")
+    private boolean attestation;
 }

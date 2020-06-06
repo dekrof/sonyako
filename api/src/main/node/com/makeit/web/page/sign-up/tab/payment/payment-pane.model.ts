@@ -1,9 +1,6 @@
 import { FormikProps } from "formik";
 import { injectable, observable } from '@page/decorator';
-
-export enum AllowedCurrency {
-    USD = "USD", EUR = "EUR", UAH = "UAH", GBP = "GBP"
-}
+import { CurrencyType, Payment } from "@client/api-client";
 
 @injectable()
 export class PaymentModel {
@@ -23,7 +20,7 @@ export class PaymentModel {
     public beneficiaryName: string;
 
     @observable
-    public currency: AllowedCurrency = AllowedCurrency.UAH;
+    public currency: CurrencyType = CurrencyType.UAH;
 
     @observable
     public rate: number;
@@ -104,20 +101,16 @@ export class PaymentModel {
         return null;
     }
 
-    public getPayment() {
+    public getPayment(): Payment {
         return {
-            attestation: {
-                remittanceInfo: this.remittanceInfo,
-                accepted: this.attestation
-            },
+            attestation: this.attestation,
             beneficiaryName: this.beneficiaryName,
-            card: {
-                number: this.cardNumber,
-                holder: this.cardHolder,
-                expire: this.cardExpireDate
-            },
+            cardExpireDate: this.cardExpireDate,
+            cardHolder: this.cardHolder,
+            cardNumber: this.cardNumber,
             currency: this.currency,
-            rate: this.rate
-        }
+            rate: this.rate,
+            remittanceInfo: this.remittanceInfo
+        } as Payment
     }
 }

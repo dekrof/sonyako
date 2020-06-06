@@ -1,15 +1,16 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { WrappedComponentProps, injectIntl } from "react-intl";
+import { injectIntl, WrappedComponentProps } from "react-intl";
 
 import { Divider, Space, Typography } from "antd";
 import Cards, { Focused } from "react-credit-cards";
 
 import { Formik } from "formik";
-import { Form, FormItem, Input, InputNumber, DatePicker, Checkbox, Select } from "formik-antd";
+import { Checkbox, DatePicker, Form, FormItem, Input, InputNumber, Select } from "formik-antd";
 
-import { observer, observable, resolve } from "@page/decorator";
-import { PaymentModel, AllowedCurrency } from '@page/sign-up/tab/payment';
+import { observable, observer, resolve } from "@page/decorator";
+import { PaymentModel } from '@page/sign-up/tab/payment';
+import { CurrencyType } from "@client/api-client";
 
 import "@css/credit-cards.less";
 
@@ -31,26 +32,26 @@ class PaymentPanel extends React.Component<WrappedComponentProps> {
                             <Form layout="vertical" className="signup-form payment-form">
                                 {
                                     (() => {
-                                        // the workaraout to fix the bag of formik
+                                        // the workaround to fix the bag of formik
                                         this.model.form = props;
                                         return null;
                                     })()
                                 }
                                 <Divider orientation="left">Payment Card</Divider>
                                 <Space direction="horizontal" align="center" size={30}>
-                                    <div style={{ userSelect: "none" }}>
+                                    <div style={{userSelect: "none"}}>
                                         <Cards
-                                            locale={{ valid: "дійсна до" }}
+                                            locale={{valid: "дійсна до"}}
                                             cvc={-1}
                                             preview={true}
                                             focused={this.focused}
                                             acceptedCards={["visa", "visaelectron", "mastercard", "maestro", "discover"]}
                                             number={this.model.cardNumber || ""}
                                             expiry={this.model.cardExpireDate || ""}
-                                            name={this.model.cardHolder || ""} />
+                                            name={this.model.cardHolder || ""}/>
 
                                     </div>
-                                    <div style={{ width: 533 }}>
+                                    <div style={{width: 533}}>
                                         <Space direction="vertical" className="card-space" size={0}>
                                             <FormItem
                                                 name="cardNumber"
@@ -58,11 +59,11 @@ class PaymentPanel extends React.Component<WrappedComponentProps> {
                                                 label="Card Number">
                                                 <InputNumber
                                                     size="large"
-                                                    style={{ width: "100%" }}
+                                                    style={{width: "100%"}}
                                                     name="cardNumber"
                                                     onFocus={() => this.focused = "number"}
                                                     onChange={(ev) => this.model.cardNumber = ev?.toString().trim().replace(/\D/g, "")}
-                                                    formatter={value => this.formatCardNumber(value)} />
+                                                    formatter={value => this.formatCardNumber(value)}/>
                                             </FormItem>
                                             <Space direction="horizontal" size={20}>
                                                 <FormItem
@@ -72,7 +73,7 @@ class PaymentPanel extends React.Component<WrappedComponentProps> {
                                                     <Input
                                                         onFocus={() => this.focused = "name"}
                                                         onChange={(ev) => this.model.cardHolder = ev.target.value}
-                                                        style={{ width: 367 }} name="cardHolder" />
+                                                        style={{width: 367}} name="cardHolder"/>
                                                 </FormItem>
                                                 <FormItem
                                                     name="cardExpireDate"
@@ -82,7 +83,7 @@ class PaymentPanel extends React.Component<WrappedComponentProps> {
                                                     <DatePicker
                                                         onFocus={() => this.focused = "expiry"}
                                                         onChange={(ev) => this.model.cardExpireDate = ev.format("YYMM")}
-                                                        name="ExpireDate" picker="month" format="YY/MM" />
+                                                        name="ExpireDate" picker="month" format="YY/MM"/>
                                                 </FormItem>
                                             </Space>
                                         </Space>
@@ -95,20 +96,20 @@ class PaymentPanel extends React.Component<WrappedComponentProps> {
                                     name="beneficiaryName">
                                     <Input
                                         name="beneficiaryName"
-                                        onChange={ev => this.model.beneficiaryName = ev.currentTarget.value} />
+                                        onChange={ev => this.model.beneficiaryName = ev.currentTarget.value}/>
                                 </FormItem>
                                 <FormItem
                                     label="Currency"
                                     name="currency">
                                     <Select
                                         name="currency"
-                                        style={{ width: 280 }}
-                                        defaultValue={AllowedCurrency.UAH}
+                                        style={{width: 280}}
+                                        defaultValue={CurrencyType.UAH}
                                         onChange={ev => this.model.currency = ev}>
-                                        <Select.Option value={AllowedCurrency.USD}>Dollar USA <i>USD | $</i></Select.Option>
-                                        <Select.Option value={AllowedCurrency.EUR}>Euro <i>EUR | €</i></Select.Option>
-                                        <Select.Option value={AllowedCurrency.GBP}>Pound sterling <i>GBP | £</i></Select.Option>
-                                        <Select.Option value={AllowedCurrency.UAH}>Українська Гривня <i>UAH | ₴</i></Select.Option>
+                                        <Select.Option value={CurrencyType.USD}>Dollar USA <i>USD | $</i></Select.Option>
+                                        <Select.Option value={CurrencyType.EUR}>Euro <i>EUR | €</i></Select.Option>
+                                        <Select.Option value={CurrencyType.GBP}>Pound sterling <i>GBP | £</i></Select.Option>
+                                        <Select.Option value={CurrencyType.UAH}>Українська Гривня <i>UAH | ₴</i></Select.Option>
                                     </Select>
                                 </FormItem>
                                 <FormItem
@@ -117,8 +118,8 @@ class PaymentPanel extends React.Component<WrappedComponentProps> {
                                     name="rate">
                                     <InputNumber
                                         name="rate"
-                                        style={{ width: 280 }}
-                                        onChange={ev => this.model.rate = Number(ev?.toString().trim())} />
+                                        style={{width: 280}}
+                                        onChange={ev => this.model.rate = Number(ev?.toString().trim())}/>
                                 </FormItem>
                                 <FormItem
                                     label="Remittance Information (optional)"
@@ -133,10 +134,10 @@ class PaymentPanel extends React.Component<WrappedComponentProps> {
                                 <Divider orientation="left" type="horizontal" dashed>Tax Comission</Divider>
                                 <Typography.Paragraph>
                                     <Link to="/">Make IT</Link> make guaranties to get you paid up to 7 business days.
-                                <br />
+                                    <br/>
                                     <Link to="/">Make IT</Link> apply Tax Commission $30 USD per wire to any bank,
-                                until you reach the minimum paid cost in your professional level.
-                            </Typography.Paragraph>
+                                    until you reach the minimum paid cost in your professional level.
+                                </Typography.Paragraph>
                                 <Typography.Paragraph type="secondary">
                                     <dl>
                                         <li>
@@ -154,7 +155,7 @@ class PaymentPanel extends React.Component<WrappedComponentProps> {
                                     </dl>
                                 </Typography.Paragraph>
 
-                                <Divider orientation="left" type="horizontal" dashed />
+                                <Divider orientation="left" type="horizontal" dashed/>
                                 <FormItem
                                     validate={value => this.model.validateAttestation(value)}
                                     name="attestation">
@@ -162,7 +163,7 @@ class PaymentPanel extends React.Component<WrappedComponentProps> {
                                         name="attestation"
                                         onChange={ev => this.model.attestation = ev.target.checked}>
                                         I attest that I am the owner and have full authorization to this bank account.
-                                </Checkbox>
+                                    </Checkbox>
                                 </FormItem>
                             </Form>
                         )
