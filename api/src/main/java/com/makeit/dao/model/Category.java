@@ -36,11 +36,15 @@ public class Category implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "url", nullable = false, unique = true)
+    @NotBlank(message = "Category url should not be blank")
+    private String url;
+
+    @Column(name = "name", nullable = false, unique = true)
     @NotBlank(message = "Category name should not be blank")
     private String name;
 
-    @Column(nullable = false)
+    @Column(name = "description", nullable = false)
     @NotBlank(message = "Category description should not be blank")
     private String description;
 

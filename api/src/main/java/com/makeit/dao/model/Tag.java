@@ -43,6 +43,9 @@ public class Tag implements Serializable {
     @NotBlank(message = "Description should not be null")
     private String description;
 
+    @Column(name = "category_id", nullable = false, insertable = false, updatable = false)
+    private Long categoryId;
+
     @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
     private Set<User> users = Set.of();
 

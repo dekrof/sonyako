@@ -83,6 +83,52 @@ export class AuthenticationClient<O> {
     }
 }
 
+export class CategoryClient<O> {
+
+    constructor(protected httpClient: HttpClient<O>) {
+    }
+
+    /**
+     * HTTP GET /api/category
+     * Java method: com.makeit.api.controller.CategoryController.getCategories
+     */
+    getCategories(queryParams?: { page?: number; size?: number; sort?: string; }, options?: O): RestResponse<ApiResponse<Page<CategoryDto>>> {
+        return this.httpClient.request({ method: "GET", url: uriEncoding`api/category`, queryParams: queryParams, options: options });
+    }
+
+    /**
+     * HTTP POST /api/category
+     * Java method: com.makeit.api.controller.CategoryController.saveCategory
+     */
+    saveCategory(dto: CategoryDto, options?: O): RestResponse<ApiResponse<CategoryDto>> {
+        return this.httpClient.request({ method: "POST", url: uriEncoding`api/category`, data: dto, options: options });
+    }
+
+    /**
+     * HTTP PUT /api/category
+     * Java method: com.makeit.api.controller.CategoryController.updateCategory
+     */
+    updateCategory(dto: CategoryDto, options?: O): RestResponse<ApiResponse<CategoryDto>> {
+        return this.httpClient.request({ method: "PUT", url: uriEncoding`api/category`, data: dto, options: options });
+    }
+
+    /**
+     * HTTP DELETE /api/category/{id}
+     * Java method: com.makeit.api.controller.CategoryController.deleteCategory
+     */
+    deleteCategory(id: number, options?: O): RestResponse<ApiResponse<CategoryDto>> {
+        return this.httpClient.request({ method: "DELETE", url: uriEncoding`api/category/${id}`, options: options });
+    }
+
+    /**
+     * HTTP GET /api/category/{id}
+     * Java method: com.makeit.api.controller.CategoryController.getCategory
+     */
+    getCategory(id: number, options?: O): RestResponse<ApiResponse<CategoryDto>> {
+        return this.httpClient.request({ method: "GET", url: uriEncoding`api/category/${id}`, options: options });
+    }
+}
+
 export class FreelancerClient<O> {
 
     constructor(protected httpClient: HttpClient<O>) {
@@ -256,6 +302,7 @@ export class BaseProfileDto {
 
 export class Category {
     id: number;
+    url: string;
     name: string;
     description: string;
     projects: Project[];
@@ -266,9 +313,29 @@ export class Category {
         }
         const instance = target || new Category();
         instance.id = data.id;
+        instance.url = data.url;
         instance.name = data.name;
         instance.description = data.description;
         instance.projects = __getCopyArrayFn(Project.fromData)(data.projects);
+        return instance;
+    }
+}
+
+export class CategoryDto {
+    id: number;
+    url: string;
+    name: string;
+    description: string;
+
+    static fromData(data: CategoryDto, target?: CategoryDto): CategoryDto {
+        if (!data) {
+            return data;
+        }
+        const instance = target || new CategoryDto();
+        instance.id = data.id;
+        instance.url = data.url;
+        instance.name = data.name;
+        instance.description = data.description;
         return instance;
     }
 }
@@ -496,6 +563,29 @@ export class LogoutDto {
         instance.deviceInfo = DeviceInfoDto.fromData(data.deviceInfo);
         return instance;
     }
+}
+
+export interface Page<T> {
+    totalPages: number;
+    totalElements: number;
+    last: boolean;
+    size: number;
+    content: T[];
+    number: number;
+    sort: Sort;
+    first: boolean;
+    numberOfElements: number;
+    pageable: Pageable;
+    empty: boolean;
+}
+
+export interface Pageable {
+    offset: number;
+    sort: Sort;
+    pageNumber: number;
+    paged: boolean;
+    unpaged: boolean;
+    pageSize: number;
 }
 
 /**
@@ -768,7 +858,6 @@ export class RegistrationDto {
     email: string;
     password: string;
     profile: Profile;
-    payment: Payment;
     registerAsAdmin: boolean;
     registerAsFreelancer: boolean;
     registerAsOwner: boolean;
@@ -782,7 +871,6 @@ export class RegistrationDto {
         instance.email = data.email;
         instance.password = data.password;
         instance.profile = Profile.fromData(data.profile);
-        instance.payment = Payment.fromData(data.payment);
         instance.registerAsAdmin = data.registerAsAdmin;
         instance.registerAsFreelancer = data.registerAsFreelancer;
         instance.registerAsOwner = data.registerAsOwner;
@@ -860,10 +948,28 @@ export class SkillRatingId {
     }
 }
 
+export class Sort {
+    unsorted: boolean;
+    sorted: boolean;
+    empty: boolean;
+
+    static fromData(data: Sort, target?: Sort): Sort {
+        if (!data) {
+            return data;
+        }
+        const instance = target || new Sort();
+        instance.unsorted = data.unsorted;
+        instance.sorted = data.sorted;
+        instance.empty = data.empty;
+        return instance;
+    }
+}
+
 export class Tag {
     id: number;
     name: string;
     description: string;
+    categoryId: number;
     users: User[];
     projects: Project[];
     tasks: Task[];
@@ -876,6 +982,7 @@ export class Tag {
         instance.id = data.id;
         instance.name = data.name;
         instance.description = data.description;
+        instance.categoryId = data.categoryId;
         instance.users = __getCopyArrayFn(User.fromData)(data.users);
         instance.projects = __getCopyArrayFn(Project.fromData)(data.projects);
         instance.tasks = __getCopyArrayFn(Task.fromData)(data.tasks);
@@ -1309,6 +1416,14 @@ class AxiosHttpClient implements HttpClient<Axios.AxiosRequestConfig> {
 }
 
 export class AxiosAuthenticationClient extends AuthenticationClient<Axios.AxiosRequestConfig> {
+
+    constructor(baseURL: string, axiosInstance: Axios.AxiosInstance = axios.create()) {
+        axiosInstance.defaults.baseURL = baseURL;
+        super(new AxiosHttpClient(axiosInstance));
+    }
+}
+
+export class AxiosCategoryClient extends CategoryClient<Axios.AxiosRequestConfig> {
 
     constructor(baseURL: string, axiosInstance: Axios.AxiosInstance = axios.create()) {
         axiosInstance.defaults.baseURL = baseURL;
