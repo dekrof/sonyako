@@ -1,9 +1,12 @@
 package com.makeit.api.model;
 
 import com.makeit.dao.model.Profile;
-import com.makeit.dao.model.User;
 import io.swagger.annotations.ApiModel;
 import lombok.*;
+import lombok.experimental.*;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * @author sonnyako <Makydon Sofiia>
@@ -15,11 +18,9 @@ import lombok.*;
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class CompanyDto {
+public class UserDto {
 
     private Long id;
-    private String name;
-    private String description;
-    private String logo;
-    private UserDto owner;
+    private String username;
+    private BaseProfileDto profile;
 }
