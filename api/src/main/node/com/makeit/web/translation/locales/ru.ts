@@ -55,4 +55,36 @@ export default {
     "com.makeit.web.page.home.how-it-works-item-3-head": "Простая оплата работы",
     "com.makeit.web.page.home.how-it-works-item-3-text": "Платите почасово или по фиксированной цене и полу-чайте счета через Make&nbsp;ІТ. Оплачивайте работу, кото-рую Вы авторозировали.",
     "com.makeit.web.page.home.incoming-projects": "Откройте для себя новые проекты",
+
+    //TaskController
+    "task.should.not.be.null": "Отсутствует задание",
+    "task.should.not.be.saved.before": "Задание не должно быть сохраненным ранее",
+    "task.id.should.not.be.null": "Идентификатор задания отсутствует",
+
+    //TagController
+    "tag.should.not.be.null": "Отсутствует тег",
+    "tag.should.not.be.saved.before": "Тег не должен быть сохраненным ранее",
+    "tag.id.should.not.be.null": "Идентификатор тега отсутствует",
+
+    //RoleController
+    "role.should.not.be.null": "Отсутствует роль",
+    "role.should.not.be.saved.before": "Роль не должна быть сохранена ранее",
+    "role.id.should.not.be.null": "Идентификатор роли отсутствует",
+
+    //ProjectController
+    "project.should.not.be.null": "Отсутствует проект",
+    "project.should.not.be.saved.before": "Проект не должен быть сохраненным ранее",
+    "project.id.should.not.be.null": "Идентификатор проекта отсутствует",
+
+    //CompanyController
+    "company.should.not.be.null": "Отсутствует компания",
+    "company.should.not.be.saved.before": "Компания не должна быть сохранена ранее",
+    "company.id.should.not.be.null": "Идентификатор компании отсутствует",
+
+    //CategoryController
+    "category.should.not.be.null": "Отсутствует категория",
+    "category.should.not.be.saved.before": "Категория не должна быть сохранена ранее",
+    "category.id.should.not.be.null": "Идентификатор категории отсутствует",
+
+
 };

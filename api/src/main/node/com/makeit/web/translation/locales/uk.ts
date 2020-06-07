@@ -56,4 +56,34 @@ export default {
     "com.makeit.web.page.home.how-it-works-item-3-head": "Проста оплата праці",
     "com.makeit.web.page.home.how-it-works-item-3-text": "Оплачуйте погодинну або фіксовану ціну та отримуйте рахунки через Make&nbsp;ІТ. Платіть за роботу, яку Ви авторизуєте.",
     "com.makeit.web.page.home.incoming-projects": "Дізнайтеся про нові проекти",
+
+    //TaskController
+    "task.should.not.be.null": "Відсутнє завдання",
+    "task.should.not.be.saved.before": "Завдання не повинно бути збереженим раніше",
+    "task.id.should.not.be.null": "Відсутній ідентифікатор завдання",
+
+    //TagController
+    "tag.should.not.be.null": "Відсутній тег",
+    "tag.should.not.be.saved.before": "Тег не повиннен бути збереженим раніше",
+    "tag.id.should.not.be.null": "Відсутній ідентифікатор тегу",
+
+    //RoleController
+    "role.should.not.be.null": "Відсутня роль",
+    "role.should.not.be.saved.before": "Роль не повинна бути збережена раніше",
+    "role.id.should.not.be.null": "Відсутній ідентифікатор ролі",
+
+    //ProjectController
+    "project.should.not.be.null": "Відсутній проект",
+    "project.should.not.be.saved.before": "Проект не повинен бути збереженим раніше",
+    "project.id.should.not.be.null": "Відсутній ідентифікатор проекту",
+
+    //CompanyController
+    "company.should.not.be.null": "Відсутня компанія",
+    "company.should.not.be.saved.before": "Компанія не повинна бути збережена раніше",
+    "company.id.should.not.be.null": "Відсутній ідентифікатор компанії",
+
+    //CategoryController
+    "category.should.not.be.null": "Відсутня категорія",
+    "category.should.not.be.saved.before": "Категорія не повинна бути збережена раніше",
+    "category.id.should.not.be.null": "Відсутній ідентифікатор категорії",
 };

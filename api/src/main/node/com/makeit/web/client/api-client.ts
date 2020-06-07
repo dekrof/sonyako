@@ -129,6 +129,52 @@ export class CategoryClient<O> {
     }
 }
 
+export class CompanyClient<O> {
+
+    constructor(protected httpClient: HttpClient<O>) {
+    }
+
+    /**
+     * HTTP GET /api/company
+     * Java method: com.makeit.api.controller.CompanyController.getCompanies
+     */
+    getCompanies(queryParams?: { page?: number; size?: number; sort?: string; }, options?: O): RestResponse<ApiResponse<Page<CompanyDto>>> {
+        return this.httpClient.request({ method: "GET", url: uriEncoding`api/company`, queryParams: queryParams, options: options });
+    }
+
+    /**
+     * HTTP POST /api/company
+     * Java method: com.makeit.api.controller.CompanyController.saveCompany
+     */
+    saveCompany(dto: CompanyDto, options?: O): RestResponse<ApiResponse<CompanyDto>> {
+        return this.httpClient.request({ method: "POST", url: uriEncoding`api/company`, data: dto, options: options });
+    }
+
+    /**
+     * HTTP PUT /api/company
+     * Java method: com.makeit.api.controller.CompanyController.updateCompany
+     */
+    updateCompany(dto: CompanyDto, options?: O): RestResponse<ApiResponse<CompanyDto>> {
+        return this.httpClient.request({ method: "PUT", url: uriEncoding`api/company`, data: dto, options: options });
+    }
+
+    /**
+     * HTTP DELETE /api/company/{id}
+     * Java method: com.makeit.api.controller.CompanyController.deleteCompany
+     */
+    deleteCompany(id: number, options?: O): RestResponse<ApiResponse<CompanyDto>> {
+        return this.httpClient.request({ method: "DELETE", url: uriEncoding`api/company/${id}`, options: options });
+    }
+
+    /**
+     * HTTP GET /api/company/{id}
+     * Java method: com.makeit.api.controller.CompanyController.getCompany
+     */
+    getCompany(id: number, options?: O): RestResponse<ApiResponse<CompanyDto>> {
+        return this.httpClient.request({ method: "GET", url: uriEncoding`api/company/${id}`, options: options });
+    }
+}
+
 export class FreelancerClient<O> {
 
     constructor(protected httpClient: HttpClient<O>) {
@@ -140,6 +186,190 @@ export class FreelancerClient<O> {
      */
     getTopNineFreelancers(options?: O): RestResponse<TopDeveloperDto[]> {
         return this.httpClient.request({ method: "GET", url: uriEncoding`api/freelancer/get/top/nine/freelancers`, options: options });
+    }
+}
+
+export class ProjectClient<O> {
+
+    constructor(protected httpClient: HttpClient<O>) {
+    }
+
+    /**
+     * HTTP GET /api/project
+     * Java method: com.makeit.api.controller.ProjectController.getProjects
+     */
+    getProjects(queryParams?: { page?: number; size?: number; sort?: string; }, options?: O): RestResponse<ApiResponse<Page<ProjectDto>>> {
+        return this.httpClient.request({ method: "GET", url: uriEncoding`api/project`, queryParams: queryParams, options: options });
+    }
+
+    /**
+     * HTTP POST /api/project
+     * Java method: com.makeit.api.controller.ProjectController.saveProject
+     */
+    saveProject(dto: ProjectDto, options?: O): RestResponse<ApiResponse<ProjectDto>> {
+        return this.httpClient.request({ method: "POST", url: uriEncoding`api/project`, data: dto, options: options });
+    }
+
+    /**
+     * HTTP PUT /api/project
+     * Java method: com.makeit.api.controller.ProjectController.updateProject
+     */
+    updateProject(dto: ProjectDto, options?: O): RestResponse<ApiResponse<ProjectDto>> {
+        return this.httpClient.request({ method: "PUT", url: uriEncoding`api/project`, data: dto, options: options });
+    }
+
+    /**
+     * HTTP DELETE /api/project/{id}
+     * Java method: com.makeit.api.controller.ProjectController.deleteProject
+     */
+    deleteProject(id: number, options?: O): RestResponse<ApiResponse<ProjectDto>> {
+        return this.httpClient.request({ method: "DELETE", url: uriEncoding`api/project/${id}`, options: options });
+    }
+
+    /**
+     * HTTP GET /api/project/{id}
+     * Java method: com.makeit.api.controller.ProjectController.getProject
+     */
+    getProject(id: number, options?: O): RestResponse<ApiResponse<ProjectDto>> {
+        return this.httpClient.request({ method: "GET", url: uriEncoding`api/project/${id}`, options: options });
+    }
+}
+
+export class RoleClient<O> {
+
+    constructor(protected httpClient: HttpClient<O>) {
+    }
+
+    /**
+     * HTTP GET /api/role
+     * Java method: com.makeit.api.controller.RoleController.getRoles
+     */
+    getRoles(queryParams?: { page?: number; size?: number; sort?: string; }, options?: O): RestResponse<ApiResponse<Page<RoleDto>>> {
+        return this.httpClient.request({ method: "GET", url: uriEncoding`api/role`, queryParams: queryParams, options: options });
+    }
+
+    /**
+     * HTTP POST /api/role
+     * Java method: com.makeit.api.controller.RoleController.saveRole
+     */
+    saveRole(dto: RoleDto, options?: O): RestResponse<ApiResponse<RoleDto>> {
+        return this.httpClient.request({ method: "POST", url: uriEncoding`api/role`, data: dto, options: options });
+    }
+
+    /**
+     * HTTP PUT /api/role
+     * Java method: com.makeit.api.controller.RoleController.updateRole
+     */
+    updateRole(dto: RoleDto, options?: O): RestResponse<ApiResponse<RoleDto>> {
+        return this.httpClient.request({ method: "PUT", url: uriEncoding`api/role`, data: dto, options: options });
+    }
+
+    /**
+     * HTTP DELETE /api/role/{id}
+     * Java method: com.makeit.api.controller.RoleController.deleteRole
+     */
+    deleteRole(id: number, options?: O): RestResponse<ApiResponse<RoleDto>> {
+        return this.httpClient.request({ method: "DELETE", url: uriEncoding`api/role/${id}`, options: options });
+    }
+
+    /**
+     * HTTP GET /api/role/{id}
+     * Java method: com.makeit.api.controller.RoleController.getRole
+     */
+    getRole(id: number, options?: O): RestResponse<ApiResponse<RoleDto>> {
+        return this.httpClient.request({ method: "GET", url: uriEncoding`api/role/${id}`, options: options });
+    }
+}
+
+export class TagClient<O> {
+
+    constructor(protected httpClient: HttpClient<O>) {
+    }
+
+    /**
+     * HTTP GET /api/tag
+     * Java method: com.makeit.api.controller.TagController.getTags
+     */
+    getTags(queryParams?: { page?: number; size?: number; sort?: string; }, options?: O): RestResponse<ApiResponse<Page<TagDto>>> {
+        return this.httpClient.request({ method: "GET", url: uriEncoding`api/tag`, queryParams: queryParams, options: options });
+    }
+
+    /**
+     * HTTP POST /api/tag
+     * Java method: com.makeit.api.controller.TagController.saveTag
+     */
+    saveTag(dto: TagDto, options?: O): RestResponse<ApiResponse<TagDto>> {
+        return this.httpClient.request({ method: "POST", url: uriEncoding`api/tag`, data: dto, options: options });
+    }
+
+    /**
+     * HTTP PUT /api/tag
+     * Java method: com.makeit.api.controller.TagController.updateTag
+     */
+    updateTag(dto: TagDto, options?: O): RestResponse<ApiResponse<TagDto>> {
+        return this.httpClient.request({ method: "PUT", url: uriEncoding`api/tag`, data: dto, options: options });
+    }
+
+    /**
+     * HTTP DELETE /api/tag/{id}
+     * Java method: com.makeit.api.controller.TagController.deleteTag
+     */
+    deleteTag(id: number, options?: O): RestResponse<ApiResponse<TagDto>> {
+        return this.httpClient.request({ method: "DELETE", url: uriEncoding`api/tag/${id}`, options: options });
+    }
+
+    /**
+     * HTTP GET /api/tag/{id}
+     * Java method: com.makeit.api.controller.TagController.getTag
+     */
+    getTag(id: number, options?: O): RestResponse<ApiResponse<TagDto>> {
+        return this.httpClient.request({ method: "GET", url: uriEncoding`api/tag/${id}`, options: options });
+    }
+}
+
+export class TaskClient<O> {
+
+    constructor(protected httpClient: HttpClient<O>) {
+    }
+
+    /**
+     * HTTP GET /api/task
+     * Java method: com.makeit.api.controller.TaskController.getTasks
+     */
+    getTasks(queryParams?: { page?: number; size?: number; sort?: string; }, options?: O): RestResponse<ApiResponse<Page<TaskDto>>> {
+        return this.httpClient.request({ method: "GET", url: uriEncoding`api/task`, queryParams: queryParams, options: options });
+    }
+
+    /**
+     * HTTP POST /api/task
+     * Java method: com.makeit.api.controller.TaskController.saveTask
+     */
+    saveTask(dto: TaskDto, options?: O): RestResponse<ApiResponse<TaskDto>> {
+        return this.httpClient.request({ method: "POST", url: uriEncoding`api/task`, data: dto, options: options });
+    }
+
+    /**
+     * HTTP PUT /api/task
+     * Java method: com.makeit.api.controller.TaskController.updateTask
+     */
+    updateTask(dto: TaskDto, options?: O): RestResponse<ApiResponse<TaskDto>> {
+        return this.httpClient.request({ method: "PUT", url: uriEncoding`api/task`, data: dto, options: options });
+    }
+
+    /**
+     * HTTP DELETE /api/task/{id}
+     * Java method: com.makeit.api.controller.TaskController.deleteTask
+     */
+    deleteTask(id: number, options?: O): RestResponse<ApiResponse<TaskDto>> {
+        return this.httpClient.request({ method: "DELETE", url: uriEncoding`api/task/${id}`, options: options });
+    }
+
+    /**
+     * HTTP GET /api/task/{id}
+     * Java method: com.makeit.api.controller.TaskController.getTask
+     */
+    getTask(id: number, options?: O): RestResponse<ApiResponse<TaskDto>> {
+        return this.httpClient.request({ method: "GET", url: uriEncoding`api/task/${id}`, options: options });
     }
 }
 
@@ -404,6 +634,27 @@ export class Company {
     }
 }
 
+export class CompanyDto {
+    id: number;
+    name: string;
+    description: string;
+    logo: string;
+    owner: UserDto;
+
+    static fromData(data: CompanyDto, target?: CompanyDto): CompanyDto {
+        if (!data) {
+            return data;
+        }
+        const instance = target || new CompanyDto();
+        instance.id = data.id;
+        instance.name = data.name;
+        instance.description = data.description;
+        instance.logo = data.logo;
+        instance.owner = UserDto.fromData(data.owner);
+        return instance;
+    }
+}
+
 export class DeviceInfoDto {
     deviceId: string;
     deviceType: DeviceType;
@@ -566,16 +817,16 @@ export class LogoutDto {
 }
 
 export interface Page<T> {
-    totalPages: number;
     totalElements: number;
+    totalPages: number;
     size: number;
     content: T[];
     number: number;
     sort: Sort;
-    pageable: Pageable;
     last: boolean;
-    numberOfElements: number;
     first: boolean;
+    numberOfElements: number;
+    pageable: Pageable;
     empty: boolean;
 }
 
@@ -805,6 +1056,39 @@ export class ProjectCommentId {
     }
 }
 
+export class ProjectDto {
+    id: number;
+    name: string;
+    description: string;
+    company: CompanyDto;
+    category: CategoryDto;
+    fixedRate: boolean;
+    fixedTime: boolean;
+    ratePerHour: number;
+    rateCurrency: string;
+    minDuration: number;
+    maxDuration: number;
+
+    static fromData(data: ProjectDto, target?: ProjectDto): ProjectDto {
+        if (!data) {
+            return data;
+        }
+        const instance = target || new ProjectDto();
+        instance.id = data.id;
+        instance.name = data.name;
+        instance.description = data.description;
+        instance.company = CompanyDto.fromData(data.company);
+        instance.category = CategoryDto.fromData(data.category);
+        instance.fixedRate = data.fixedRate;
+        instance.fixedTime = data.fixedTime;
+        instance.ratePerHour = data.ratePerHour;
+        instance.rateCurrency = data.rateCurrency;
+        instance.minDuration = data.minDuration;
+        instance.maxDuration = data.maxDuration;
+        return instance;
+    }
+}
+
 export class RateDto {
     currency: CurrencyType;
     rate: number;
@@ -891,6 +1175,21 @@ export class Role {
         instance.id = data.id;
         instance.roleName = data.roleName;
         instance.users = __getCopyArrayFn(User.fromData)(data.users);
+        return instance;
+    }
+}
+
+export class RoleDto {
+    id: number;
+    roleName: RoleName;
+
+    static fromData(data: RoleDto, target?: RoleDto): RoleDto {
+        if (!data) {
+            return data;
+        }
+        const instance = target || new RoleDto();
+        instance.id = data.id;
+        instance.roleName = data.roleName;
         return instance;
     }
 }
@@ -1083,6 +1382,37 @@ export class TaskCommentId {
     }
 }
 
+export class TaskDto {
+    id: number;
+    name: string;
+    description: string;
+    complexity: number;
+    duration: number;
+    projectId: number;
+    parentTaskId: number;
+    progressStatus: number;
+    statedAt: Date;
+    overdone: boolean;
+
+    static fromData(data: TaskDto, target?: TaskDto): TaskDto {
+        if (!data) {
+            return data;
+        }
+        const instance = target || new TaskDto();
+        instance.id = data.id;
+        instance.name = data.name;
+        instance.description = data.description;
+        instance.complexity = data.complexity;
+        instance.duration = data.duration;
+        instance.projectId = data.projectId;
+        instance.parentTaskId = data.parentTaskId;
+        instance.progressStatus = data.progressStatus;
+        instance.statedAt = data.statedAt;
+        instance.overdone = data.overdone;
+        return instance;
+    }
+}
+
 export class TokenRefreshDto {
     refreshToken: string;
 
@@ -1246,13 +1576,30 @@ export class UserDevice {
     }
 }
 
+export class UserDto {
+    id: number;
+    username: string;
+    profile: BaseProfileDto;
+
+    static fromData(data: UserDto, target?: UserDto): UserDto {
+        if (!data) {
+            return data;
+        }
+        const instance = target || new UserDto();
+        instance.id = data.id;
+        instance.username = data.username;
+        instance.profile = BaseProfileDto.fromData(data.profile);
+        return instance;
+    }
+}
+
 export class UserProject {
     id: UserProjectId;
     user: User;
     project: Project;
     rating: number;
-    userOwner: boolean;
     userCreator: boolean;
+    userOwner: boolean;
 
     static fromData(data: UserProject, target?: UserProject): UserProject {
         if (!data) {
@@ -1263,8 +1610,8 @@ export class UserProject {
         instance.user = User.fromData(data.user);
         instance.project = Project.fromData(data.project);
         instance.rating = data.rating;
-        instance.userOwner = data.userOwner;
         instance.userCreator = data.userCreator;
+        instance.userOwner = data.userOwner;
         return instance;
     }
 }
@@ -1431,7 +1778,47 @@ export class AxiosCategoryClient extends CategoryClient<Axios.AxiosRequestConfig
     }
 }
 
+export class AxiosCompanyClient extends CompanyClient<Axios.AxiosRequestConfig> {
+
+    constructor(baseURL: string, axiosInstance: Axios.AxiosInstance = axios.create()) {
+        axiosInstance.defaults.baseURL = baseURL;
+        super(new AxiosHttpClient(axiosInstance));
+    }
+}
+
 export class AxiosFreelancerClient extends FreelancerClient<Axios.AxiosRequestConfig> {
+
+    constructor(baseURL: string, axiosInstance: Axios.AxiosInstance = axios.create()) {
+        axiosInstance.defaults.baseURL = baseURL;
+        super(new AxiosHttpClient(axiosInstance));
+    }
+}
+
+export class AxiosProjectClient extends ProjectClient<Axios.AxiosRequestConfig> {
+
+    constructor(baseURL: string, axiosInstance: Axios.AxiosInstance = axios.create()) {
+        axiosInstance.defaults.baseURL = baseURL;
+        super(new AxiosHttpClient(axiosInstance));
+    }
+}
+
+export class AxiosRoleClient extends RoleClient<Axios.AxiosRequestConfig> {
+
+    constructor(baseURL: string, axiosInstance: Axios.AxiosInstance = axios.create()) {
+        axiosInstance.defaults.baseURL = baseURL;
+        super(new AxiosHttpClient(axiosInstance));
+    }
+}
+
+export class AxiosTagClient extends TagClient<Axios.AxiosRequestConfig> {
+
+    constructor(baseURL: string, axiosInstance: Axios.AxiosInstance = axios.create()) {
+        axiosInstance.defaults.baseURL = baseURL;
+        super(new AxiosHttpClient(axiosInstance));
+    }
+}
+
+export class AxiosTaskClient extends TaskClient<Axios.AxiosRequestConfig> {
 
     constructor(baseURL: string, axiosInstance: Axios.AxiosInstance = axios.create()) {
         axiosInstance.defaults.baseURL = baseURL;

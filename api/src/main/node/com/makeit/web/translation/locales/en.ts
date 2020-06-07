@@ -57,4 +57,34 @@ export default {
     "com.makeit.web.page.home.how-it-works-item-3-head": "Payment simplified",
     "com.makeit.web.page.home.how-it-works-item-3-text": "Pay hourly or fixed-price and receive invoices through Make IT. Pay for work you authorize.",
     "com.makeit.web.page.home.incoming-projects": "Discover upcoming projects",
+
+    //TaskController
+    "task.should.not.be.null": "Task should not be null",
+    "task.should.not.be.saved.before": "Task should not be saved before",
+    "task.id.should.not.be.null": "Task id should not be null",
+
+    //TagController
+    "tag.should.not.be.null": "Tag should not be null",
+    "tag.should.not.be.saved.before": "Tag should not be saved before",
+    "tag.id.should.not.be.null": "Tag id should not be null",
+
+    //RoleController
+    "role.should.not.be.null": "Role should not be null",
+    "role.should.not.be.saved.before": "Role should not be saved before",
+    "role.id.should.not.be.null": "Role id should not be null",
+
+    //ProjectController
+    "project.should.not.be.null": "Project should not be null",
+    "project.should.not.be.saved.before": "Project should not be saved before",
+    "project.id.should.not.be.null": "Project id should not be null",
+
+    //CompanyController
+    "company.should.not.be.null": "Company should not be null",
+    "company.should.not.be.saved.before": "Company should not be saved before",
+    "company.id.should.not.be.null": "Company id should not be null",
+
+    //CategoryController
+    "category.should.not.be.null": "Category should not be null",
+    "category.should.not.be.saved.before": "Category should not be saved before",
+    "category.id.should.not.be.null": "Category id should not be null",
 };

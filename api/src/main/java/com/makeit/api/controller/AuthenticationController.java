@@ -253,7 +253,7 @@ public class AuthenticationController {
         if (response.isPresent() && response.get().getSuccess()) {
             var headers = new HttpHeaders();
             // todo: set config value;
-            headers.setLocation(URI.create("http://localhost:9090/email-confirmation"));
+            headers.setLocation(URI.create("http://localhost:8080/email-confirmation"));
             return new ResponseEntity<>(headers, HttpStatus.TEMPORARY_REDIRECT);
         }
 
