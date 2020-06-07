@@ -1,48 +1,48 @@
 .home {
-    display        : flex;
-    flex-direction : column;
-    align-items    : center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: start;
-    width          : 100%;
-    min-height     : calc(100vh - 113px);
+    width: 100%;
+    min-height: calc(100vh - 113px);
 
-    border-left     : 1px solid #f0f0f0;
-    border-right    : 1px solid #f0f0f0;
+    border-left: 1px solid #f0f0f0;
+    border-right: 1px solid #f0f0f0;
     background-color: #ffffff;
-    padding         : 0 0 20px;
+    padding: 0 0 20px;
 
     &-working-together {
         background: linear-gradient(340deg, rgb(255, 255, 255) 0%, rgba(255, 251, 254, 0.7) 35%, rgba(254, 249, 242, 0.6) 100%);
         text-align: right;
-        padding   : 20px 20px 0 20px;
+        padding: 20px 20px 0 20px;
 
         h1 {
             color: #9a2c80 !important;
         }
 
         &-title {
-            float     : left;
+            float: left;
             word-break: break-word;
-            width     : 600px;
+            width: 600px;
             text-align: left;
-            z-index   : 100;
+            z-index: 100;
 
-            button>span {
+            button > span {
                 text-transform: uppercase;
             }
         }
 
         svg {
-            z-index   : 99;
+            z-index: 99;
             margin-top: -100px;
         }
     }
 
     &-perspectives {
         background-color: #faf5f9;
-        padding         : 0 20px;
-        margin-top      : -6px;
-        z-index         : 98;
+        padding: 0 20px;
+        margin-top: -6px;
+        z-index: 98;
 
         &-head,
         &-item {
@@ -66,21 +66,21 @@
 
     &-how-it-works {
         background-color: rgba(249, 240, 222, 0.3);
-        padding         : 0 20px;
-        margin-top      : 40px;
-        z-index         : 98;
+        padding: 0 20px;
+        margin-top: 40px;
+        z-index: 98;
 
         &-item,
         &-head {
-            margin      : 20px 0;
-            min-height  : 270px;
+            margin: 20px 0;
+            min-height: 270px;
             padding-left: 20px;
-            text-align  : center;
-            border-left : 3px solid #e5d8b8;
+            text-align: center;
+            border-left: 3px solid #e5d8b8;
 
             .ant-avatar {
                 background-color: rgba(255, 255, 255, 0.95);
-                text-align      : center;
+                text-align: center;
 
                 svg {
                     vertical-align: middle;
@@ -89,19 +89,19 @@
 
             h1 {
                 font-size: 1.3em !important;
-                height   : 45px;
+                height: 45px;
             }
 
             span.ant-typography {
-                text-align     : justify;
+                text-align: justify;
                 text-align-last: left;
-                hyphens        : auto;
-                display        : block;
+                hyphens: auto;
+                display: block;
             }
         }
 
         &-head {
-            border-left : none;
+            border-left: none;
             padding-left: 0;
         }
     }
@@ -111,21 +111,22 @@
     width: 998px;
 
     h1 {
-        padding      : 40px 20px 0 !important;
+        padding: 40px 20px 0 !important;
         margin-bottom: 0 !important;
-        color        : #048298 !important;
+        color: #048298 !important;
     }
 
     .top-developers-carousel {
-        width  : 998px;
+        width: 998px;
         z-index: 99;
 
         .ant-space {
-            padding      : 20px;
+            padding: 20px;
             margin-bottom: 20px;
         }
+
         .no-more-developers {
-            height: 392px;
+            height: 414px;
             display: flex;
             align-items: center;
             text-align: center;
@@ -136,28 +137,27 @@
 
         .top-developer,
         .top-developer-focused {
-            cursor       : text;
-            user-select  : none;
-            border       : 1px solid #d9d9d9;
+            cursor: text;
+            user-select: none;
+            border: 1px solid #d9d9d9;
             border-radius: 6px;
-            z-index      : 100;
+            // z-index      : 100;
 
             &:hover {
                 border: 1px solid #0097ad;
-                box-shadow:
-                    0 3px 6px -4px rgba(0, 151, 173, 0.12),
-                    0 6px 16px 0 rgba(0, 151, 173, 0.08),
-                    0 9px 28px 8px rgba(0, 151, 173, 0.05);
+                box-shadow: 0 3px 6px -4px rgba(0, 151, 173, 0.12),
+                0 6px 16px 0 rgba(0, 151, 173, 0.08),
+                0 9px 28px 8px rgba(0, 151, 173, 0.05);
             }
 
             &-tags {
                 line-height: 30px;
-                margin     : 10px 0;
+                margin: 10px 0;
             }
 
             h4 {
-                color        : #00adc0;
-                font-weight  : 500;
+                color: #00adc0;
+                font-weight: 500;
                 margin-bottom: 0;
             }
 
@@ -167,11 +167,11 @@
 
             .ant-divider {
                 border-color: #d9d9d9;
-                margin      : 0;
+                margin: 0;
             }
 
             .ant-space {
-                padding      : 0;
+                padding: 0;
                 margin-bottom: 20px;
             }
 
@@ -180,11 +180,11 @@
             }
 
             .ant-card-actions {
-                border-bottom-left-radius : 6px;
+                border-bottom-left-radius: 6px;
                 border-bottom-right-radius: 6px;
 
-                li>span,
-                li>span>a:not(.ant-btn) {
+                li > span,
+                li > span > a:not(.ant-btn) {
                     color: #000 !important;
 
                     &:hover {
@@ -194,7 +194,7 @@
             }
         }
 
-        li>button {
+        li > button {
             background-color: #048298 !important;
         }
     }
@@ -204,22 +204,22 @@
     width: 998px;
 
     h1 {
-        padding      : 40px 20px 0 !important;
+        padding: 40px 20px 0 !important;
         margin-bottom: 0 !important;
-        color        : #344a9d !important;
+        color: #344a9d !important;
     }
 
     .incoming-projects-carousel {
-        width  : 998px;
+        width: 998px;
         z-index: 99;
-        height : 510px;
+        height: 510px;
 
         .slick-list {
             padding-bottom: 6px;
         }
 
-        &>.ant-space {
-            padding      : 20px;
+        & > .ant-space {
+            padding: 20px;
             margin-bottom: 20px;
         }
 
@@ -241,33 +241,32 @@
 
         .incoming-project,
         .incoming-project-focused {
-            cursor       : text;
-            user-select  : none;
-            border       : 1px solid #d9d9d9;
+            cursor: text;
+            user-select: none;
+            border: 1px solid #d9d9d9;
             border-radius: 6px;
-            z-index      : 100;
-            height       : 450px;
-            margin       : 20px;
+            z-index: 100;
+            height: 450px;
+            margin: 20px;
 
             &:hover {
                 border: 1px solid #344a9d;
-                box-shadow:
-                    0 3px 6px -4px rgba(23, 102, 192, 0.12),
-                    0 6px 16px 0 rgba(23, 102, 192, 0.08),
-                    0 9px 28px 8px rgba(23, 102, 192, 0.05);
+                box-shadow: 0 3px 6px -4px rgba(23, 102, 192, 0.12),
+                0 6px 16px 0 rgba(23, 102, 192, 0.08),
+                0 9px 28px 8px rgba(23, 102, 192, 0.05);
             }
 
             &-tags {
                 line-height: 30px;
-                margin     : 10px 0;
+                margin: 10px 0;
             }
 
             h4 {
-                color        : #3751ad;
-                font-weight  : 500;
+                color: #3751ad;
+                font-weight: 500;
                 margin-bottom: 0;
-                text-align   : left !important;
-                min-width    : 56px;
+                text-align: left !important;
+                min-width: 56px;
             }
 
             .ant-tag-has-color {
@@ -276,11 +275,11 @@
 
             .ant-divider {
                 border-color: #d9d9d9;
-                margin      : 20px 0 10px;
+                margin: 20px 0 10px;
             }
 
             .ant-space-item .ant-space-item {
-                width     : auto !important;
+                width: auto !important;
                 text-align: justify;
             }
 
@@ -290,6 +289,7 @@
                     text-align: left;
                     padding: 18px 0 0;
                     font-size: 1em;
+
                     span {
                         font-size: 1.3em;
                         color: #4d68cc;
@@ -302,11 +302,11 @@
             }
 
             div.ant-typography {
-                text-align     : justify !important;
+                text-align: justify !important;
                 text-align-last: left;
-                hyphens        : auto;
-                overflow       : hidden;
-                margin         : 0;
+                hyphens: auto;
+                overflow: hidden;
+                margin: 0;
 
                 a {
                     color: #344a9d;
@@ -314,11 +314,11 @@
             }
 
             .ant-card-actions {
-                border-bottom-left-radius : 6px;
+                border-bottom-left-radius: 6px;
                 border-bottom-right-radius: 6px;
 
-                li>span,
-                li>span>a:not(.ant-btn) {
+                li > span,
+                li > span > a:not(.ant-btn) {
                     color: #000 !important;
 
                     &:hover {
@@ -328,7 +328,7 @@
             }
         }
 
-        li>button {
+        li > button {
             background-color: #344a9d !important;
         }
     }

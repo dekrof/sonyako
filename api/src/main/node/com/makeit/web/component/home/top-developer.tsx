@@ -1,9 +1,9 @@
 import * as React from "react";
-import {observable} from "mobx";
-import {observer} from "mobx-react";
-import {WrappedComponentProps, injectIntl} from "react-intl";
-import {Card, Avatar, Rate, Space, Typography, Divider, Tag} from "antd";
-import {CurrencyType, TopDeveloperDto} from "@client/api-client";
+import { observable } from "mobx";
+import { observer } from "mobx-react";
+import { injectIntl, WrappedComponentProps } from "react-intl";
+import { Avatar, Card, Divider, Rate, Space, Tag, Typography } from "antd";
+import { CurrencyType, TopDeveloperDto } from "@client/api-client";
 
 @observer
 class TopDeveloper extends React.Component<WrappedComponentProps & { developer?: TopDeveloperDto }> {
@@ -30,7 +30,7 @@ class TopDeveloper extends React.Component<WrappedComponentProps & { developer?:
                             <Rate defaultValue={3.5} allowHalf style={{fontSize: 14}}/>
                             <Typography.Paragraph>
                                 <h4>{`${rate}${this.getCurrencySign(currency)}`}/hr</h4>
-                                <span>{`${city}, ${countryCode}`}</span>
+                                <span style={{height: 44, display: "inline-block"}}>{`${city}, ${countryCode}`}</span>
                             </Typography.Paragraph>
                         </Space>
                     </Space>
