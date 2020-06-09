@@ -87,4 +87,9 @@ export default {
     "category.should.not.be.null": "Category should not be null",
     "category.should.not.be.saved.before": "Category should not be saved before",
     "category.id.should.not.be.null": "Category id should not be null",
+
+    //CommentController
+    "comment.should.not.be.null": "Comment should not be null",
+    "comment.should.not.be.saved.before": "Comment should not be saved before",
+    "comment.id.should.not.be.null": "Comment id should not be null",
 };

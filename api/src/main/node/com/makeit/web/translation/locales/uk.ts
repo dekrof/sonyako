@@ -86,4 +86,9 @@ export default {
     "category.should.not.be.null": "Відсутня категорія",
     "category.should.not.be.saved.before": "Категорія не повинна бути збережена раніше",
     "category.id.should.not.be.null": "Відсутній ідентифікатор категорії",
+
+    //CommentController
+    "comment.should.not.be.null": "Відсутній коментар",
+    "comment.should.not.be.saved.before": "Коментар не повинен бути збереженим раніше",
+    "comment.id.should.not.be.null": "Відсутній ідентифікатор коментаря",
 };

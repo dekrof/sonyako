@@ -86,5 +86,8 @@ export default {
     "category.should.not.be.saved.before": "Категория не должна быть сохранена ранее",
     "category.id.should.not.be.null": "Идентификатор категории отсутствует",
 
-
+    //CommentController
+    "comment.should.not.be.null": "Отсутствует коментарий",
+    "comment.should.not.be.saved.before": "Коментарий не должен быть сохраненным ранее",
+    "comment.id.should.not.be.null": "Идентификатор коментария отсутствует",
 };
