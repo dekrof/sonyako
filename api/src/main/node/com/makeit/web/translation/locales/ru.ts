@@ -90,4 +90,9 @@ export default {
     "comment.should.not.be.null": "Отсутствует коментарий",
     "comment.should.not.be.saved.before": "Коментарий не должен быть сохраненным ранее",
     "comment.id.should.not.be.null": "Идентификатор коментария отсутствует",
+
+    //SkillController
+    "skill.should.not.be.null": "Отсутствует навык",
+    "skill.should.not.be.saved.before": "Навык не должен быть сохраненным ранее",
+    "skill.id.should.not.be.null": "Идентификатор навыка отсутствует",
 };

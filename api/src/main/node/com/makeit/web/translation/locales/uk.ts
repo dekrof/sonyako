@@ -91,4 +91,9 @@ export default {
     "comment.should.not.be.null": "Відсутній коментар",
     "comment.should.not.be.saved.before": "Коментар не повинен бути збереженим раніше",
     "comment.id.should.not.be.null": "Відсутній ідентифікатор коментаря",
+
+    //SkillController
+    "skill.should.not.be.null": "Відсутня навичка",
+    "skill.should.not.be.saved.before": "Навичка не повинна бути збережена раніше",
+    "skill.id.should.not.be.null": "Відсутній ідентифікатор навички",
 };

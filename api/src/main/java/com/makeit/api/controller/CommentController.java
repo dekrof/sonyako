@@ -30,7 +30,7 @@ import javax.validation.constraints.NotNull;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api/category")
+@RequestMapping("/api/comment")
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class CommentController {
 

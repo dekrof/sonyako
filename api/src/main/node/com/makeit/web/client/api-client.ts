@@ -129,6 +129,52 @@ export class CategoryClient<O> {
     }
 }
 
+export class CommentClient<O> {
+
+    constructor(protected httpClient: HttpClient<O>) {
+    }
+
+    /**
+     * HTTP GET /api/comment
+     * Java method: com.makeit.api.controller.CommentController.getComments
+     */
+    getComments(queryParams?: { page?: number; size?: number; sort?: string; }, options?: O): RestResponse<ApiResponse<Page<CommentDto>>> {
+        return this.httpClient.request({ method: "GET", url: uriEncoding`api/comment`, queryParams: queryParams, options: options });
+    }
+
+    /**
+     * HTTP POST /api/comment
+     * Java method: com.makeit.api.controller.CommentController.saveComment
+     */
+    saveComment(dto: CommentDto, options?: O): RestResponse<ApiResponse<CommentDto>> {
+        return this.httpClient.request({ method: "POST", url: uriEncoding`api/comment`, data: dto, options: options });
+    }
+
+    /**
+     * HTTP PUT /api/comment
+     * Java method: com.makeit.api.controller.CommentController.updateComment
+     */
+    updateComment(dto: CommentDto, options?: O): RestResponse<ApiResponse<CommentDto>> {
+        return this.httpClient.request({ method: "PUT", url: uriEncoding`api/comment`, data: dto, options: options });
+    }
+
+    /**
+     * HTTP DELETE /api/comment/{id}
+     * Java method: com.makeit.api.controller.CommentController.deleteComment
+     */
+    deleteComment(id: number, options?: O): RestResponse<ApiResponse<CommentDto>> {
+        return this.httpClient.request({ method: "DELETE", url: uriEncoding`api/comment/${id}`, options: options });
+    }
+
+    /**
+     * HTTP GET /api/comment/{id}
+     * Java method: com.makeit.api.controller.CommentController.getComment
+     */
+    getComment(id: number, options?: O): RestResponse<ApiResponse<CommentDto>> {
+        return this.httpClient.request({ method: "GET", url: uriEncoding`api/comment/${id}`, options: options });
+    }
+}
+
 export class CompanyClient<O> {
 
     constructor(protected httpClient: HttpClient<O>) {
@@ -278,6 +324,52 @@ export class RoleClient<O> {
      */
     getRole(id: number, options?: O): RestResponse<ApiResponse<RoleDto>> {
         return this.httpClient.request({ method: "GET", url: uriEncoding`api/role/${id}`, options: options });
+    }
+}
+
+export class SkillClient<O> {
+
+    constructor(protected httpClient: HttpClient<O>) {
+    }
+
+    /**
+     * HTTP GET /api/skill
+     * Java method: com.makeit.api.controller.SkillController.getSkills
+     */
+    getSkills(queryParams?: { page?: number; size?: number; sort?: string; }, options?: O): RestResponse<ApiResponse<Page<SkillDto>>> {
+        return this.httpClient.request({ method: "GET", url: uriEncoding`api/skill`, queryParams: queryParams, options: options });
+    }
+
+    /**
+     * HTTP POST /api/skill
+     * Java method: com.makeit.api.controller.SkillController.saveSkill
+     */
+    saveSkill(dto: SkillDto, options?: O): RestResponse<ApiResponse<SkillDto>> {
+        return this.httpClient.request({ method: "POST", url: uriEncoding`api/skill`, data: dto, options: options });
+    }
+
+    /**
+     * HTTP PUT /api/skill
+     * Java method: com.makeit.api.controller.SkillController.updateSkill
+     */
+    updateSkill(dto: SkillDto, options?: O): RestResponse<ApiResponse<SkillDto>> {
+        return this.httpClient.request({ method: "PUT", url: uriEncoding`api/skill`, data: dto, options: options });
+    }
+
+    /**
+     * HTTP DELETE /api/skill/{id}
+     * Java method: com.makeit.api.controller.SkillController.deleteSkill
+     */
+    deleteSkill(id: number, options?: O): RestResponse<ApiResponse<SkillDto>> {
+        return this.httpClient.request({ method: "DELETE", url: uriEncoding`api/skill/${id}`, options: options });
+    }
+
+    /**
+     * HTTP GET /api/skill/{id}
+     * Java method: com.makeit.api.controller.SkillController.getSkill
+     */
+    getSkill(id: number, options?: O): RestResponse<ApiResponse<SkillDto>> {
+        return this.httpClient.request({ method: "GET", url: uriEncoding`api/skill/${id}`, options: options });
     }
 }
 
@@ -602,6 +694,27 @@ export class Comment {
     }
 }
 
+export class CommentDto {
+    id: number;
+    commentator: UserDto;
+    title: string;
+    description: string;
+    parent: CommentDto;
+
+    static fromData(data: CommentDto, target?: CommentDto): CommentDto {
+        if (!data) {
+            return data;
+        }
+        const instance = target || new CommentDto();
+        instance.id = data.id;
+        instance.commentator = UserDto.fromData(data.commentator);
+        instance.title = data.title;
+        instance.description = data.description;
+        instance.parent = CommentDto.fromData(data.parent);
+        return instance;
+    }
+}
+
 export class Company {
     createdAt: Date;
     updatedAt: Date;
@@ -817,26 +930,26 @@ export class LogoutDto {
 }
 
 export interface Page<T> {
-    totalElements: number;
     totalPages: number;
+    totalElements: number;
     size: number;
     content: T[];
     number: number;
     sort: Sort;
-    last: boolean;
     first: boolean;
-    numberOfElements: number;
     pageable: Pageable;
+    numberOfElements: number;
+    last: boolean;
     empty: boolean;
 }
 
 export interface Pageable {
     offset: number;
     sort: Sort;
-    pageSize: number;
-    paged: boolean;
     unpaged: boolean;
     pageNumber: number;
+    pageSize: number;
+    paged: boolean;
 }
 
 /**
@@ -1213,6 +1326,23 @@ export class Skill {
     }
 }
 
+export class SkillDto {
+    id: number;
+    name: string;
+    description: string;
+
+    static fromData(data: SkillDto, target?: SkillDto): SkillDto {
+        if (!data) {
+            return data;
+        }
+        const instance = target || new SkillDto();
+        instance.id = data.id;
+        instance.name = data.name;
+        instance.description = data.description;
+        return instance;
+    }
+}
+
 export class SkillRating {
     id: SkillRatingId;
     user: User;
@@ -1248,8 +1378,8 @@ export class SkillRatingId {
 }
 
 export class Sort {
-    sorted: boolean;
     unsorted: boolean;
+    sorted: boolean;
     empty: boolean;
 
     static fromData(data: Sort, target?: Sort): Sort {
@@ -1257,8 +1387,8 @@ export class Sort {
             return data;
         }
         const instance = target || new Sort();
-        instance.sorted = data.sorted;
         instance.unsorted = data.unsorted;
+        instance.sorted = data.sorted;
         instance.empty = data.empty;
         return instance;
     }
@@ -1778,6 +1908,14 @@ export class AxiosCategoryClient extends CategoryClient<Axios.AxiosRequestConfig
     }
 }
 
+export class AxiosCommentClient extends CommentClient<Axios.AxiosRequestConfig> {
+
+    constructor(baseURL: string, axiosInstance: Axios.AxiosInstance = axios.create()) {
+        axiosInstance.defaults.baseURL = baseURL;
+        super(new AxiosHttpClient(axiosInstance));
+    }
+}
+
 export class AxiosCompanyClient extends CompanyClient<Axios.AxiosRequestConfig> {
 
     constructor(baseURL: string, axiosInstance: Axios.AxiosInstance = axios.create()) {
@@ -1803,6 +1941,14 @@ export class AxiosProjectClient extends ProjectClient<Axios.AxiosRequestConfig> 
 }
 
 export class AxiosRoleClient extends RoleClient<Axios.AxiosRequestConfig> {
+
+    constructor(baseURL: string, axiosInstance: Axios.AxiosInstance = axios.create()) {
+        axiosInstance.defaults.baseURL = baseURL;
+        super(new AxiosHttpClient(axiosInstance));
+    }
+}
+
+export class AxiosSkillClient extends SkillClient<Axios.AxiosRequestConfig> {
 
     constructor(baseURL: string, axiosInstance: Axios.AxiosInstance = axios.create()) {
         axiosInstance.defaults.baseURL = baseURL;

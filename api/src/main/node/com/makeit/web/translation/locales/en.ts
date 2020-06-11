@@ -92,4 +92,9 @@ export default {
     "comment.should.not.be.null": "Comment should not be null",
     "comment.should.not.be.saved.before": "Comment should not be saved before",
     "comment.id.should.not.be.null": "Comment id should not be null",
+
+    //SkillController
+    "skill.should.not.be.null": "Skill should not be null",
+    "skill.should.not.be.saved.before": "Skill should not be saved before",
+    "skill.id.should.not.be.null": "Skill id should not be null",
 };
