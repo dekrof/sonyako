@@ -936,19 +936,19 @@ export interface Page<T> {
     content: T[];
     number: number;
     sort: Sort;
+    last: boolean;
     first: boolean;
     pageable: Pageable;
     numberOfElements: number;
-    last: boolean;
     empty: boolean;
 }
 
 export interface Pageable {
     offset: number;
     sort: Sort;
+    pageSize: number;
     unpaged: boolean;
     pageNumber: number;
-    pageSize: number;
     paged: boolean;
 }
 
@@ -1378,8 +1378,8 @@ export class SkillRatingId {
 }
 
 export class Sort {
-    unsorted: boolean;
     sorted: boolean;
+    unsorted: boolean;
     empty: boolean;
 
     static fromData(data: Sort, target?: Sort): Sort {
@@ -1387,8 +1387,8 @@ export class Sort {
             return data;
         }
         const instance = target || new Sort();
-        instance.unsorted = data.unsorted;
         instance.sorted = data.sorted;
+        instance.unsorted = data.unsorted;
         instance.empty = data.empty;
         return instance;
     }
@@ -1728,8 +1728,8 @@ export class UserProject {
     user: User;
     project: Project;
     rating: number;
-    userCreator: boolean;
     userOwner: boolean;
+    userCreator: boolean;
 
     static fromData(data: UserProject, target?: UserProject): UserProject {
         if (!data) {
@@ -1740,8 +1740,8 @@ export class UserProject {
         instance.user = User.fromData(data.user);
         instance.project = Project.fromData(data.project);
         instance.rating = data.rating;
-        instance.userCreator = data.userCreator;
         instance.userOwner = data.userOwner;
+        instance.userCreator = data.userCreator;
         return instance;
     }
 }
