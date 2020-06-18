@@ -257,6 +257,22 @@ export class FreelancerClient<O> {
     getTopNineFreelancers(options?: O): RestResponse<TopDeveloperDto[]> {
         return this.httpClient.request({ method: "GET", url: uriEncoding`api/freelancer/get/top/nine/freelancers`, options: options });
     }
+
+    /**
+     * HTTP GET /api/freelancer/of/category/{categoryId}
+     * Java method: com.makeit.api.controller.FreelancerController.getFreelancers
+     */
+    getFreelancers(categoryId: number, queryParams?: { page?: number; size?: number; sort?: string; }, options?: O): RestResponse<ApiResponse<Page<TopDeveloperDto>>> {
+        return this.httpClient.request({ method: "GET", url: uriEncoding`api/freelancer/of/category/${categoryId}`, queryParams: queryParams, options: options });
+    }
+
+    /**
+     * HTTP GET /api/freelancer/{id}
+     * Java method: com.makeit.api.controller.FreelancerController.getFreelancer
+     */
+    getFreelancer(id: string, options?: O): RestResponse<ApiResponse<UserDto>> {
+        return this.httpClient.request({ method: "GET", url: uriEncoding`api/freelancer/${id}`, options: options });
+    }
 }
 
 export class ProjectClient<O> {

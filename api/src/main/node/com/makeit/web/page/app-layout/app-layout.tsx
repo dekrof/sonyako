@@ -16,10 +16,18 @@ import { JwtAuthenticationDto, RoleName } from "@client/api-client";
 import { AppModel, AppModule, FooterTarget, Icons, LocaleProvider, LocaleSwitcher, TitleTarget, TopCategoriesMenu } from "@page/app-layout";
 import { context, resolve } from "@page/decorator";
 
-import { EmailConfirmation, EmailVerification, HomePage, ProjectCreate, ProjectView, SignInPage, SignUpPage } from "@page/pages";
+import {
+    CategoryList,
+    EmailConfirmation,
+    EmailVerification,
+    HomePage,
+    ProjectCreate,
+    ProjectView,
+    SignInPage,
+    SignUpPage
+} from "@page/pages";
 
 import "@css/theme.less";
-import { ProjectList } from "@page/project-list";
 
 const store = {
     locale: new LocaleStore("uk", {uk, en, ru})
@@ -88,7 +96,7 @@ export default class AppLayout extends React.Component {
                                     <Route path={["/email-verification"]} exact component={EmailVerification}/>
                                     <Route path={["/project/create"]} exact component={ProjectCreate}/>
                                     <Route path={["/project/view/:id"]} component={ProjectView}/>
-                                    <Route path={["/category/:categoryUrl"]} component={ProjectList}/>
+                                    <Route path={["/category/:categoryUrl"]} component={CategoryList}/>
                                 </Switch>
                                 <Drawer
                                     width={520}
