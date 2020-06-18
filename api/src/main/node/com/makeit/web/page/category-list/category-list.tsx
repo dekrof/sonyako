@@ -106,6 +106,7 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
                                     projects
                                 }
                                 pagination={{
+                                    position: "both",
                                     defaultCurrent: this.page,
                                     defaultPageSize: this.size,
                                     showSizeChanger: true,
@@ -126,6 +127,7 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
                                     freelancers
                                 }
                                 pagination={{
+                                    position: "both",
                                     defaultCurrent: this.page,
                                     defaultPageSize: this.size,
                                     showSizeChanger: true,
