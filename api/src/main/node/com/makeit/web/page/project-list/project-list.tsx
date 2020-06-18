@@ -109,6 +109,11 @@ class ProjectList extends React.Component<WrappedComponentProps & RouteComponent
     }
 
     private renderProject(project: ProjectDto, index: number) {
+        const matches = project.description.match(/<[p][^>]*>(.+?)<\/[p]>/gm);
+        const description = matches.length > 1
+            ? [matches[1], matches[2] || "", matches[3] || "" ].join("<div style='clear: both'></div>")
+            : project.description;
+
         const payment = project.fixedRate
             ? "Fixed Rate"
             : "Hourly";
@@ -121,7 +126,7 @@ class ProjectList extends React.Component<WrappedComponentProps & RouteComponent
                         width={60}
                         height={60}
                         style={{ padding: 6, borderRadius: 2, border: "1px solid #f0f0f0", background: "#fff" }} />} />
-                <p dangerouslySetInnerHTML={{ __html: project.description }}></p>
+                <p dangerouslySetInnerHTML={{ __html: description }}></p>
                 <p>
                     <strong>Proposals - {project.proposals} person(s). </strong>
                     <span> Rate per Hour - {project.ratePerHour}{project.rateCurrency} </span>
