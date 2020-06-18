@@ -175,6 +175,22 @@ export class CommentClient<O> {
     }
 
     /**
+     * HTTP GET /api/comment/of/user/{id}
+     * Java method: com.makeit.api.controller.CommentController.getUserComments
+     */
+    getUserComments(id: number, queryParams?: { page?: number; size?: number; sort?: string; }, options?: O): RestResponse<ApiResponse<Page<CommentDto>>> {
+        return this.httpClient.request({ method: "GET", url: uriEncoding`api/comment/of/user/${id}`, queryParams: queryParams, options: options });
+    }
+
+    /**
+     * HTTP DELETE /api/comment/of/user/{userId}/{id}
+     * Java method: com.makeit.api.controller.CommentController.deleteUserComment
+     */
+    deleteUserComment(userId: number, id: number, options?: O): RestResponse<ApiResponse<CommentDto>> {
+        return this.httpClient.request({ method: "DELETE", url: uriEncoding`api/comment/of/user/${userId}/${id}`, options: options });
+    }
+
+    /**
      * HTTP GET /api/comment/{id}
      * Java method: com.makeit.api.controller.CommentController.getComment
      */
@@ -906,8 +922,8 @@ export class LogoutDto {
 }
 
 export interface Page<T> {
-    totalElements: number;
     totalPages: number;
+    totalElements: number;
     last: boolean;
     size: number;
     content: T[];
@@ -922,9 +938,9 @@ export interface Page<T> {
 export interface Pageable {
     offset: number;
     sort: Sort;
+    pageNumber: number;
     paged: boolean;
     unpaged: boolean;
-    pageNumber: number;
     pageSize: number;
 }
 
@@ -1564,6 +1580,7 @@ export class TopProjectDto {
     id: number;
     name: string;
     logo: string;
+    owner: UserDto;
     description: string;
     address: AddressDto;
     ratePerHour: number;
@@ -1581,6 +1598,7 @@ export class TopProjectDto {
         instance.id = data.id;
         instance.name = data.name;
         instance.logo = data.logo;
+        instance.owner = UserDto.fromData(data.owner);
         instance.description = data.description;
         instance.address = AddressDto.fromData(data.address);
         instance.ratePerHour = data.ratePerHour;
@@ -1660,7 +1678,7 @@ export class UserComment {
 }
 
 export class UserCommentId {
-    taskId: number;
+    userId: number;
     commentId: number;
 
     static fromData(data: UserCommentId, target?: UserCommentId): UserCommentId {
@@ -1668,7 +1686,7 @@ export class UserCommentId {
             return data;
         }
         const instance = target || new UserCommentId();
-        instance.taskId = data.taskId;
+        instance.userId = data.userId;
         instance.commentId = data.commentId;
         return instance;
     }

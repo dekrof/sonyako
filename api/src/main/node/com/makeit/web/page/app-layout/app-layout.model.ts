@@ -27,6 +27,9 @@ export class AppModel {
     @observable
     public categories: CategoryDto[] = [];
 
+    @observable
+    public jwtData: any;
+
     constructor(
         @inject(JwtHelper) public helper: JwtHelper,
         @inject(AxiosUserClient) private userClient: AxiosUserClient,
@@ -43,6 +46,7 @@ export class AppModel {
         observe(this, "jwt", (ev: IValueWillChange<JwtAuthenticationDto>) => {
             if (ev.newValue) {
                 console.log("new JWT received");
+                this.jwtData = this.helper.decodeToken(ev.newValue.accessToken);
             }
         });
     }

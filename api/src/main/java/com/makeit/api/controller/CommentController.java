@@ -101,6 +101,26 @@ public class CommentController {
         }
     }
 
+    @DeleteMapping("/of/user/{userId}/{id}")
+    @RolesAllowed({"ROLE_OWNER", "ROLE_FREELANCER", "ROLE_ADMIN"})
+    public ApiResponse<CommentDto> deleteUserComment(@PathVariable("userId") Long userId, @PathVariable("id") Long id) {
+        if (id == null) {
+            return ApiResponse.<CommentDto>error()
+                .cause("comment.id.should.not.be.null")
+                .build();
+        }
+        try {
+            return ApiResponse.<CommentDto>data()
+                .data(service.deleteUserComment(userId, id))
+                .build();
+        } catch (Exception ex) {
+            LOGGER.error("Unable to delete comment", ex);
+            return ApiResponse.<CommentDto>error()
+                .cause(ex.getMessage())
+                .build();
+        }
+    }
+
     @GetMapping("/{id}")
     @RolesAllowed({"ROLE_OWNER", "ROLE_FREELANCER", "ROLE_ADMIN"})
     public ApiResponse<CommentDto> getComment(@PathVariable("id") Long id) {
@@ -141,6 +161,20 @@ public class CommentController {
         try {
             return ApiResponse.<Page<CommentDto>>data()
                 .data(service.getProjectComments(pageable, id))
+                .build();
+        } catch (Exception ex) {
+            LOGGER.error("Unable to get comments", ex);
+            return ApiResponse.<Page<CommentDto>>data()
+                .data(Page.empty())
+                .build();
+        }
+    }
+
+    @GetMapping("/of/user/{id}")
+    public ApiResponse<Page<CommentDto>> getUserComments(@NotNull Pageable pageable, @PathVariable("id") Long id) {
+        try {
+            return ApiResponse.<Page<CommentDto>>data()
+                .data(service.getUserComments(pageable, id))
                 .build();
         } catch (Exception ex) {
             LOGGER.error("Unable to get comments", ex);

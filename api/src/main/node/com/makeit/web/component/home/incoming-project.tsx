@@ -1,14 +1,21 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
-import { observer } from "mobx-react";
-import Time from "react-time";
-
 import { WrappedComponentProps, injectIntl } from "react-intl";
+import { Link } from "react-router-dom";
+import { resolve } from "inversify-react";
+import { observer } from "mobx-react";
+
+import Time from "react-time";
 import { Card, Avatar, Space, Typography, Divider, Tag } from "antd";
-import { TopProjectDto } from '../../client/api-client';
-import { CurrencyType } from '@client/api-client';
+
+import { CurrencyType, TopProjectDto } from '@client/api-client';
+import { HomeModel } from "@page/home";
+import { toJS } from 'mobx';
+
 @observer
 class IncomingProject extends React.Component<WrappedComponentProps & { project?: TopProjectDto }> {
+
+    @resolve
+    private model: HomeModel;
 
     public render() {
         const { project } = this.props;
@@ -68,9 +75,13 @@ class IncomingProject extends React.Component<WrappedComponentProps & { project?
     private renderProjectAction(project: TopProjectDto) {
         return [
             "Get Job",
-            "Contact Owner",
+            <span key="contact-owner" onClick={() => this.openContactDrawer(project)}>Contact Owner</span>,
             <span key="view-project"><Link to={`/project/view/${project.id}`}>View Project</Link></span>
         ]
+    }
+    private openContactDrawer(project: TopProjectDto) {
+        this.model.activeProject = project;
+        this.model.isCommentDrawerOpen = true;
     }
 
     private getCurrencySign(currency: string): string {

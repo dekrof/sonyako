@@ -1,11 +1,15 @@
-import { action, observable, autorun } from "mobx";
+import { action, observable, autorun, comparer, computed, toJS } from 'mobx';
 import { inject, injectable } from "inversify";
 
-import { AxiosFreelancerClient, TopDeveloperDto, AxiosProjectClient, TopProjectDto } from '@client/api-client';
+import { CommentDto, AxiosCommentClient, AxiosFreelancerClient, TopDeveloperDto, AxiosProjectClient, TopProjectDto, CommentType } from '@client/api-client';
 import { AppModel } from "@page/app-layout";
+import { notification } from 'antd';
 
 @injectable()
 export class HomeModel {
+
+    @observable
+    public isCommentDrawerOpen: boolean = false;
 
     @observable
     public topDevelopers: TopDeveloperDto[] = [];
@@ -13,10 +17,14 @@ export class HomeModel {
     @observable
     public topProjects: TopProjectDto[] = [];
 
+    @observable
+    public activeProject: TopProjectDto;
+
     constructor(
         @inject(AppModel) private appModel: AppModel,
         @inject(AxiosFreelancerClient) private freelancerClient: AxiosFreelancerClient,
-        @inject(AxiosProjectClient) private projectClient: AxiosProjectClient
+        @inject(AxiosProjectClient) private projectClient: AxiosProjectClient,
+        @inject(AxiosCommentClient) private commentClient: AxiosCommentClient
     ) {
         autorun(reaction => {
             this.getTopDevelopers().then(() => reaction.dispose());
@@ -25,6 +33,11 @@ export class HomeModel {
         autorun(reaction => {
             this.getTopProjects().then(() => reaction.dispose());
         });
+    }
+
+    @computed
+    public get jwtData(): any {
+        return this.appModel.jwtData;
     }
 
     @action
@@ -47,5 +60,23 @@ export class HomeModel {
             console.error(ex.data);
             this.topProjects = [];
         }
+    }
+
+    @action
+    public async sendMessageToOwner(description: string): Promise<CommentDto> {
+        const author = Number(this.appModel.jwtData.sub);
+        const {tokenType, accessToken} = this.appModel.jwt;
+
+        const comment: any = {
+            belongTo: this.activeProject.owner.id,
+            commentator: {id: author} as any,
+            description: description,
+            type: CommentType.USER,
+            title: ""
+        };
+
+        return await this.commentClient.saveComment(comment, {headers: {Authorization: `${tokenType} ${accessToken}`}})
+            .then(value => value.data)
+            .then(value => value.data);
     }
 }

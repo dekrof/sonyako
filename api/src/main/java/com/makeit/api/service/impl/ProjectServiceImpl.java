@@ -134,6 +134,7 @@ public class ProjectServiceImpl implements ProjectService {
             return objectMapper.convertValue(project, TopProjectDto.class)
                 .toBuilder()
                 .address(objectMapper.convertValue(user.getProfile().getAddress(), AddressDto.class))
+                .owner(objectMapper.convertValue(user, UserDto.class))
                 .build();
         };
 

@@ -25,7 +25,11 @@ class TopDeveloper extends React.Component<WrappedComponentProps & { developer?:
                         viewProfileAction
                     ]}>
                     <Space direction="horizontal" align="start" size={20}>
-                        <Avatar size={120} shape="square" src={developer?.avatarUrl}/>
+                        <Avatar
+                            size={120}
+                            shape="square"
+                            style={{border: "1px solid #d9d9d9", borderRadius: 3}}
+                            src={developer?.avatarUrl}/>
                         <Space direction="vertical" size={20}>
                             <Rate defaultValue={3.5} allowHalf style={{fontSize: 14}}/>
                             <Typography.Paragraph>

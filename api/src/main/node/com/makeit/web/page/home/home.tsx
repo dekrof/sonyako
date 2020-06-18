@@ -2,21 +2,28 @@ import * as React from "react";
 import { WrappedComponentProps, FormattedMessage, injectIntl } from "react-intl";
 import { RouteComponentProps } from "react-router";
 
-import { resolve } from "inversify-react";
-import { page, observer, context } from '@page/decorator';
+import { page, observer, context, resolve, observable } from '@page/decorator';
 import { FormattedHTMLMessage } from "@page/app-layout/lang";
 import { HomeModule, Pictures, HomeModel } from '@page/home';
 import { Title, Footer } from "@page/app-layout";
 
-import { Typography, Space, Button, Avatar } from "antd";
+import { Typography, Space, Button, Avatar, Drawer, Comment, notification } from 'antd';
 import { TopDeveloperCarousel, IncomingProjectCarousel } from "@component/home";
 
 import "@page/home/home.less";
+import TextArea from "antd/lib/input/TextArea";
 
 @page(false) @context(HomeModule) @observer
 class HomePage extends React.Component<WrappedComponentProps & RouteComponentProps> {
 
+    @resolve
+    private model: HomeModel;
+
+    @observable
+    private textMessage: string;
+
     public render() {
+        const {activeProject} = this.model;
         return (
             <>
                 <Title>
@@ -97,8 +104,50 @@ class HomePage extends React.Component<WrappedComponentProps & RouteComponentPro
                     </article>
                 </section>
                 <Footer />
+                <Drawer
+                    closable={false}
+                    placement="top"
+                    className="contact-owner-drawer"
+                    visible={this.model.isCommentDrawerOpen}
+                    footer={this.renderDrawerFooter()}>
+                        <Comment
+                            avatar={<img src={this.model.jwtData?.avatarUrl} />}
+                            author={`${this.model.jwtData?.name} ${this.model.jwtData?.surname}`}
+                            content={<>
+                                <TextArea rows={4} onChange={(ev) => this.textMessage = ev.target.value}/>
+                                <p><sub>You writing to {activeProject?.owner.profile.name} {activeProject?.owner.profile.surname}</sub></p>
+                            </>}
+                        />
+                </Drawer>
             </>
         );
+    }
+
+    private renderDrawerFooter() {
+        return (
+            <>
+                <Button onClick={() => this.sendMessageToOwner()}>Send Message</Button>
+                <a onClick={() => this.closeDrawer()}>Cancel and close</a>
+            </>
+        );
+    }
+
+    private sendMessageToOwner(): void {
+        if (!this.model.jwtData) {
+            notification.warn({
+                message: "Sign-in required",
+                description: <span>Only authorized users can leave a comment. Please, <a href="/sign-in">sign-in</a> to continue.</span>,
+            });
+        } else {
+            this.model.sendMessageToOwner(this.textMessage).then(() => {
+                this.textMessage = null;
+                this.closeDrawer();
+            });
+        }
+    }
+
+    private closeDrawer() {
+        this.model.isCommentDrawerOpen = false;
     }
 }
 

@@ -17,6 +17,7 @@ public class TopProjectDto {
     private Long id;
     private String name;
     private String logo;
+    private UserDto owner;
     private String description;
     private AddressDto address;
     private double ratePerHour;

@@ -14,6 +14,8 @@ public interface CommentService {
 
     CommentDto saveOrUpdateComment(CommentDto dto);
 
+    CommentDto deleteUserComment(Long projectId, Long id);
+
     CommentDto deleteComment(CommentType commentType, Long entityId, Long id);
 
     CommentDto getComment(Long id);
@@ -23,4 +25,6 @@ public interface CommentService {
     CommentDto deleteProjectComment(Long projectId, Long id);
 
     Page<CommentDto> getProjectComments(Pageable pageable, Long projectId);
+
+    Page<CommentDto> getUserComments(Pageable pageable, Long userId);
 }

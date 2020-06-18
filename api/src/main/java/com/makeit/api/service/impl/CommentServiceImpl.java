@@ -7,8 +7,11 @@ import com.makeit.dao.model.Comment;
 import com.makeit.dao.model.CommentType;
 import com.makeit.dao.model.ProjectComment;
 import com.makeit.dao.model.ProjectCommentId;
+import com.makeit.dao.model.UserComment;
+import com.makeit.dao.model.UserCommentId;
 import com.makeit.dao.repository.CommentRepository;
 import com.makeit.dao.repository.ProjectCommentRepository;
+import com.makeit.dao.repository.UserCommentRepository;
 import lombok.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +34,7 @@ import java.util.function.UnaryOperator;
 public class CommentServiceImpl implements CommentService {
 
     private final ProjectCommentRepository projectCommentRepository;
+    private final UserCommentRepository userCommentRepository;
     private final CommentRepository repository;
     private final ObjectMapper objectMapper;
 
@@ -60,6 +64,16 @@ public class CommentServiceImpl implements CommentService {
             projectCommentRepository.save(projectComment);
         }
 
+        if (dto.getType() == CommentType.USER) {
+            var projectComment = UserComment.builder()
+                .id(UserCommentId.builder()
+                    .commentId(saved.getId())
+                    .userId(dto.getBelongTo())
+                    .build())
+                .build();
+            userCommentRepository.save(projectComment);
+        }
+
         return saved.toBuilder()
             .belongTo(dto.getBelongTo())
             .build();
@@ -68,6 +82,11 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public CommentDto deleteProjectComment(Long projectId, Long id) {
         return deleteComment(CommentType.PROJECT, projectId, id);
+    }
+
+    @Override
+    public CommentDto deleteUserComment(Long projectId, Long id) {
+        return deleteComment(CommentType.USER, projectId, id);
     }
 
     @Override
@@ -81,6 +100,15 @@ public class CommentServiceImpl implements CommentService {
                 .build();
 
             projectCommentRepository.deleteById(id);
+        }
+
+        if (saved.isPresent() && commentType == CommentType.USER) {
+            var id = UserCommentId.builder()
+                .commentId(commentId)
+                .userId(entityId)
+                .build();
+
+            userCommentRepository.deleteById(id);
         }
 
         UnaryOperator<Comment> mapper = comment -> {
@@ -109,6 +137,13 @@ public class CommentServiceImpl implements CommentService {
     public Page<CommentDto> getProjectComments(Pageable pageable, Long projectId) {
         return projectCommentRepository.findById_ProjectId(projectId, pageable)
             .map(ProjectComment::getComment)
+            .map(toDto);
+    }
+
+    @Override
+    public Page<CommentDto> getUserComments(Pageable pageable, Long userId) {
+        return userCommentRepository.findById_UserId(userId, pageable)
+            .map(UserComment::getComment)
             .map(toDto);
     }
 }
