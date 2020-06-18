@@ -129,8 +129,6 @@ public class JwtTokenProvider {
         } catch (IllegalArgumentException ex) {
             LOGGER.error("JWT claims string is empty", ex);
             throw new InvalidTokenRequestException(TOKEN_TYPE, token, "Illegal argument token");
-        } finally {
-            return false;
         }
     }
 }

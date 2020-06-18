@@ -275,18 +275,14 @@ class UserPanel extends React.Component<WrappedComponentProps> {
         </>;
     }
 
+    @bind
     private handleChange(info) {
-        if (info.file.status === "uploading") {
-            this.model.loading = true;
-            return;
-        }
-
-        if (info.file.status === "done") {
-            getBase64(info.file.originFileObj, avatarUrl => {
-                this.model.avatarUrl = avatarUrl;
-                this.model.loading = false;
-            });
-        }
+        this.model.loading = true;
+        getBase64(info.file.originFileObj, avatarUrl => {
+            this.model.avatarUrl = avatarUrl;
+            this.model.loading = false;
+        });
+        return void 0;
     }
 
     @bind

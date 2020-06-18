@@ -1,54 +1,45 @@
 @import "../../asset/css/antd-overrides";
 
-@signup-section-width               : 998px;
+@signup-section-width: 998px;
 @signup-submit-button-wrapper-height: 73px;
 
 .signup {
-    z-index        : 99;
-    display        : flex;
-    align-items    : center;
+    z-index: 99;
+    display: flex;
+    align-items: center;
     justify-content: center;
-    margin-bottom  : -@signup-submit-button-wrapper-height;
+    margin-bottom: -@signup-submit-button-wrapper-height;
 
     &-submit-button-wrapper {
-        position   : fixed;
-        bottom     : 0;
-        height     : @signup-submit-button-wrapper-height;
-        z-index    : 100;
-        margin-left: -51px;
-
-        @supports not (backdrop-filter: none) {
-            &-content {
-                background: rgba(255, 255, 255, 0.9);
-            }
-        }
+        align-self: center;
+        height: @signup-submit-button-wrapper-height;
+        width: @signup-section-width;
+        margin: auto;
 
         &-content {
-            height      : 100%;
-            border-top  : 1px solid #f0f0f0;
-            border-left : 1px solid #f0f0f0;
+            height: 100%;
+            border-top: 1px solid #f0f0f0;
+            border-left: 1px solid #f0f0f0;
             border-right: 1px solid #f0f0f0;
 
-            width                  : calc(@signup-section-width - 2px - 102px);
-            background-color       : rgba(255, 255, 255, .15);
-            -webkit-backdrop-filter: blur(10px);
-            backdrop-filter        : blur(10px);
-            text-align             : center;
+            width: @signup-section-width;
+            background-color: #fff;
+            text-align: center;
 
             padding: 0 20px;
 
             &::before {
-                display : block;
-                content : "";
+                display: block;
+                content: "";
                 position: absolute;
-                left    : 0;
-                top     : -6px;
-                height  : 6px;
-                width   : calc(@signup-section-width - 4px - 102px);
+                left: 0;
+                top: -6px;
+                height: 6px;
+                width: calc(@signup-section-width - 4px - 102px);
                 background: linear-gradient(to top,
-                        rgba(73, 57, 76, 0.15) 0%,
-                        rgba(73, 57, 76, 0.04) 40%,
-                        rgba(0, 0, 0, 0)) 100%;
+                rgba(73, 57, 76, 0.15) 0%,
+                rgba(73, 57, 76, 0.04) 40%,
+                rgba(0, 0, 0, 0)) 100%;
             }
 
             .ant-space {
@@ -61,25 +52,34 @@
         }
     }
 
-    @supports (-moz-appearance:none) {
-        &-submit-button-wrapper {
-            margin-left: -102px;
-        }
+    .ant-tabs-right > .ant-tabs-content-holder,
+    .ant-tabs-right > div > .ant-tabs-content-holder {
+        margin-right: 0;
+    }
+
+    .ant-tabs-right > .ant-tabs-content-holder > .ant-tabs-content > .ant-tabs-tabpane,
+    .ant-tabs-right > div > .ant-tabs-content-holder > .ant-tabs-content > .ant-tabs-tabpane {
+        padding-right: 0;
+        overflow-y: auto;
+        height: calc(100vh - @signup-submit-button-wrapper-height - 115px);
+    }
+
+    .ant-tabs-content {
+        width: 893px;
     }
 
     &-stack-container {
         background-color: #fdfdfd;
-        border-left     : 1px solid #f0f0f0;
-        border-right    : 1px solid #f0f0f0;
-        width           : 100%;
-        max-width       : 70vw;
-        height          : auto;
-        min-height      : calc(100vh - 113px);
+        border-left: 1px solid #f0f0f0;
+        border-right: 1px solid #f0f0f0;
+        overflow: hidden;
+        width: 100%;
+        max-width: 70vw;
+        height: calc(100vh - 189px);
 
         &-tabs {
-            width     : 100%;
-            height    : auto;
-            min-height: calc(100vh - 113px);
+            width: 100%;
+            height: auto;
 
             div[role=tablist] {
                 background-color: #ffffff;
@@ -91,9 +91,9 @@
                 }
 
                 span {
-                    color      : @text-color;
+                    color: @text-color;
                     font-weight: normal;
-                    font-size  : 14px;
+                    font-size: 14px;
 
                     &:hover {
                         color: @link-color;
@@ -108,9 +108,8 @@
     }
 
     &-form {
-        padding   : 20px 20px 83px !important;
-        height    : auto;
-        min-height: calc(100vh - 113px);
+        padding: 20px !important;
+        height: auto;
 
         &-avatar-space {
             .ant-space-item {
@@ -124,8 +123,17 @@
             right: 10px;
         }
 
+        .ant-tabs-tabpane {
+            width: auto !important;
+        }
+
+        .ant-form-item-children-icon {
+            right: 11px !important;
+            display: inline-block;
+        }
+
         .ant-btn-link {
-            z-index         : 100;
+            z-index: 100;
             background-color: #ffffff;
         }
 
@@ -134,9 +142,9 @@
         }
 
         .ant-tabs-extra-content {
-            float       : left !important;
-            line-height : initial !important;
-            padding     : 3px;
+            float: left !important;
+            line-height: initial !important;
+            padding: 3px;
             margin-right: 20px !important;
         }
 
@@ -149,12 +157,12 @@
 
         .ant-tabs-tab-prev {
             &::after {
-                content   : '';
-                position  : absolute;
-                height    : 100%;
-                width     : 6px;
-                right     : 0;
-                z-index   : -1;
+                content: '';
+                position: absolute;
+                height: 100%;
+                width: 6px;
+                right: 0;
+                z-index: -1;
                 box-shadow: 6px 0 6px #fdfdfd;
             }
 
@@ -165,12 +173,12 @@
 
         .ant-tabs-tab-next {
             &::before {
-                content   : '';
-                position  : absolute;
-                height    : 100%;
-                width     : 6px;
-                left      : 2px;
-                z-index   : -1;
+                content: '';
+                position: absolute;
+                height: 100%;
+                width: 6px;
+                left: 2px;
+                z-index: -1;
                 box-shadow: -6px 0 6px #fdfdfd;
             }
 
@@ -186,14 +194,16 @@
         &-tabs {
             div[role="tablist"] {
                 background-color: transparent;
-                border          : none;
+                border: none;
+                flex-direction: row-reverse;
+                padding-bottom: 20px;
             }
 
-            div[role=tab] {
-                margin       : 3px 6px 6px 0 !important;
-                padding      : 3.5px 5px 3.5px 12px !important;
+            button[role=tab].ant-tabs-tab {
+                margin: 3px 6px 6px 0 !important;
+                padding: 3.5px 5px 3.5px 12px !important;
                 border-radius: 16px !important;
-                border       : 1px solid #d9d9d9 !important;
+                border: 1px solid #d9d9d9 !important;
 
                 &[aria-selected=false] svg {
                     filter: grayscale(100%) opacity(0.3);
@@ -203,8 +213,8 @@
                     margin: 0;
                 }
 
-                span>svg {
-                    display       : inline;
+                span > svg {
+                    display: inline;
                     vertical-align: -4.5px;
                 }
             }
@@ -213,7 +223,7 @@
 
     .address-form {
         .select-before {
-            width     : 120px;
+            width: 120px;
             text-align: left;
         }
 
@@ -224,9 +234,9 @@
         }
 
         &-map-wrapper {
-            background-image   : url("../../asset/svg/map-empty.svg");
-            background-repeat  : no-repeat;
-            background-size    : 100px 100px;
+            background-image: url("../../asset/svg/map-empty.svg");
+            background-repeat: no-repeat;
+            background-size: 100px 100px;
             background-position: center center;
 
             padding: 0;
@@ -260,24 +270,24 @@
 
         dl {
             display: table;
-            margin : 20px 0;
+            margin: 20px 0;
 
             li {
                 display: table-row;
 
-                &>dd {
+                & > dd {
                     padding-left: 10px;
-                    text-align  : left;
+                    text-align: left;
                 }
 
-                &>dt {
-                    text-align   : left;
+                & > dt {
+                    text-align: left;
                     padding-right: 155px;
-                    border-right : 1px solid #f0f0f0;
+                    border-right: 1px solid #f0f0f0;
                 }
 
-                &>dt,
-                &>dd {
+                & > dt,
+                & > dd {
                     display: table-cell;
                 }
             }
@@ -286,7 +296,7 @@
 
     .ant-tabs-tab {
         .ant-badge {
-            top : -40px;
+            top: -40px;
             left: 45px;
 
             sup {
@@ -298,40 +308,38 @@
 
 .ant-select-selection-item i,
 .ant-select-item-option-content i {
-    float       : right;
+    float: right;
     font-variant: all-small-caps;
-    font-style  : normal;
+    font-style: normal;
 }
 
 .ant-popover {
     &-placement-bottom {
         .ant-popover-arrow {
-            box-shadow      : -2px -2px 1px #efefef !important;
-            z-index         : 1;
-            top             : 7px !important;
+            box-shadow: -2px -2px 1px #efefef !important;
+            z-index: 1;
+            top: 7px !important;
             border-top-color: #f2f2f2 !important;
         }
     }
 
     &-content {
-        border       : 1px solid #f0f0f0;
+        border: 1px solid #f0f0f0;
         border-radius: 6px;
     }
 
     &-title {
-        border-top-left-radius : 6px;
+        border-top-left-radius: 6px;
         border-top-right-radius: 6px;
-        background-color       : #fafafa;
-        font-weight            : bold;
-        padding                : 10px 16px 9px;
+        background-color: #fafafa;
+        font-weight: bold;
+        padding: 10px 16px 9px;
     }
 
     &-inner {
         border-radius: 6px !important;
 
         &-content {
-            padding: 0 !important;
-
             li * {
                 text-align: left !important;
             }

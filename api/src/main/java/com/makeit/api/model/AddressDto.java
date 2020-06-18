@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @Builder(toBuilder = true)
 public class AddressDto implements Serializable {
 

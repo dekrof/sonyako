@@ -129,6 +129,60 @@ export class CategoryClient<O> {
     }
 }
 
+export class CommentClient<O> {
+
+    constructor(protected httpClient: HttpClient<O>) {
+    }
+
+    /**
+     * HTTP GET /api/comment
+     * Java method: com.makeit.api.controller.CommentController.getComments
+     */
+    getComments(queryParams?: { page?: number; size?: number; sort?: string; }, options?: O): RestResponse<ApiResponse<Page<CommentDto>>> {
+        return this.httpClient.request({ method: "GET", url: uriEncoding`api/comment`, queryParams: queryParams, options: options });
+    }
+
+    /**
+     * HTTP POST /api/comment
+     * Java method: com.makeit.api.controller.CommentController.saveComment
+     */
+    saveComment(dto: CommentDto, options?: O): RestResponse<ApiResponse<CommentDto>> {
+        return this.httpClient.request({ method: "POST", url: uriEncoding`api/comment`, data: dto, options: options });
+    }
+
+    /**
+     * HTTP PUT /api/comment
+     * Java method: com.makeit.api.controller.CommentController.updateComment
+     */
+    updateComment(dto: CommentDto, options?: O): RestResponse<ApiResponse<CommentDto>> {
+        return this.httpClient.request({ method: "PUT", url: uriEncoding`api/comment`, data: dto, options: options });
+    }
+
+    /**
+     * HTTP GET /api/comment/of/project/{id}
+     * Java method: com.makeit.api.controller.CommentController.getProjectComments
+     */
+    getProjectComments(id: number, queryParams?: { page?: number; size?: number; sort?: string; }, options?: O): RestResponse<ApiResponse<Page<CommentDto>>> {
+        return this.httpClient.request({ method: "GET", url: uriEncoding`api/comment/of/project/${id}`, queryParams: queryParams, options: options });
+    }
+
+    /**
+     * HTTP DELETE /api/comment/of/project/{projectId}/{id}
+     * Java method: com.makeit.api.controller.CommentController.deleteComment
+     */
+    deleteComment(projectId: number, id: number, options?: O): RestResponse<ApiResponse<CommentDto>> {
+        return this.httpClient.request({ method: "DELETE", url: uriEncoding`api/comment/of/project/${projectId}/${id}`, options: options });
+    }
+
+    /**
+     * HTTP GET /api/comment/{id}
+     * Java method: com.makeit.api.controller.CommentController.getComment
+     */
+    getComment(id: number, options?: O): RestResponse<ApiResponse<CommentDto>> {
+        return this.httpClient.request({ method: "GET", url: uriEncoding`api/comment/${id}`, options: options });
+    }
+}
+
 export class CompanyClient<O> {
 
     constructor(protected httpClient: HttpClient<O>) {
@@ -195,14 +249,6 @@ export class ProjectClient<O> {
     }
 
     /**
-     * HTTP GET /api/project
-     * Java method: com.makeit.api.controller.ProjectController.getProjects
-     */
-    getProjects(queryParams?: { page?: number; size?: number; sort?: string; }, options?: O): RestResponse<ApiResponse<Page<ProjectDto>>> {
-        return this.httpClient.request({ method: "GET", url: uriEncoding`api/project`, queryParams: queryParams, options: options });
-    }
-
-    /**
      * HTTP POST /api/project
      * Java method: com.makeit.api.controller.ProjectController.saveProject
      */
@@ -216,6 +262,14 @@ export class ProjectClient<O> {
      */
     updateProject(dto: ProjectDto, options?: O): RestResponse<ApiResponse<ProjectDto>> {
         return this.httpClient.request({ method: "PUT", url: uriEncoding`api/project`, data: dto, options: options });
+    }
+
+    /**
+     * HTTP GET /api/project/of/category/{categoryId}
+     * Java method: com.makeit.api.controller.ProjectController.getProjects
+     */
+    getProjects(categoryId: number, queryParams?: { page?: number; size?: number; sort?: string; }, options?: O): RestResponse<ApiResponse<Page<ProjectDto>>> {
+        return this.httpClient.request({ method: "GET", url: uriEncoding`api/project/of/category/${categoryId}`, queryParams: queryParams, options: options });
     }
 
     /**
@@ -535,7 +589,6 @@ export class Category {
     url: string;
     name: string;
     description: string;
-    projects: Project[];
 
     static fromData(data: Category, target?: Category): Category {
         if (!data) {
@@ -546,7 +599,6 @@ export class Category {
         instance.url = data.url;
         instance.name = data.name;
         instance.description = data.description;
-        instance.projects = __getCopyArrayFn(Project.fromData)(data.projects);
         return instance;
     }
 }
@@ -580,7 +632,7 @@ export class Comment {
     title: string;
     description: string;
     parent: Comment;
-    children: Comment[];
+    type: CommentType;
 
     static fromData(data: Comment, target?: Comment): Comment {
         if (!data) {
@@ -597,7 +649,36 @@ export class Comment {
         instance.title = data.title;
         instance.description = data.description;
         instance.parent = Comment.fromData(data.parent);
-        instance.children = __getCopyArrayFn(Comment.fromData)(data.children);
+        instance.type = data.type;
+        return instance;
+    }
+}
+
+export class CommentDto {
+    id: number;
+    commentator: UserDto;
+    title: string;
+    description: string;
+    parent: CommentDto;
+    replies: CommentDto[];
+    type: CommentType;
+    belongTo: number;
+    createdAt: Date;
+
+    static fromData(data: CommentDto, target?: CommentDto): CommentDto {
+        if (!data) {
+            return data;
+        }
+        const instance = target || new CommentDto();
+        instance.id = data.id;
+        instance.commentator = UserDto.fromData(data.commentator);
+        instance.title = data.title;
+        instance.description = data.description;
+        instance.parent = CommentDto.fromData(data.parent);
+        instance.replies = __getCopyArrayFn(CommentDto.fromData)(data.replies);
+        instance.type = data.type;
+        instance.belongTo = data.belongTo;
+        instance.createdAt = data.createdAt;
         return instance;
     }
 }
@@ -817,13 +898,13 @@ export class LogoutDto {
 }
 
 export interface Page<T> {
-    totalElements: number;
     totalPages: number;
+    totalElements: number;
+    last: boolean;
     size: number;
     content: T[];
     number: number;
     sort: Sort;
-    last: boolean;
     first: boolean;
     numberOfElements: number;
     pageable: Pageable;
@@ -833,10 +914,10 @@ export interface Page<T> {
 export interface Pageable {
     offset: number;
     sort: Sort;
-    pageSize: number;
+    pageNumber: number;
     paged: boolean;
     unpaged: boolean;
-    pageNumber: number;
+    pageSize: number;
 }
 
 /**
@@ -987,6 +1068,7 @@ export class Project {
     updatedBy: string;
     id: number;
     name: string;
+    logo: string;
     description: string;
     company: Company;
     category: Category;
@@ -996,6 +1078,10 @@ export class Project {
     rateCurrency: string;
     minDuration: number;
     maxDuration: number;
+    requiredLevel: number;
+    loe: number;
+    proposals: number;
+    active: boolean;
     tags: Tag[];
 
     static fromData(data: Project, target?: Project): Project {
@@ -1010,6 +1096,7 @@ export class Project {
         instance.updatedBy = data.updatedBy;
         instance.id = data.id;
         instance.name = data.name;
+        instance.logo = data.logo;
         instance.description = data.description;
         instance.company = Company.fromData(data.company);
         instance.category = Category.fromData(data.category);
@@ -1019,6 +1106,10 @@ export class Project {
         instance.rateCurrency = data.rateCurrency;
         instance.minDuration = data.minDuration;
         instance.maxDuration = data.maxDuration;
+        instance.requiredLevel = data.requiredLevel;
+        instance.loe = data.loe;
+        instance.proposals = data.proposals;
+        instance.active = data.active;
         instance.tags = __getCopyArrayFn(Tag.fromData)(data.tags);
         return instance;
     }
@@ -1058,6 +1149,7 @@ export class ProjectCommentId {
 
 export class ProjectDto {
     id: number;
+    logo: string;
     name: string;
     description: string;
     company: CompanyDto;
@@ -1068,6 +1160,13 @@ export class ProjectDto {
     rateCurrency: string;
     minDuration: number;
     maxDuration: number;
+    owner: UserDto;
+    rating: number;
+    requiredLevel: number;
+    loe: number;
+    proposals: number;
+    active: boolean;
+    createdAt: Date;
 
     static fromData(data: ProjectDto, target?: ProjectDto): ProjectDto {
         if (!data) {
@@ -1075,6 +1174,7 @@ export class ProjectDto {
         }
         const instance = target || new ProjectDto();
         instance.id = data.id;
+        instance.logo = data.logo;
         instance.name = data.name;
         instance.description = data.description;
         instance.company = CompanyDto.fromData(data.company);
@@ -1085,6 +1185,13 @@ export class ProjectDto {
         instance.rateCurrency = data.rateCurrency;
         instance.minDuration = data.minDuration;
         instance.maxDuration = data.maxDuration;
+        instance.owner = UserDto.fromData(data.owner);
+        instance.rating = data.rating;
+        instance.requiredLevel = data.requiredLevel;
+        instance.loe = data.loe;
+        instance.proposals = data.proposals;
+        instance.active = data.active;
+        instance.createdAt = data.createdAt;
         return instance;
     }
 }
@@ -1165,7 +1272,6 @@ export class RegistrationDto {
 export class Role {
     id: number;
     roleName: RoleName;
-    users: User[];
 
     static fromData(data: Role, target?: Role): Role {
         if (!data) {
@@ -1174,7 +1280,6 @@ export class Role {
         const instance = target || new Role();
         instance.id = data.id;
         instance.roleName = data.roleName;
-        instance.users = __getCopyArrayFn(User.fromData)(data.users);
         return instance;
     }
 }
@@ -1269,9 +1374,6 @@ export class Tag {
     name: string;
     description: string;
     categoryId: number;
-    users: User[];
-    projects: Project[];
-    tasks: Task[];
 
     static fromData(data: Tag, target?: Tag): Tag {
         if (!data) {
@@ -1282,9 +1384,6 @@ export class Tag {
         instance.name = data.name;
         instance.description = data.description;
         instance.categoryId = data.categoryId;
-        instance.users = __getCopyArrayFn(User.fromData)(data.users);
-        instance.projects = __getCopyArrayFn(Project.fromData)(data.projects);
-        instance.tasks = __getCopyArrayFn(Task.fromData)(data.tasks);
         return instance;
     }
 }
@@ -1433,6 +1532,7 @@ export class TopDeveloperDto {
     avatarUrl: string;
     tags: TagDto[];
     address: AddressDto;
+    legalBusiness: string;
     rate: RateDto;
 
     static fromData(data: TopDeveloperDto, target?: TopDeveloperDto): TopDeveloperDto {
@@ -1446,6 +1546,7 @@ export class TopDeveloperDto {
         instance.avatarUrl = data.avatarUrl;
         instance.tags = __getCopyArrayFn(TagDto.fromData)(data.tags);
         instance.address = AddressDto.fromData(data.address);
+        instance.legalBusiness = data.legalBusiness;
         instance.rate = RateDto.fromData(data.rate);
         return instance;
     }
@@ -1478,11 +1579,6 @@ export class User {
     active: boolean;
     emailVerified: boolean;
     roles: Role[];
-    tags: Tag[];
-    tasks: Task[];
-    ratedSkills: SkillRating[];
-    comments: Comment[];
-    companies: Company[];
 
     static fromData(data: User, target?: User): User {
         if (!data) {
@@ -1501,11 +1597,6 @@ export class User {
         instance.active = data.active;
         instance.emailVerified = data.emailVerified;
         instance.roles = __getCopyArrayFn(Role.fromData)(data.roles);
-        instance.tags = __getCopyArrayFn(Tag.fromData)(data.tags);
-        instance.tasks = __getCopyArrayFn(Task.fromData)(data.tasks);
-        instance.ratedSkills = __getCopyArrayFn(SkillRating.fromData)(data.ratedSkills);
-        instance.comments = __getCopyArrayFn(Comment.fromData)(data.comments);
-        instance.companies = __getCopyArrayFn(Company.fromData)(data.companies);
         return instance;
     }
 }
@@ -1618,7 +1709,7 @@ export class UserProject {
 
 export class UserProjectId {
     userId: number;
-    skillId: number;
+    projectId: number;
 
     static fromData(data: UserProjectId, target?: UserProjectId): UserProjectId {
         if (!data) {
@@ -1626,7 +1717,7 @@ export class UserProjectId {
         }
         const instance = target || new UserProjectId();
         instance.userId = data.userId;
-        instance.skillId = data.skillId;
+        instance.projectId = data.projectId;
         return instance;
     }
 }
@@ -1638,6 +1729,12 @@ export const enum CityType {
     TOWN = "TOWN",
     TOWNSHIP = "TOWNSHIP",
     VILLAGE = "VILLAGE",
+}
+
+export const enum CommentType {
+    PROJECT = "PROJECT",
+    USER = "USER",
+    TASK = "TASK",
 }
 
 export const enum CurrencyType {
@@ -1771,6 +1868,14 @@ export class AxiosAuthenticationClient extends AuthenticationClient<Axios.AxiosR
 }
 
 export class AxiosCategoryClient extends CategoryClient<Axios.AxiosRequestConfig> {
+
+    constructor(baseURL: string, axiosInstance: Axios.AxiosInstance = axios.create()) {
+        axiosInstance.defaults.baseURL = baseURL;
+        super(new AxiosHttpClient(axiosInstance));
+    }
+}
+
+export class AxiosCommentClient extends CommentClient<Axios.AxiosRequestConfig> {
 
     constructor(baseURL: string, axiosInstance: Axios.AxiosInstance = axios.create()) {
         axiosInstance.defaults.baseURL = baseURL;

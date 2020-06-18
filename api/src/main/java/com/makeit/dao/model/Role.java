@@ -7,14 +7,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.io.Serializable;
-import java.util.Set;
+import java.util.Objects;
 
 /**
  * @author sonnyako <Makydon Sofiia>
@@ -41,6 +39,21 @@ public class Role implements Serializable {
     @NaturalId
     private RoleName roleName;
 
-    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
-    private final Set<User> users = Set.of();
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Role)) {
+            return false;
+        }
+        var role = (Role) obj;
+        return id.equals(role.id)
+            && roleName == role.roleName;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, roleName);
+    }
 }

@@ -2,10 +2,9 @@ package com.makeit.api.controller;
 
 import com.makeit.api.model.ApiResponse;
 import com.makeit.api.model.ProjectDto;
-import com.makeit.api.model.TagDto;
 import com.makeit.api.service.ProjectService;
-import com.makeit.api.service.TagService;
-import com.makeit.dao.model.Project;
+import com.makeit.security.JwtUserDetails;
+import com.makeit.supported.annotation.CurrentUser;
 import lombok.*;
 import lombok.extern.slf4j.*;
 import org.springframework.data.domain.Page;
@@ -18,7 +17,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -36,8 +37,12 @@ public class ProjectController {
 
     private final ProjectService service;
 
-    @PostMapping("/")
-    public ApiResponse<ProjectDto> saveProject(@Valid @RequestBody ProjectDto dto) {
+    @PostMapping("")
+    @RolesAllowed("ROLE_OWNER")
+    public ApiResponse<ProjectDto> saveProject(
+        @ApiIgnore @CurrentUser JwtUserDetails userDetails,
+        @Valid @RequestBody ProjectDto dto
+    ) {
         if (dto == null) {
             return ApiResponse.<ProjectDto>error()
                 .cause("project.should.not.be.null")
@@ -51,8 +56,9 @@ public class ProjectController {
         }
 
         try {
+            var userId = userDetails.getUser().getId();
             return ApiResponse.<ProjectDto>data()
-                .data(service.saveOrUpdateProject(dto))
+                .data(service.saveOrUpdateProject(dto, userId))
                 .build();
         } catch (Exception ex) {
             LOGGER.error("Unable to save project", ex);
@@ -62,8 +68,12 @@ public class ProjectController {
         }
     }
 
-    @PutMapping("/")
-    public ApiResponse<ProjectDto> updateProject(@Valid @RequestBody ProjectDto dto) {
+    @PutMapping("")
+    @RolesAllowed("ROLE_OWNER")
+    public ApiResponse<ProjectDto> updateProject(
+        @ApiIgnore @CurrentUser JwtUserDetails userDetails,
+        @Valid @RequestBody ProjectDto dto
+    ) {
         if (dto == null) {
             return ApiResponse.<ProjectDto>error()
                 .cause("project.should.not.be.null")
@@ -71,7 +81,7 @@ public class ProjectController {
         }
         try {
             return ApiResponse.<ProjectDto>data()
-                .data(service.saveOrUpdateProject(dto))
+                .data(service.saveOrUpdateProject(dto, userDetails.getUser().getId()))
                 .build();
         } catch (Exception ex) {
             LOGGER.error("Unable to update project", ex);
@@ -114,17 +124,17 @@ public class ProjectController {
                 .build();
         } catch (Exception ex) {
             LOGGER.error("Unable to get project", ex);
-            return ApiResponse.<ProjectDto>data()
-                .data(null)
+            return ApiResponse.<ProjectDto>error()
+                .cause(ex.getMessage())
                 .build();
         }
     }
 
-    @GetMapping("/")
-    public ApiResponse<Page<ProjectDto>> getProjects(@NotNull Pageable pageable) {
+    @GetMapping("/of/category/{categoryId}")
+    public ApiResponse<Page<ProjectDto>> getProjects(@NotNull Pageable pageable, @PathVariable("categoryId") Long categoryId) {
         try {
             return ApiResponse.<Page<ProjectDto>>data()
-                .data(service.getProjects(pageable))
+                .data(service.getProjectsByCategory(pageable, categoryId))
                 .build();
         } catch (Exception ex) {
             LOGGER.error("Unable to get projects", ex);

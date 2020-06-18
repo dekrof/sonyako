@@ -162,7 +162,7 @@ export class SkillSelection extends React.Component<SkillSelectionProps> {
                 <TwoLineSelect
                     ref={this.skillRef}
                     data={getSkillsByCategory(category)}
-                    inputStyle={{width: 470}}
+                    inputStyle={{width: 440}}
                     onSelectionChange={(skill: TwoLineItem & { id: number }) => this.onSkillChange(skill)}
                     defaultValue={{label: "Skill", description: "Select your best skill"}}/>
 

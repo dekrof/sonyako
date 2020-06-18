@@ -3,12 +3,10 @@ package com.makeit.dao.model;
 import lombok.*;
 import lombok.experimental.*;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
@@ -20,7 +18,7 @@ import java.io.Serializable;
  * @since 1.0.0
  */
 @Data
-@Entity
+@Entity(name = "USER_PROJECT")
 @Table(name = "USER_PROJECT")
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor
@@ -32,14 +30,12 @@ public class UserProject implements Serializable {
     @EmbeddedId
     private UserProjectId id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("user_id")
-    @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("project_id")
-    @JoinColumn(name = "project_id")
     private Project project;
 
     @Column(name = "rating", nullable = false)

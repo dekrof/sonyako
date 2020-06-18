@@ -33,7 +33,7 @@ public class CategoryController {
 
     private final CategoryService service;
 
-    @PostMapping("/")
+    @PostMapping("")
     public ApiResponse<CategoryDto> saveCategory(@Valid @RequestBody CategoryDto dto) {
         if (dto == null) {
             return ApiResponse.<CategoryDto>error()
@@ -59,7 +59,7 @@ public class CategoryController {
         }
     }
 
-    @PutMapping("/")
+    @PutMapping("")
     public ApiResponse<CategoryDto> updateCategory(@Valid @RequestBody CategoryDto dto) {
         if (dto == null) {
             return ApiResponse.<CategoryDto>error()
@@ -117,7 +117,7 @@ public class CategoryController {
         }
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public ApiResponse<Page<CategoryDto>> getCategories(@NotNull Pageable pageable) {
         try {
             return ApiResponse.<Page<CategoryDto>>data()

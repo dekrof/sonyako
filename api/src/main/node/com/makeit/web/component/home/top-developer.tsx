@@ -44,7 +44,7 @@ class TopDeveloper extends React.Component<WrappedComponentProps & { developer?:
                     <Divider plain style={{marginBottom: 20}}/>
                     <Card.Meta
                         title={`${developer.firstName} ${developer.lastName}`}
-                        description="Expert Joomla Web Developer"/>
+                        description={<p style={{height: 36, textOverflow: "ellipsis"}}>{developer.legalBusiness}</p>}/>
                 </Card>
             </>
         )

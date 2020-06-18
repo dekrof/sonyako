@@ -48,6 +48,7 @@ public class FreelancerServiceImpl implements com.makeit.api.service.FreelancerS
                     .firstName(profile.getName())
                     .lastName(profile.getSurname())
                     .address(objectMapper.convertValue(address, AddressDto.class))
+                    .legalBusiness(payment.getBeneficiaryName())
                     .rate(objectMapper.convertValue(payment, RateDto.class))
                     .tags(tags.stream()
                         .map(tag -> objectMapper.convertValue(tag, TagDto.class))

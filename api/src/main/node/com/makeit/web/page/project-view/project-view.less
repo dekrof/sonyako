@@ -1,0 +1,197 @@
+.project-view {
+    z-index: 99;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    width: 100%;
+    min-height: calc(100vh - 113px);
+
+    padding: 0 20px;
+    border-left: 1px solid #f0f0f0;
+    border-right: 1px solid #f0f0f0;
+    background-color: #ffffff;
+
+    & > .ant-space {
+        align-items: flex-start;
+    }
+
+    & > .ant-space > .ant-space-item {
+        width: auto;
+        min-height: 100%;
+
+        &:first-child {
+            width: calc(68% - 11px);
+            padding-right: 20px;
+            border-right: 1px solid #f0f0f0;
+        }
+
+        &:last-child {
+            width: calc(32% - 10px);
+            min-height: 100%;
+        }
+    }
+
+    article {
+        background: #fdfdfd;
+
+        .ant-empty p {
+            text-align: center;
+            text-align-last: center;
+        }
+    }
+
+    article, summary {
+        padding-top: 20px;
+        background: white;
+
+        .ant-typography {
+            h3 {
+                font-weight: normal !important;
+            }
+        }
+
+        p {
+            text-align: justify;
+            text-align-last: left;
+            hyphens: auto;
+        }
+
+        table {
+            @border-width: 3px;
+
+            width: 100%;
+            border-collapse: collapse;
+            border-style: hidden;
+            border-radius: @border-width;
+            box-shadow: 0 0 0 1px #e0e0e0;
+
+            tr:first-child th:first-child {
+                border-top-left-radius: @border-width;
+            }
+
+            tr:first-child th:last-child {
+                border-top-right-radius: @border-width;
+            }
+
+            tr:last-child td:first-child {
+                border-bottom-left-radius: @border-width;
+            }
+
+            tr:last-child td:last-child {
+                border-bottom-right-radius: @border-width;
+            }
+        }
+
+        th, td {
+            background: #ffffff;
+            border-collapse: collapse !important;
+            border: 1px solid #e0e0e0;
+
+            p {
+                text-align: left;
+                margin: 0;
+            }
+        }
+
+        td, th {
+            padding: 3px 6px;
+        }
+    }
+
+    summary {
+
+        .ant-btn {
+            width: 100% !important;
+            text-transform: uppercase;
+        }
+
+        h4 {
+            font-weight: normal;
+            clear: right;
+        }
+
+        dl {
+            list-style: none;
+
+            li > strong {
+                display: inline-block;
+                width: 50%;
+            }
+        }
+
+        em {
+            background-color: #fceb80;
+            font-style: normal;
+            margin-right: 10px;
+            margin-top: 10px;
+            padding: 0 7px;
+            font-size: 12px;
+            line-height: 23px;
+            border-radius: 3px;
+            display: inline-block;
+            &::after {
+                position: absolute;
+                content: '•';
+                font-size: 20px;
+                vertical-align: top;
+                text-indent: -12px;
+                line-height: 0px;
+                border-width: 12px 0 12px 10px;
+                border-color: transparent transparent transparent #fceb80;
+                border-style: solid;
+                margin-left: 6px;
+                width: 16px;
+                height: 23px;
+                display: inline-block;
+                color: white;
+            }
+        }
+    }
+
+    .ant-list {
+        width: 100%;
+    }
+
+
+    .ant-list-items > .ant-list-item {
+        border-top: none !important;
+    }
+
+    .ant-list-item:first-child {
+        border-top: 1px solid #f0f0f0;
+    }
+
+    .ant-comment {
+        width: 100%;
+
+        ul {
+            padding-left: 0;
+        }
+
+        &-avatar img {
+            border-radius: 2px !important;
+        }
+
+        &-nested .ant-list-item {
+            padding-bottom: 0;
+        }
+
+        &-content-detail {
+            text-align: justify;
+            text-align-last: left;
+            hyphens: auto;
+        }
+    }
+}
+
+.delete-project-popconfirm {
+    .ant-popover-message {
+        width: 300px !important;
+
+        &-title {
+            position: relative !important;
+            padding-left: 25px !important;
+            width: 100%;
+        }
+    }
+}

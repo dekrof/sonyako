@@ -13,7 +13,7 @@ import { PaymentModule } from "@page/sign-up/tab/payment";
 import { AddressModule } from "@page/sign-up/tab/address";
 import { SkillModule } from "@page/sign-up/tab/skill";
 import { UserModule } from "@page/sign-up/tab/user";
-import { Title } from "@page/app-layout";
+import { Title, Footer } from '@page/app-layout';
 
 import { resolve, context, page } from "@page/decorator";
 
@@ -113,7 +113,8 @@ class SignUpPage extends React.Component<WrappedComponentProps & RouteComponentP
                             </Tabs.TabPane>
                         </Tabs>
                     </div>
-                    <footer className="signup-submit-button-wrapper">
+                </section>
+                <div className="signup-submit-button-wrapper">
                         <div className="signup-submit-button-wrapper-content">
                             <Space align="center" direction="horizontal" size={20}>
                                 <Button
@@ -131,8 +132,8 @@ class SignUpPage extends React.Component<WrappedComponentProps & RouteComponentP
                                 </Checkbox>
                             </Space>
                         </div>
-                    </footer>
-                </section>
+                    </div>
+                <Footer />
             </>
         );
     }

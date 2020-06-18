@@ -2,6 +2,8 @@ package com.makeit.api.model;
 
 import lombok.*;
 
+import java.time.Instant;
+
 /**
  * @author sonnyako <Makydon Sofiia>
  * @version 1.0.0
@@ -14,6 +16,7 @@ import lombok.*;
 public class ProjectDto {
 
     private Long id;
+    private String logo;
     private String name;
     private String description;
     private CompanyDto company;
@@ -24,4 +27,11 @@ public class ProjectDto {
     private String rateCurrency;
     private Long minDuration;
     private Long maxDuration;
+    private UserDto owner;
+    private double rating;
+    private Integer requiredLevel;
+    private Integer loe;
+    private Integer proposals;
+    private boolean active;
+    private Instant createdAt;
 }

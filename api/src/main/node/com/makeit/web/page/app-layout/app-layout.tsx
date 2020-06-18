@@ -9,22 +9,20 @@ import en from "@translation/locales/en";
 import uk from "@translation/locales/uk";
 import ru from "@translation/locales/ru";
 
-import { Badge, Button, Drawer, Form, Modal, PageHeader, Space, Typography } from "antd";
-import { Avatar, Input, Radio } from "antd";
+import { Avatar, Badge, Button, Drawer, Form, Input, Modal, notification, PageHeader, Radio, Space, Typography } from "antd";
 
-import { JwtAuthenticationDto } from "@client/api-client";
+import { JwtAuthenticationDto, RoleName } from "@client/api-client";
 
-import { LocaleProvider, LocaleSwitcher, TitleTarget, FooterTarget } from "@page/app-layout";
-import { AppModel, AppModule, Icons, TopCategoriesMenu } from "@page/app-layout";
+import { AppModel, AppModule, FooterTarget, Icons, LocaleProvider, LocaleSwitcher, TitleTarget, TopCategoriesMenu } from "@page/app-layout";
 import { context, resolve } from "@page/decorator";
 
-import { HomePage, SignInPage, SignUpPage } from "@page/pages";
-import { EmailConfirmation, EmailVerification } from "@page/pages";
+import { EmailConfirmation, EmailVerification, HomePage, ProjectCreate, ProjectView, SignInPage, SignUpPage } from "@page/pages";
 
 import "@css/theme.less";
+import { ProjectList } from "@page/project-list";
 
 const store = {
-    locale: new LocaleStore("uk", { uk, en, ru })
+    locale: new LocaleStore("uk", {uk, en, ru})
 };
 
 enum SessionStatus {
@@ -78,16 +76,19 @@ export default class AppLayout extends React.Component {
                                 <PageHeader
                                     className="app-header"
                                     title={<div className="app-logo"><Link to="/"><span>Make IT</span></Link></div>}
-                                    subTitle={<TitleTarget />}
+                                    subTitle={<TitleTarget/>}
                                     extra={this.renderExtraContent()}
-                                    onBack={() => window.history.back()} />
-                                <TopCategoriesMenu />
+                                    onBack={() => window.history.back()}/>
+                                <TopCategoriesMenu/>
                                 <Switch>
-                                    <Route path={["/"]} exact component={HomePage} />
-                                    <Route path={["/sign-in"]} exact component={SignInPage} />
-                                    <Route path={["/sign-up", "/sign-up/(user|owner)/:tab?"]} exact component={SignUpPage} />
-                                    <Route path={["/email-confirmation"]} exact component={EmailConfirmation} />
-                                    <Route path={["/email-verification"]} exact component={EmailVerification} />
+                                    <Route path={["/"]} exact component={HomePage}/>
+                                    <Route path={["/sign-in"]} exact component={SignInPage}/>
+                                    <Route path={["/sign-up", "/sign-up/(user|owner)/:tab?"]} exact component={SignUpPage}/>
+                                    <Route path={["/email-confirmation"]} exact component={EmailConfirmation}/>
+                                    <Route path={["/email-verification"]} exact component={EmailVerification}/>
+                                    <Route path={["/project/create"]} exact component={ProjectCreate}/>
+                                    <Route path={["/project/view/:id"]} component={ProjectView}/>
+                                    <Route path={["/category/:categoryUrl"]} component={ProjectList}/>
                                 </Switch>
                                 <Drawer
                                     width={520}
@@ -97,7 +98,7 @@ export default class AppLayout extends React.Component {
                                     onClose={() => this.isUserDrawerOpen = false}
                                     title={this.renderUserDrawerTitle()}>
                                     test
-                            </Drawer>
+                                </Drawer>
                                 <Modal
                                     visible={this.model.isSecure && this.sessionStatus != SessionStatus.LIVE}
                                     centered={true}
@@ -107,7 +108,7 @@ export default class AppLayout extends React.Component {
                                     footer={this.renderModalFooter()}>
                                     <div>
                                         <Space align="center" direction="horizontal" size={10}>
-                                            <Icons.SessionExpiration width={90} height={90} />
+                                            <Icons.SessionExpiration width={90} height={90}/>
                                             {
                                                 this.isSessionShouldBeExtended
                                                     ? this.renderExtendSessionForm()
@@ -117,7 +118,7 @@ export default class AppLayout extends React.Component {
                                     </div>
                                 </Modal>
                             </main>
-                            <FooterTarget />
+                            <FooterTarget/>
                         </>
                     </Router>
                 </LocaleProvider>
@@ -137,11 +138,11 @@ export default class AppLayout extends React.Component {
     private renderExtendSessionForm() {
         return (
             <>
-                <Form layout="vertical" style={{ width: 385 }}>
+                <Form layout="vertical" style={{width: 385}}>
                     <Form.Item
                         label="Password"
                         help="Confirm your identity to extend current session">
-                        <Input.Password name="password" />
+                        <Input.Password name="password"/>
                     </Form.Item>
                 </Form>
             </>
@@ -149,24 +150,24 @@ export default class AppLayout extends React.Component {
     }
 
     private renderExtraContent() {
-        const { jwt, helper } = this.model;
+        const {jwt, helper} = this.model;
         return (
             <>
                 <Space size={24}>
-                    <Link to="/sign-in"><FormattedMessage id="app.header.sign-in" /></Link>
-                    <Link to="/sign-up"><FormattedMessage id="app.header.sign-up" /></Link>
-                    <Button type="primary"><FormattedMessage id="app.header.post-job" /></Button>
-                    <LocaleSwitcher />
+                    <Link to="/sign-in"><FormattedMessage id="app.header.sign-in"/></Link>
+                    <Link to="/sign-up"><FormattedMessage id="app.header.sign-up"/></Link>
+                    <Button type="primary" onClick={() => this.postJob()}><FormattedMessage id="app.header.post-job"/></Button>
+                    <LocaleSwitcher/>
                     {
                         !jwt ? null : <div onClick={() => this.isUserDrawerOpen = true}>
-                            <Badge showZero={false} count={42} style={{ marginRight: 9 }}>
+                            <Badge showZero={false} count={42} style={{marginRight: 9}}>
                                 <Avatar
                                     style={{background: "#f0f0f0"}}
                                     size={32} src={helper.decodeToken(jwt.accessToken)?.avatarUrl}>
                                     {
                                         !!helper.decodeToken(jwt.accessToken).avatarUrl
                                             ? null
-                                            : <Icons.UserAnonymous width={32} height={32} />
+                                            : <Icons.UserAnonymous width={32} height={32}/>
                                     }
                                 </Avatar>
                             </Badge>
@@ -181,9 +182,9 @@ export default class AppLayout extends React.Component {
         return (
             <div>
                 <span
-                    style={{ display: "inline", float: "left" }}
+                    style={{display: "inline", float: "left"}}
                     onClick={() => this.isUserDrawerOpen = false}>
-                    <Icons.ModalClose width={24} height={24} />
+                    <Icons.ModalClose width={24} height={24}/>
                 </span>
                 <Radio.Group defaultValue={DrawerView.TODAY}>
                     <Radio.Button value={DrawerView.TODAY}>Today</Radio.Button>
@@ -197,7 +198,7 @@ export default class AppLayout extends React.Component {
     private computeSessionStatus(token: string) {
         const soon = 60 * 1000, now = Date.now();
 
-        let { exp } = this.model.helper.decodeToken(token);
+        let {exp} = this.model.helper.decodeToken(token);
         exp = exp * 1000;
 
         if (now >= exp) {
@@ -216,5 +217,22 @@ export default class AppLayout extends React.Component {
             this.sessionStatus = SessionStatus.SHOULD_BE_EXTENDED;
             clearTimeout(timeout);
         }, exp - now - soon);
+    }
+
+    private async postJob() {
+        const {jwt, helper} = this.model;
+
+        if (!jwt) {
+            notification.warn({
+                message: "Sign-in required",
+                description: <span>Only authorized clients can post a job. Please, <a href="/sign-in">sign-in</a> to continue.</span>,
+            });
+            return;
+        }
+        const user = await this.model.getUser();
+        const role = user.roles.find(role => role.roleName == RoleName.ROLE_OWNER);
+        if (role) {
+            window.location.href = "/project/create";
+        }
     }
 }

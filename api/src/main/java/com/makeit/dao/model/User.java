@@ -1,5 +1,6 @@
 package com.makeit.dao.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.makeit.supported.validation.NullOrNotBlank;
 import lombok.*;
 import lombok.experimental.*;
@@ -19,6 +20,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -32,7 +34,6 @@ import java.util.Set;
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@EqualsAndHashCode(callSuper = true)
 public class User extends AbstractEntity {
 
     private static final long serialVersionUID = 7951382734495785152L;
@@ -50,7 +51,7 @@ public class User extends AbstractEntity {
     private String password;
 
     @Valid
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "profile_id", referencedColumnName = "id")
     private Profile profile;
 
@@ -69,6 +70,7 @@ public class User extends AbstractEntity {
     )
     private Set<Role> roles = Set.of();
 
+    @JsonIgnore
     @Singular
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
@@ -76,21 +78,41 @@ public class User extends AbstractEntity {
         joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
         inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id")
     )
-    private Set<Tag> tags = Set.of();
+    private Set<Tag> tags;
 
-    @Singular
-    @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<@Valid Task> tasks = Set.of();
-
+    @JsonIgnore
     @Singular
     @OneToMany(mappedBy = "skill", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<@Valid SkillRating> ratedSkills = Set.of();
 
-    @Singular
-    @OneToMany(mappedBy = "commentator", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<@Valid Comment> comments = Set.of();
-
+    @JsonIgnore
     @Singular
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<@Valid Company> companies = Set.of();
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof User)) {
+            return false;
+        }
+        var user = (User) obj;
+        return active == user.active
+            && id.equals(user.id)
+            && emailVerified == user.emailVerified
+            && username.equals(user.username)
+            && password.equals(user.password)
+            && Objects.equals(roles, user.roles);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+            id, username, password,
+            profile, active, emailVerified,
+            roles
+        );
+    }
 }

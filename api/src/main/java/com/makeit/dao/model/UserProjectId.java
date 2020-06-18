@@ -24,5 +24,5 @@ public class UserProjectId implements Serializable {
     private Long userId;
 
     @Column(name = "project_id", nullable = false)
-    private Long skillId;
+    private Long projectId;
 }

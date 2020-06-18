@@ -2,10 +2,7 @@ package com.makeit.api.controller;
 
 import com.makeit.api.model.ApiResponse;
 import com.makeit.api.model.CommentDto;
-import com.makeit.api.model.ProjectDto;
 import com.makeit.api.service.CommentService;
-import com.makeit.api.service.ProjectService;
-import com.makeit.dao.model.Comment;
 import lombok.*;
 import lombok.extern.slf4j.*;
 import org.springframework.data.domain.Page;
@@ -19,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -30,13 +28,14 @@ import javax.validation.constraints.NotNull;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api/category")
+@RequestMapping("/api/comment")
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class CommentController {
 
     private final CommentService service;
 
-    @PostMapping("/")
+    @PostMapping("")
+    @RolesAllowed({"ROLE_OWNER", "ROLE_FREELANCER", "ROLE_ADMIN"})
     public ApiResponse<CommentDto> saveComment(@Valid @RequestBody CommentDto dto) {
         if (dto == null) {
             return ApiResponse.<CommentDto>error()
@@ -62,7 +61,8 @@ public class CommentController {
         }
     }
 
-    @PutMapping("/")
+    @PutMapping("")
+    @RolesAllowed({"ROLE_OWNER", "ROLE_FREELANCER", "ROLE_ADMIN"})
     public ApiResponse<CommentDto> updateComment(@Valid @RequestBody CommentDto dto) {
         if (dto == null) {
             return ApiResponse.<CommentDto>error()
@@ -81,8 +81,9 @@ public class CommentController {
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ApiResponse<CommentDto> deleteComment(@PathVariable("id") Long id) {
+    @DeleteMapping("/of/project/{projectId}/{id}")
+    @RolesAllowed({"ROLE_OWNER", "ROLE_FREELANCER", "ROLE_ADMIN"})
+    public ApiResponse<CommentDto> deleteComment(@PathVariable("projectId") Long projectId, @PathVariable("id") Long id) {
         if (id == null) {
             return ApiResponse.<CommentDto>error()
                 .cause("comment.id.should.not.be.null")
@@ -90,7 +91,7 @@ public class CommentController {
         }
         try {
             return ApiResponse.<CommentDto>data()
-                .data(service.deleteComment(id))
+                .data(service.deleteProjectComment(projectId, id))
                 .build();
         } catch (Exception ex) {
             LOGGER.error("Unable to delete comment", ex);
@@ -101,6 +102,7 @@ public class CommentController {
     }
 
     @GetMapping("/{id}")
+    @RolesAllowed({"ROLE_OWNER", "ROLE_FREELANCER", "ROLE_ADMIN"})
     public ApiResponse<CommentDto> getComment(@PathVariable("id") Long id) {
         if (id == null) {
             return ApiResponse.<CommentDto>error()
@@ -120,11 +122,25 @@ public class CommentController {
         }
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public ApiResponse<Page<CommentDto>> getComments(@NotNull Pageable pageable) {
         try {
             return ApiResponse.<Page<CommentDto>>data()
                 .data(service.getComments(pageable))
+                .build();
+        } catch (Exception ex) {
+            LOGGER.error("Unable to get comments", ex);
+            return ApiResponse.<Page<CommentDto>>data()
+                .data(Page.empty())
+                .build();
+        }
+    }
+
+    @GetMapping("/of/project/{id}")
+    public ApiResponse<Page<CommentDto>> getProjectComments(@NotNull Pageable pageable, @PathVariable("id") Long id) {
+        try {
+            return ApiResponse.<Page<CommentDto>>data()
+                .data(service.getProjectComments(pageable, id))
                 .build();
         } catch (Exception ex) {
             LOGGER.error("Unable to get comments", ex);

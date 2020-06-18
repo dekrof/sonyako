@@ -2,22 +2,26 @@ package com.makeit.api.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.makeit.api.model.ProjectDto;
-import com.makeit.api.model.TagDto;
+import com.makeit.api.model.UserDto;
 import com.makeit.api.service.ProjectService;
 import com.makeit.dao.model.Project;
-import com.makeit.dao.model.Tag;
+import com.makeit.dao.model.UserProject;
+import com.makeit.dao.model.UserProjectId;
 import com.makeit.dao.repository.ProjectRepository;
-import com.makeit.dao.repository.TagRepository;
+import com.makeit.dao.repository.UserProjectRepository;
+import com.makeit.dao.repository.UserRepository;
 import lombok.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import javax.transaction.Transactional;
+import java.util.List;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
+import java.util.stream.Collectors;
 
 /**
  * @author sonnyako <Makydon Sofiia>
@@ -25,9 +29,12 @@ import java.util.function.UnaryOperator;
  * @since 1.0.0
  */
 @Service
+@Transactional
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ProjectServiceImpl implements ProjectService {
 
+    private final UserProjectRepository userProjectRepository;
+    private final UserRepository userRepository;
     private final ProjectRepository repository;
     private final ObjectMapper objectMapper;
 
@@ -41,16 +48,28 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    @Transactional
-    public ProjectDto saveOrUpdateProject(ProjectDto dto) {
-        return toEntity
-            .andThen(repository::save)
-            .andThen(toDto)
-            .apply(dto);
+    public ProjectDto saveOrUpdateProject(ProjectDto dto, Long userId) {
+        var project = toEntity.andThen(repository::save).apply(dto);
+        var user = objectMapper.convertValue(userRepository.getOne(userId), UserDto.class);
+
+        var userProject = userProjectRepository.save(UserProject.builder()
+            .id(UserProjectId.builder()
+                .projectId(project.getId())
+                .userId(user.getId())
+                .build())
+            .isUserCreator(true)
+            .isUserOwner(true)
+            .rating(4.0)
+            .build()
+        );
+
+        return toDto.apply(project)
+            .toBuilder()
+            .owner(user)
+            .build();
     }
 
     @Override
-    @Transactional
     public ProjectDto deleteProject(Long id) {
         UnaryOperator<Project> mapper = project -> {
             repository.delete(project);
@@ -66,11 +85,41 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectDto getProject(Long id) {
-        return repository.findById(id).map(toDto).orElse(null);
+        List<UserProject> userProjects = userProjectRepository.findById_ProjectId(id);
+        var user = userProjects.stream()
+            .filter(UserProject::isUserOwner)
+            .map(UserProject::getUser)
+            .findFirst();
+
+        var rating = userProjects.stream()
+            .collect(Collectors.averagingDouble(UserProject::getRating));
+
+        if (user.isPresent()) {
+            var owner = objectMapper.convertValue(user.get(), UserDto.class);
+            return repository.findById(id)
+                .map(toDto)
+                .map(dto -> dto.toBuilder()
+                    .owner(owner)
+                    .rating(rating)
+                    .build())
+                .orElse(null);
+        }
+        return null;
     }
 
     @Override
     public Page<ProjectDto> getProjects(Pageable pageable) {
-        return repository.findAll(pageable).map(toDto);
+        return repository.findAll(pageable)
+            .map(toDto);
+    }
+
+    @Override
+    public Page<ProjectDto> getProjectsByCategory(Pageable pageable, Long categoryId) {
+        return userProjectRepository.getProjectsByCategory(pageable, categoryId)
+            .map(userProject -> toDto.apply(userProject.getProject())
+                .toBuilder()
+                .owner(objectMapper.convertValue(userProject.getUser(), UserDto.class))
+                .build()
+            );
     }
 }

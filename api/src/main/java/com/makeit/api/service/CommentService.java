@@ -1,12 +1,9 @@
 package com.makeit.api.service;
 
 import com.makeit.api.model.CommentDto;
-import com.makeit.api.model.CompanyDto;
-import com.makeit.dao.model.Comment;
+import com.makeit.dao.model.CommentType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
-import javax.transaction.Transactional;
 
 /**
  * @author sonnyako <Makydon Sofiia>
@@ -15,13 +12,15 @@ import javax.transaction.Transactional;
  */
 public interface CommentService {
 
-    @Transactional
     CommentDto saveOrUpdateComment(CommentDto dto);
 
-    @Transactional
-    CommentDto deleteComment(Long id);
+    CommentDto deleteComment(CommentType commentType, Long entityId, Long id);
 
     CommentDto getComment(Long id);
 
     Page<CommentDto> getComments(Pageable pageable);
+
+    CommentDto deleteProjectComment(Long projectId, Long id);
+
+    Page<CommentDto> getProjectComments(Pageable pageable, Long projectId);
 }

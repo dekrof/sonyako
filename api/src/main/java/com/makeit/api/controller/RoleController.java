@@ -2,10 +2,7 @@ package com.makeit.api.controller;
 
 import com.makeit.api.model.ApiResponse;
 import com.makeit.api.model.RoleDto;
-import com.makeit.api.model.TaskDto;
 import com.makeit.api.service.RoleService;
-import com.makeit.api.service.TaskService;
-import com.makeit.dao.model.Role;
 import lombok.*;
 import lombok.extern.slf4j.*;
 import org.springframework.data.domain.Page;
@@ -36,7 +33,7 @@ public class RoleController {
 
     private final RoleService service;
 
-    @PostMapping("/")
+    @PostMapping("")
     public ApiResponse<RoleDto> saveRole(@Valid @RequestBody RoleDto dto) {
         if (dto == null) {
             return ApiResponse.<RoleDto>error()
@@ -62,7 +59,7 @@ public class RoleController {
         }
     }
 
-    @PutMapping("/")
+    @PutMapping("")
     public ApiResponse<RoleDto> updateRole(@Valid @RequestBody RoleDto dto) {
         if (dto == null) {
             return ApiResponse.<RoleDto>error()
@@ -120,7 +117,7 @@ public class RoleController {
         }
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public ApiResponse<Page<RoleDto>> getRoles(@NotNull Pageable pageable) {
         try {
             return ApiResponse.<Page<RoleDto>>data()

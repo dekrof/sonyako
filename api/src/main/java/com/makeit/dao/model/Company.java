@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -29,7 +30,6 @@ import java.util.Set;
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@EqualsAndHashCode(callSuper = true)
 public class Company extends AbstractEntity {
 
     private static final long serialVersionUID = 7951382734495785152L;
@@ -56,4 +56,22 @@ public class Company extends AbstractEntity {
 
     @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<@Valid Project> projects = Set.of();
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Company)) {
+            return false;
+        }
+        var company = (Company) obj;
+        return id.equals(company.id)
+            && name.equals(company.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
+    }
 }

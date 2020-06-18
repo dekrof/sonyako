@@ -4,16 +4,14 @@ import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
-import java.util.Set;
+import java.util.Objects;
 
 /**
  * @author sonnyako <Makydon Sofiia>
@@ -46,12 +44,23 @@ public class Tag implements Serializable {
     @Column(name = "category_id", nullable = false, insertable = false, updatable = false)
     private Long categoryId;
 
-    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
-    private Set<User> users = Set.of();
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Tag)) {
+            return false;
+        }
+        var tag = (Tag) obj;
+        return Objects.equals(id, tag.id)
+            && Objects.equals(name, tag.name)
+            && Objects.equals(description, tag.description)
+            && Objects.equals(categoryId, tag.categoryId);
+    }
 
-    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
-    private Set<Project> projects = Set.of();
-
-    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
-    private Set<Task> tasks = Set.of();
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, categoryId);
+    }
 }

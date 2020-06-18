@@ -23,6 +23,7 @@ public class TopDeveloperDto {
     private String avatarUrl;
     private Set<TagDto> tags;
     private AddressDto address;
+    private String legalBusiness;
     private RateDto rate;
 
 }

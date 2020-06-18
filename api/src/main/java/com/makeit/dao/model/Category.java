@@ -3,19 +3,14 @@ package com.makeit.dao.model;
 import lombok.*;
 import lombok.experimental.*;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
-import java.util.Set;
 
 /**
  * @author sonnyako <Makydon Sofiia>
@@ -47,7 +42,4 @@ public class Category implements Serializable {
     @Column(name = "description", nullable = false)
     @NotBlank(message = "Category description should not be blank")
     private String description;
-
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<@Valid Project> projects = Set.of();
 }

@@ -57,7 +57,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query(
         nativeQuery = true,
-        value = "SELECT * FROM USER user WHERE user.user_type = 0 LIMIT 9"
+        value = "SELECT usr.* "
+            + "FROM USER usr, USER_AUTHORITY uat "
+            + "WHERE uat.user_id = usr.id "
+            + "    AND usr.is_active = 1 "
+            + "    AND usr.is_email_verified = 1 "
+            + "    AND uat.role_id = 2 "
+            + "LIMIT 9"
     )
     List<User> findTopNineFreelancers();
 }

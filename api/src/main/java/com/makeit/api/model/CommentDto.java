@@ -1,9 +1,12 @@
 package com.makeit.api.model;
 
-import com.makeit.dao.model.Comment;
-import com.makeit.dao.model.User;
+import com.makeit.dao.model.CommentType;
 import io.swagger.annotations.ApiModel;
 import lombok.*;
+import org.springframework.lang.Nullable;
+
+import java.time.Instant;
+import java.util.List;
 
 /**
  * @author sonnyako <Makydon Sofiia>
@@ -19,7 +22,19 @@ public class CommentDto {
 
     private Long id;
     private UserDto commentator;
-    private String title;
+
+    @Builder.Default
+    private String title = "";
+
     private String description;
     private CommentDto parent;
+    private List<CommentDto> replies;
+
+    @Nullable
+    private CommentType type;
+
+    @Nullable
+    private Long belongTo;
+
+    private Instant createdAt;
 }

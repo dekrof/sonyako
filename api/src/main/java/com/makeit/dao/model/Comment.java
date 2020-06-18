@@ -6,20 +6,18 @@ import lombok.experimental.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * @author sonnyako <Makydon Sofiia>
@@ -47,7 +45,6 @@ public class Comment extends AbstractEntity implements Comparable<Comment> {
     private User commentator;
 
     @Column(name = "title", nullable = false)
-    @NotBlank(message = "Comment title should not be blank")
     private String title;
 
     @Column(name = "description", nullable = false)
@@ -56,14 +53,12 @@ public class Comment extends AbstractEntity implements Comparable<Comment> {
 
     @Valid
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_comment_id", insertable = false, updatable = false)
+    @JoinColumn(name = "parent_comment_id")
     private Comment parent;
 
-    @Singular
-    @OneToMany(fetch = FetchType.LAZY)
-    @OrderColumn
-    @JoinColumn(name = "parent_comment_id")
-    private List<@Valid Comment> children = new LinkedList<>();
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "related_to", nullable = false)
+    private CommentType type;
 
     @Override
     public int compareTo(Comment other) {
