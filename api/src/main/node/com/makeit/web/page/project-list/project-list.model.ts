@@ -1,7 +1,7 @@
 import { inject, injectable } from "inversify";
 import { AppModel } from "@page/app-layout";
 import { AxiosProjectClient, CategoryDto, ProjectDto } from "@client/api-client";
-import { action, observable } from "mobx";
+import { action, observable, computed } from "mobx";
 import { delay, debounce } from "helpful-decorators";
 
 @injectable()

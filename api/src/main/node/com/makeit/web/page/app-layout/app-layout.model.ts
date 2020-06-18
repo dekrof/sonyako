@@ -2,10 +2,11 @@ import { action, flow, IValueWillChange, observable, observe } from "mobx";
 import { persist } from "mobx-persist";
 
 import { inject, injectable } from "@page/decorator";
-import { AxiosCategoryClient, AxiosUserClient, CategoryDto, DeviceType, JwtAuthenticationDto } from "@client/api-client";
+import { AxiosCategoryClient, AxiosUserClient, CategoryDto, DeviceType, JwtAuthenticationDto, RoleName } from "@client/api-client";
 
 import { JwtHelper } from "@model/jwt-helper";
 import { detectDevice, fingerprintDevice, Fingerprints } from "@model/device-detect";
+import { RoleDto } from '../../client/api-client';
 
 @injectable()
 export class AppModel {
@@ -35,13 +36,13 @@ export class AppModel {
             .then(value => value.data.data)
             .then(value => value.content)
             .then(value => this.categories = value);
-        
+
         this.deviceType = detectDevice();
         this.fingerprint();
 
         observe(this, "jwt", (ev: IValueWillChange<JwtAuthenticationDto>) => {
             if (ev.newValue) {
-                console.log("new JWT recieved");
+                console.log("new JWT received");
             }
         });
     }

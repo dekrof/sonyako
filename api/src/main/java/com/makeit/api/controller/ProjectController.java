@@ -2,6 +2,7 @@ package com.makeit.api.controller;
 
 import com.makeit.api.model.ApiResponse;
 import com.makeit.api.model.ProjectDto;
+import com.makeit.api.model.TopProjectDto;
 import com.makeit.api.service.ProjectService;
 import com.makeit.security.JwtUserDetails;
 import com.makeit.supported.annotation.CurrentUser;
@@ -23,6 +24,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * @author sonnyako <Makydon Sofiia>
@@ -140,6 +142,20 @@ public class ProjectController {
             LOGGER.error("Unable to get projects", ex);
             return ApiResponse.<Page<ProjectDto>>data()
                 .data(Page.empty())
+                .build();
+        }
+    }
+
+    @GetMapping("/top/ten")
+    public ApiResponse<List<TopProjectDto>> getLastTenProjects() {
+        try {
+            return ApiResponse.<List<TopProjectDto>>data()
+                .data(service.getLastTenProjects())
+                .build();
+        } catch (Exception ex) {
+            LOGGER.error("Unable to get projects", ex);
+            return ApiResponse.<List<TopProjectDto>>data()
+                .data(List.of())
                 .build();
         }
     }

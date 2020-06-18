@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * @author sonnyako <Makydon Sofiia>
@@ -23,11 +24,23 @@ public interface UserProjectRepository extends JpaRepository<UserProject, UserPr
 
     @Query(
         nativeQuery = true,
-        value = "SELECT * FROM USER_PROJECT usp, USER usr, PROJECT prj "
+        value
+            = "SELECT * FROM USER_PROJECT usp, USER usr, PROJECT prj "
             + "WHERE usp.project_id = prj.id "
             + "    AND usp.user_id = usr.id "
             + "    AND usp.is_user_owner = true "
             + "    AND prj.category_id = :categoryId"
     )
     Page<UserProject> getProjectsByCategory(Pageable pageable, @Param("categoryId") Long categoryId);
+
+    @Query(
+        nativeQuery = true,
+        value
+            = "SELECT * FROM USER_PROJECT usp, USER usr, PROJECT prj "
+            + "WHERE usp.project_id = prj.id "
+            + "    AND usp.user_id = usr.id "
+            + "    AND usp.is_user_owner = true "
+            + "LIMIT 10"
+    )
+    Stream<UserProject> getLastTenProjects();
 }

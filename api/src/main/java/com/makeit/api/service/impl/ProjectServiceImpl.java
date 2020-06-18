@@ -1,7 +1,9 @@
 package com.makeit.api.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.makeit.api.model.AddressDto;
 import com.makeit.api.model.ProjectDto;
+import com.makeit.api.model.TopProjectDto;
 import com.makeit.api.model.UserDto;
 import com.makeit.api.service.ProjectService;
 import com.makeit.dao.model.Project;
@@ -121,5 +123,22 @@ public class ProjectServiceImpl implements ProjectService {
                 .owner(objectMapper.convertValue(userProject.getUser(), UserDto.class))
                 .build()
             );
+    }
+
+    @Override
+    public List<TopProjectDto> getLastTenProjects() {
+        Function<UserProject, TopProjectDto> mapper = userProject -> {
+            var project = userProject.getProject();
+            var user = userProject.getUser();
+
+            return objectMapper.convertValue(project, TopProjectDto.class)
+                .toBuilder()
+                .address(objectMapper.convertValue(user.getProfile().getAddress(), AddressDto.class))
+                .build();
+        };
+
+        return userProjectRepository.getLastTenProjects()
+            .map(mapper)
+            .collect(Collectors.toList());
     }
 }

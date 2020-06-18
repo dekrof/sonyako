@@ -273,6 +273,14 @@ export class ProjectClient<O> {
     }
 
     /**
+     * HTTP GET /api/project/top/ten
+     * Java method: com.makeit.api.controller.ProjectController.getLastTenProjects
+     */
+    getLastTenProjects(options?: O): RestResponse<ApiResponse<TopProjectDto[]>> {
+        return this.httpClient.request({ method: "GET", url: uriEncoding`api/project/top/ten`, options: options });
+    }
+
+    /**
      * HTTP DELETE /api/project/{id}
      * Java method: com.makeit.api.controller.ProjectController.deleteProject
      */
@@ -914,9 +922,9 @@ export interface Page<T> {
 export interface Pageable {
     offset: number;
     sort: Sort;
-    pageNumber: number;
     paged: boolean;
     unpaged: boolean;
+    pageNumber: number;
     pageSize: number;
 }
 
@@ -1353,8 +1361,8 @@ export class SkillRatingId {
 }
 
 export class Sort {
-    sorted: boolean;
     unsorted: boolean;
+    sorted: boolean;
     empty: boolean;
 
     static fromData(data: Sort, target?: Sort): Sort {
@@ -1362,8 +1370,8 @@ export class Sort {
             return data;
         }
         const instance = target || new Sort();
-        instance.sorted = data.sorted;
         instance.unsorted = data.unsorted;
+        instance.sorted = data.sorted;
         instance.empty = data.empty;
         return instance;
     }
@@ -1548,6 +1556,37 @@ export class TopDeveloperDto {
         instance.address = AddressDto.fromData(data.address);
         instance.legalBusiness = data.legalBusiness;
         instance.rate = RateDto.fromData(data.rate);
+        return instance;
+    }
+}
+
+export class TopProjectDto {
+    name: string;
+    logo: string;
+    description: string;
+    address: AddressDto;
+    ratePerHour: number;
+    rateCurrency: string;
+    minDuration: number;
+    maxDuration: number;
+    proposals: number;
+    createdAt: Date;
+
+    static fromData(data: TopProjectDto, target?: TopProjectDto): TopProjectDto {
+        if (!data) {
+            return data;
+        }
+        const instance = target || new TopProjectDto();
+        instance.name = data.name;
+        instance.logo = data.logo;
+        instance.description = data.description;
+        instance.address = AddressDto.fromData(data.address);
+        instance.ratePerHour = data.ratePerHour;
+        instance.rateCurrency = data.rateCurrency;
+        instance.minDuration = data.minDuration;
+        instance.maxDuration = data.maxDuration;
+        instance.proposals = data.proposals;
+        instance.createdAt = data.createdAt;
         return instance;
     }
 }

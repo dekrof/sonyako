@@ -20,8 +20,6 @@ class TopDeveloperCarousel extends React.Component<WrappedComponentProps> {
     public model: HomeModel
 
     public render() {
-        console.log(toJS(this.model?.topDevelopers));
-
         return (
             <>
                 <Carousel className="top-developers-carousel">
