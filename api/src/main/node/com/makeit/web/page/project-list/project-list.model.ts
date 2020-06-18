@@ -2,7 +2,7 @@ import { inject, injectable } from "inversify";
 import { AppModel } from "@page/app-layout";
 import { AxiosProjectClient, CategoryDto, ProjectDto } from "@client/api-client";
 import { action, observable } from "mobx";
-import { delay, memo } from "helpful-decorators";
+import { delay } from "helpful-decorators";
 
 @injectable()
 export class ProjectListModel {
@@ -24,7 +24,7 @@ export class ProjectListModel {
     @observable
     public pageSize: number = 0;
 
-    @action @delay(300) @memo((...args) => args.join("_"))
+    @action @delay(300)
     public async getProjects(categoryUrl: string, page: number, size: number) {
         const retrieveCategories = async () => {
             const category = this.appModel.categories.find(category => category.url === categoryUrl);

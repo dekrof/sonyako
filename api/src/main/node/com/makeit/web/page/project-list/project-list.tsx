@@ -1,6 +1,7 @@
 import * as React from "react";
 import { injectIntl, WrappedComponentProps } from "react-intl";
 import { RouteComponentProps } from "react-router";
+import { Link } from "react-router-dom";
 import { observer } from "mobx-react";
 
 import TimeAgo, { TimeAgoProps } from "timeago-react/lib/timeago-react";
@@ -18,6 +19,7 @@ import { FolderViewOutlined, PaperClipOutlined, LikeOutlined, UserAddOutlined } 
 
 import "@page/project-list/project-list.less";
 import { ProjectDto } from "@client/api-client";
+import { flow } from 'mobx';
 
 timeago.register("uk", uk);
 timeago.register("en", en);
@@ -60,7 +62,7 @@ class ProjectList extends React.Component<WrappedComponentProps & RouteComponent
 
     private size: number;
 
-    public async componentDidMount() {
+    public componentDidMount() {
         const { search } = this.props.location;
         const { categoryUrl } = this.props.match.params as { categoryUrl: string };
         this.categoryUrl = categoryUrl;
@@ -69,15 +71,13 @@ class ProjectList extends React.Component<WrappedComponentProps & RouteComponent
         const [page, size] = [parseInt(params.get("page")), parseInt(params.get("size"))];
 
         this.page = isNaN(page) ? 0 : page;
-        this.size = isNaN(size) ? 20 : size
-
-        if (this.categoryUrl) {
-            await this.model.getProjects(this.categoryUrl, this.page, this.size);
-        }
+        this.size = isNaN(size) ? 20 : size;
+        this.loadProjects();
     }
 
     public render() {
         const { total, pageSize, projects } = this.model;
+
         return (
             <>
                 <Title>{this.model.category?.name} Projects</Title>
@@ -107,6 +107,12 @@ class ProjectList extends React.Component<WrappedComponentProps & RouteComponent
             </>
         );
     }
+
+    private loadProjects = flow(function* () {
+        if (this.categoryUrl) {
+            yield this.model.getProjects(this.categoryUrl, this.page, this.size);
+        }
+    }.bind(this));
 
     private renderProject(project: ProjectDto, index: number) {
         const matches = project.description.match(/<[p][^>]*>(.+?)<\/[p]>/gm);
@@ -141,7 +147,7 @@ class ProjectList extends React.Component<WrappedComponentProps & RouteComponent
 
     private renderProjectActions(project: ProjectDto) {
         return [
-            <span key="view-project-action"><FolderViewOutlined /> View Project</span>,
+            <span key="view-project-action"><FolderViewOutlined /> <Link to={`/project/view/${project.id}`} >View Project</Link></span>,
             <span key="like-project-action"><LikeOutlined /> Star project</span>,
             <span key="save-project-action"><PaperClipOutlined /> Save project</span>,
             <span key="hire-project-action"><UserAddOutlined /> Hire Me</span>,
