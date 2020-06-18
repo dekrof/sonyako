@@ -906,8 +906,8 @@ export class LogoutDto {
 }
 
 export interface Page<T> {
-    totalPages: number;
     totalElements: number;
+    totalPages: number;
     last: boolean;
     size: number;
     content: T[];
@@ -1361,8 +1361,8 @@ export class SkillRatingId {
 }
 
 export class Sort {
-    unsorted: boolean;
     sorted: boolean;
+    unsorted: boolean;
     empty: boolean;
 
     static fromData(data: Sort, target?: Sort): Sort {
@@ -1370,8 +1370,8 @@ export class Sort {
             return data;
         }
         const instance = target || new Sort();
-        instance.unsorted = data.unsorted;
         instance.sorted = data.sorted;
+        instance.unsorted = data.unsorted;
         instance.empty = data.empty;
         return instance;
     }
@@ -1561,6 +1561,7 @@ export class TopDeveloperDto {
 }
 
 export class TopProjectDto {
+    id: number;
     name: string;
     logo: string;
     description: string;
@@ -1577,6 +1578,7 @@ export class TopProjectDto {
             return data;
         }
         const instance = target || new TopProjectDto();
+        instance.id = data.id;
         instance.name = data.name;
         instance.logo = data.logo;
         instance.description = data.description;

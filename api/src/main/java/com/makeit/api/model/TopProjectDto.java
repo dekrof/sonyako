@@ -14,6 +14,7 @@ import java.time.Instant;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(toBuilder = true)
 public class TopProjectDto {
+    private Long id;
     private String name;
     private String logo;
     private String description;

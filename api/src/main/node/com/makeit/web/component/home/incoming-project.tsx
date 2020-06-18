@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 import { observer } from "mobx-react";
 import Time from "react-time";
 
@@ -20,10 +21,14 @@ class IncomingProject extends React.Component<WrappedComponentProps & { project?
         return (
             <>
                 <Card className="incoming-project"
-                    actions={["Get Job", "Contact Owner", "View Project"]}>
+                    actions={this.renderProjectAction(project)}>
                     <Space direction="horizontal" align="start" size={20} className="incoming-project-overview">
                         <div>
-                            <Avatar size={120} shape="square" src={project.logo} />
+                            <Avatar
+                                size={120}
+                                shape="square"
+                                src={project.logo}
+                                style={{border: "1px solid #d9d9d9", borderRadius: 3, padding: 6}} />
                             <div className="incoming-project-overview-budjet">
                                 <span>{`${project.ratePerHour}${this.getCurrencySign(project.rateCurrency)}/hr`}</span>
                                 <br />
@@ -58,6 +63,14 @@ class IncomingProject extends React.Component<WrappedComponentProps & { project?
                 </Card>
             </>
         );
+    }
+
+    private renderProjectAction(project: TopProjectDto) {
+        return [
+            "Get Job",
+            "Contact Owner",
+            <span key="view-project"><Link to={`/project/view/${project.id}`}>View Project</Link></span>
+        ]
     }
 
     private getCurrencySign(currency: string): string {
