@@ -17,7 +17,7 @@ import { Footer, Title } from "@page/app-layout";
 import { context, page, resolve } from "@page/decorator";
 
 import { Divider, List, Tabs } from "antd";
-import { FolderViewOutlined, LikeOutlined, PaperClipOutlined, UserAddOutlined } from "@ant-design/icons";
+import { FolderViewOutlined, LikeOutlined, PaperClipOutlined, UserAddOutlined, SendOutlined, ContactsOutlined } from "@ant-design/icons";
 
 import { ProjectDto, TopDeveloperDto, CurrencyType } from '@client/api-client';
 
@@ -171,7 +171,7 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
 
     private renderFreelancer(freelancer: TopDeveloperDto, index: number) {
         return (
-            <List.Item actions={["Hire Me", "View Profile", "Contact Freelancer"]}>
+            <List.Item actions={this.renderFreelancerActions(freelancer)}>
                 <List.Item.Meta
                     title={`${freelancer.firstName} ${freelancer.lastName}`}
                     description={
@@ -233,6 +233,14 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
             <span key="like-project-action"><LikeOutlined /> Star project</span>,
             <span key="save-project-action"><PaperClipOutlined /> Save project</span>,
             <span key="hire-project-action"><UserAddOutlined /> Hire Me</span>,
+        ]
+    }
+
+    private renderFreelancerActions(freelancer: TopDeveloperDto) {
+        return [
+            <span key="hire-project-action"><UserAddOutlined /> Hire Me</span>,
+            <span key="view-project-action"><ContactsOutlined /> <Link to={`/freelancer/view/${freelancer?.id}`}>View Profile</Link></span>,
+            <span key="save-project-action"><SendOutlined /> Contact Freelancer</span>,
         ]
     }
 
