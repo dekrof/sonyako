@@ -1,7 +1,7 @@
 import { action, observable, autorun, comparer, computed, toJS } from 'mobx';
 import { inject, injectable } from "inversify";
 
-import { CommentDto, AxiosCommentClient, AxiosFreelancerClient, TopDeveloperDto, AxiosProjectClient, TopProjectDto, CommentType } from '@client/api-client';
+import { AxiosCommentClient, AxiosFreelancerClient,  AxiosProjectClient , CommentDto, CommentType, TopDeveloperDto, TopProjectDto } from '@client/api-client';
 import { AppModel } from "@page/app-layout";
 import { notification } from 'antd';
 

@@ -1,8 +1,8 @@
 import { inject, injectable } from "inversify";
 import { AppModel } from "@page/app-layout";
-import { AxiosProjectClient, AxiosFreelancerClient, CategoryDto, ProjectDto, TopDeveloperDto } from "@client/api-client";
-import { action, observable } from "mobx";
-import { delay } from "helpful-decorators";
+import { AxiosProjectClient, AxiosFreelancerClient, AxiosCommentClient, CategoryDto, CommentDto, CommentType, ProjectDto, TopDeveloperDto } from "@client/api-client";
+import { action, observable, computed } from "mobx";
+import { debounce } from "helpful-decorators";
 
 @injectable()
 export class CategoryListModel {
@@ -10,11 +10,15 @@ export class CategoryListModel {
     constructor(
         @inject(AppModel) private appModel: AppModel,
         @inject(AxiosProjectClient) private projectClient: AxiosProjectClient,
-        @inject(AxiosFreelancerClient) private freelancerClient: AxiosFreelancerClient
+        @inject(AxiosFreelancerClient) private freelancerClient: AxiosFreelancerClient,
+        @inject(AxiosCommentClient) private commentClient: AxiosCommentClient
     ) {
     }
 
     public category: CategoryDto;
+
+    @observable
+    public isCommentDrawerOpen: boolean;
 
     @observable
     public projects: ProjectDto[] = [];
@@ -26,6 +30,9 @@ export class CategoryListModel {
     public projectPageSize: number = 0;
 
     @observable
+    public activeFreelancer: TopDeveloperDto;
+
+    @observable
     public freelancers: TopDeveloperDto[] = [];
 
     @observable
@@ -34,12 +41,35 @@ export class CategoryListModel {
     @observable
     public freelancerPageSize: number = 0;
 
-    @action @delay(300)
+    @computed
+    public get jwtData(): any {
+        return this.appModel.jwtData;
+    }
+
+    @action
+    public async sendMessageToUser(description: string): Promise<CommentDto> {
+        const author = Number(this.appModel.jwtData.sub);
+        const { tokenType, accessToken } = this.appModel.jwt;
+
+        const comment: any = {
+            belongTo: this.activeFreelancer.id,
+            commentator: { id: author } as any,
+            description: description,
+            type: CommentType.USER,
+            title: ""
+        };
+
+        return await this.commentClient.saveComment(comment, { headers: { Authorization: `${tokenType} ${accessToken}` } })
+            .then(value => value.data)
+            .then(value => value.data);
+    }
+
+    @action @debounce(300)
     public async getProjects(categoryUrl: string, page: number, size: number) {
         const retrieveProjects = async () => {
             const category = this.appModel.categories.find(category => category.url === categoryUrl);
             if (category) {
-                const response = await this.projectClient.getProjects(category.id, {page, size})
+                const response = await this.projectClient.getProjects(category.id, { page, size })
                     .then(value => value.data)
                     .then(value => value.data);
 
@@ -65,12 +95,12 @@ export class CategoryListModel {
         }
     }
 
-    @action @delay(300)
+    @action @debounce(300)
     public async getFreelancers(categoryUrl: string, page: number, size: number) {
         const retrieveFreelancers = async () => {
             const category = this.appModel.categories.find(category => category.url === categoryUrl);
             if (category) {
-                const response = await this.freelancerClient.getFreelancers(category.id, {page, size})
+                const response = await this.freelancerClient.getFreelancers(category.id, { page, size })
                     .then(value => value.data)
                     .then(value => value.data);
 

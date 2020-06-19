@@ -16,7 +16,7 @@ import { CategoryListModel, CategoryListModule } from "@page/category-list";
 import { Footer, Title } from "@page/app-layout";
 import { context, page, resolve } from "@page/decorator";
 
-import { Divider, List, Tabs } from "antd";
+import { Divider, List, Tabs, Drawer, Comment, Input, Button, notification } from "antd";
 import { FolderViewOutlined, LikeOutlined, PaperClipOutlined, UserAddOutlined, SendOutlined, ContactsOutlined } from "@ant-design/icons";
 
 import { ProjectDto, TopDeveloperDto, CurrencyType } from '@client/api-client';
@@ -59,6 +59,9 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
 
     @resolve
     private model: CategoryListModel;
+
+    @observable
+    private textMessage: string;
 
     @observable
     private category: { url: string } = { url: "" };
@@ -143,6 +146,21 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
                     </Tabs>
                 </section>
                 <Footer />
+                <Drawer
+                    closable={false}
+                    placement="top"
+                    className="contact-owner-drawer"
+                    visible={this.model.isCommentDrawerOpen}
+                    footer={this.renderDrawerFooter()}>
+                    <Comment
+                        avatar={<img src={this.model.jwtData?.avatarUrl} />}
+                        author={`${this.model.jwtData?.name} ${this.model.jwtData?.surname}`}
+                        content={<>
+                            <Input.TextArea rows={4} onChange={(ev) => this.textMessage = ev.target.value} />
+                            <p><sub>You writing to {this.model.activeFreelancer?.firstName} {this.model.activeFreelancer?.lastName}</sub></p>
+                        </>}
+                    />
+                </Drawer>
             </>
         );
     }
@@ -196,6 +214,46 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
         )
     }
 
+    private sendMessageToUser() {
+        if (!this.model.jwtData) {
+            notification.warn({
+                message: "Sign-in required",
+                description: <span>Only authorized users can leave a comment. Please, <a href="/sign-in">sign-in</a> to continue.</span>,
+            });
+            return;
+        }
+
+        this.model.sendMessageToUser(this.textMessage).then(() => {
+            this.textMessage = null;
+            this.closeDrawer();
+        });
+    }
+
+    private closeDrawer() {
+        this.model.isCommentDrawerOpen = false;
+    }
+
+    private openContactDrawer(freelancer: TopDeveloperDto) {
+        if (!this.model.jwtData) {
+            notification.warn({
+                message: "Sign-in required",
+                description: <span>Only authorized users can leave a comment. Please, <a href="/sign-in">sign-in</a> to continue.</span>,
+            });
+            return;
+        }
+        this.model.activeFreelancer = freelancer;
+        this.model.isCommentDrawerOpen = true;
+    }
+
+    private renderDrawerFooter() {
+        return (
+            <>
+                <Button onClick={() => this.sendMessageToUser()}>Send Message</Button>
+                <a onClick={() => this.closeDrawer()}>Cancel and close</a>
+            </>
+        );
+    }
+
     private renderProject(project: ProjectDto, index: number) {
         const matches = project.description.match(/<[p][^>]*>(.+?)<\/[p]>/gm);
         const description = matches.length > 1
@@ -238,9 +296,9 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
 
     private renderFreelancerActions(freelancer: TopDeveloperDto) {
         return [
-            <span key="hire-project-action"><UserAddOutlined /> Hire Me</span>,
-            <span key="view-project-action"><ContactsOutlined /> <Link to={`/freelancer/view/${freelancer?.id}`}>View Profile</Link></span>,
-            <span key="save-project-action"><SendOutlined /> Contact Freelancer</span>,
+            <span key="hire-me-action"><UserAddOutlined /> Hire Me</span>,
+            <span key="view-profile-action"><ContactsOutlined /> <Link to={`/freelancer/view/${freelancer?.id}`}>View Profile</Link></span>,
+            <span key="contact-user-action"><a onClick={() => this.openContactDrawer(freelancer)}><SendOutlined /> Contact Freelancer</a></span>,
         ]
     }
 

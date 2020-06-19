@@ -4,7 +4,7 @@ import axios from "axios";
 import { CategoryListModel } from "@page/category-list/index";
 import { Context } from "@page/decorator";
 
-import { AxiosProjectClient, AxiosFreelancerClient } from "@client/api-client";
+import { AxiosProjectClient, AxiosFreelancerClient, AxiosCommentClient } from "@client/api-client";
 
 export const CategoryListModule: Context = {
     bootstrap: (ctx) => {
@@ -13,6 +13,10 @@ export const CategoryListModule: Context = {
             axios.create()
         ));
         ctx.bind<AxiosFreelancerClient>(AxiosFreelancerClient).toConstantValue(new AxiosFreelancerClient(
+            process.env.API_BASE_URL,
+            axios.create()
+        ));
+        ctx.bind<AxiosCommentClient>(AxiosCommentClient).toConstantValue(new AxiosCommentClient(
             process.env.API_BASE_URL,
             axios.create()
         ));
