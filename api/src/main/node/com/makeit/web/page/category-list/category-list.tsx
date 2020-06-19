@@ -20,6 +20,7 @@ import { FolderViewOutlined, LikeOutlined, PaperClipOutlined, UserAddOutlined } 
 import "@page/category-list/category-list.less";
 import { ProjectDto, TopDeveloperDto } from "@client/api-client";
 import { flow, observable, intercept, observe } from 'mobx';
+import content from '../../types';
 
 timeago.register("uk", uk);
 timeago.register("en", en);
@@ -172,11 +173,23 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
             <List.Item actions={["Hire Me", "View Profile", "Contact Freelancer"]}>
                 <List.Item.Meta
                     title={`${freelancer.firstName} ${freelancer.lastName}`}
-                    description={freelancer.legalBusiness}
+                    description={
+                        <>
+                            <span>{freelancer.legalBusiness}</span>
+                            <p>
+                                <strong>{`${freelancer.rate.rate}${freelancer.rate.currency}/hr`}</strong>
+                                <br />
+                                <span>{`${freelancer.address.city}, ${freelancer.address.countryCode}`}</span>
+                            </p>
+                        </>
+                    }
                     avatar={<img src={freelancer.avatarUrl}
                         width={120}
                         height={120}
-                        style={{ padding: 2, borderRadius: 2, border: "1px solid #f0f0f0", background: "#fff" }} />} />
+                        style={{ padding: 2, borderRadius: 2, border: "1px solid #f0f0f0", background: "#fff" }} />}>
+                </List.Item.Meta>
+                <p>
+                </p>
                 <Divider plain style={{ marginBottom: 0 }} />
             </List.Item>
         )
