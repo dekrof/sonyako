@@ -2,6 +2,8 @@ import * as React from "react";
 import { injectIntl, WrappedComponentProps } from "react-intl";
 import { RouteComponentProps } from "react-router";
 import { Link } from "react-router-dom";
+
+import { flow, observable, observe } from 'mobx';
 import { observer } from "mobx-react";
 
 import TimeAgo, { TimeAgoProps } from "timeago-react/lib/timeago-react";
@@ -17,16 +19,15 @@ import { context, page, resolve } from "@page/decorator";
 import { Divider, List, Tabs } from "antd";
 import { FolderViewOutlined, LikeOutlined, PaperClipOutlined, UserAddOutlined } from "@ant-design/icons";
 
+import { ProjectDto, TopDeveloperDto, CurrencyType } from '@client/api-client';
+
 import "@page/category-list/category-list.less";
-import { ProjectDto, TopDeveloperDto } from "@client/api-client";
-import { flow, observable, intercept, observe } from 'mobx';
-import content from '../../types';
 
 timeago.register("uk", uk);
 timeago.register("en", en);
 timeago.register("ru", ru);
 
-const SinceOfTime = (TimeAgo as unknown) as React.Component<TimeAgoProps> & { new(props): React.Component<TimeAgoProps> };
+const SinceOfTime = (TimeAgo as unknown) as React.Component<TimeAgoProps> & { new(props: TimeAgoProps): React.Component<TimeAgoProps> };
 
 const experiences = [
     {
@@ -135,7 +136,7 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
                                     pageSizeOptions: ["4", "10", "20", "30", "40", "50"],
                                     total: totalFreelancers,
                                     onChange: (page, pageSize) => this.model.getFreelancers(this.category.url, page - 1, pageSize),
-                                    onShowSizeChange: (page, pageSize) => this.model.getFreelancers(this.category.url, page  - 1, pageSize),
+                                    onShowSizeChange: (page, pageSize) => this.model.getFreelancers(this.category.url, page - 1, pageSize),
                                 }}
                             />
                         </Tabs.TabPane>
@@ -177,7 +178,7 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
                         <>
                             <span>{freelancer.legalBusiness}</span>
                             <p>
-                                <strong>{`${freelancer.rate.rate}${freelancer.rate.currency}/hr`}</strong>
+                                <strong>{`${freelancer.rate.rate}${this.getCurrencySign(freelancer.rate.currency)}/hr`}</strong>
                                 <br />
                                 <span>{`${freelancer.address.city}, ${freelancer.address.countryCode}`}</span>
                             </p>
@@ -216,7 +217,7 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
                 <p dangerouslySetInnerHTML={{ __html: description }}></p>
                 <p>
                     <strong>Proposals - {project.proposals} person(s). </strong>
-                    <span> Rate per Hour - {project.ratePerHour}{project.rateCurrency} </span>
+                    <span> Rate Per Hour - <span>{project.ratePerHour}{this.getCurrencySign(project.rateCurrency)} </span></span>
                     <span className="payment-details">
                         <em>{payment} </em>{project.fixedTime ? <em>Fixed Time</em> : null}
                     </span>
@@ -245,6 +246,17 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
                 <span>Posted: <SinceOfTime datetime={project.createdAt} locale={locale} /> by {`${name} ${surname}`}</span>
             </>
         );
+    }
+
+    private getCurrencySign(currency: CurrencyType | string): string {
+        switch (currency) {
+            // @formatter:off
+            case CurrencyType.EUR: return "€";
+            case CurrencyType.GBP: return "£";
+            case CurrencyType.UAH: return "₴";
+            case CurrencyType.USD: return "$";
+            // @formatter:on
+        }
     }
 }
 

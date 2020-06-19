@@ -38,9 +38,23 @@
 
     .ant-row > div {
         .ant-col {
+            padding: 20px 0;
+            padding-bottom: 10px;
+            margin: 1px;
+
+            &:hover {
+                outline: 1px solid #9a2c80;
+                background: #fffffa !important;
+            }
+
             .ant-list-item {
                 background-color: transparent !important;
                 margin-bottom: 0 !important;
+
+                &:hover {
+                    outline: none;
+                    background: none;
+                }
 
                 &-meta-description {
                     height: 92px;
@@ -59,17 +73,9 @@
 
                 &-action {
                     margin: 0;
-                    padding-top: 20px;
+                    padding-bottom: 0 !important;
                     background: linear-gradient(180deg, rgba(255, 251, 254,1) 0%, rgba(255, 251, 254,0) 35%);
                 }
-            }
-
-            padding: 20px 0;
-            margin: 1px;
-
-            &:hover {
-                outline: 1px solid #9a2c80;
-                background: #fffffa !important;
             }
         }
 
@@ -81,15 +87,17 @@
 
     .ant-list-lg {
         .ant-list-item {
+            margin: 1px;
             padding: 0;
             padding-top: 20px;
 
             &:hover {
-                background: #fffff4 !important;
+                outline: 1px solid #9a2c80;
+                background: #fffffa !important;
             }
 
             &:nth-child(even), &:hover {
-                background: rgba(255, 251, 254, 0.75);
+                background: #fbfbfb;
             }
 
             &:nth-child(odd) {
@@ -97,7 +105,10 @@
             }
 
             &-action {
-                margin: 16px 0;
+                margin: 0;
+                padding: 10px 20px !important;
+                background: linear-gradient(180deg, rgba(255, 251, 254,1) 0%, rgba(255, 251, 254,0) 35%);
+
                 a {
                     color: #a6a6a9;
                 }
@@ -118,6 +129,10 @@
             }
 
             p {
+                span > span {
+                    color: #9a2c80;
+                    margin-right: 6px;
+                }
                 text-align: justify;
                 text-align-last: left;
                 hyphens: auto;
