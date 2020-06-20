@@ -330,7 +330,7 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
     private renderFreelancerActions(freelancer: TopDeveloperDto) {
         return [
             <span key="view-profile-action"><ContactsOutlined /> <Link to={`/profile/view/${freelancer?.id}`}> View Profile</Link></span>,
-            <span key="contact-user-action"><a onClick={() => this.openContactDrawer(freelancer)}><SendOutlined /> Contact Freelancer</a></span>,
+            <span key="contact-user-action"><a onClick={() => this.openContactDrawer(freelancer)}><SendOutlined /> Contact Me</a></span>,
             <span key="hire-me-action"><UserAddOutlined /><this.hireMenu freelancer={freelancer} /></span>
         ]
     }
