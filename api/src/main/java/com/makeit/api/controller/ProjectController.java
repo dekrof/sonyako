@@ -3,7 +3,9 @@ package com.makeit.api.controller;
 import com.makeit.api.model.ApiResponse;
 import com.makeit.api.model.ProjectDto;
 import com.makeit.api.model.TopProjectDto;
+import com.makeit.api.model.UserDto;
 import com.makeit.api.service.ProjectService;
+import com.makeit.dao.model.UserStatusType;
 import com.makeit.security.JwtUserDetails;
 import com.makeit.supported.annotation.CurrentUser;
 import lombok.*;
@@ -12,11 +14,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -158,5 +162,31 @@ public class ProjectController {
                 .data(List.of())
                 .build();
         }
+    }
+
+    @GetMapping("/projects/{projectId}")
+    public ApiResponse<List<UserDto>> getUserProjects(
+        @PathVariable("projectId") Long projectId,
+        @RequestParam(value = "status") UserStatusType status
+    ) {
+        try {
+            return ApiResponse.<List<UserDto>>data()
+                .data(service.getUserProjects(projectId, status))
+                .build();
+        } catch (Exception ex) {
+            LOGGER.error(ex.getMessage());
+
+            return ApiResponse.<List<UserDto>>error()
+                .data(service.getUserProjects(projectId, status))
+                .cause(ex.getMessage())
+                .build();
+        }
+    }
+
+    @PatchMapping("/change/status/{projectId}")
+    public ApiResponse<Boolean> changeStatus(@PathVariable("projectId") Long projectId) {
+        return ApiResponse.<Boolean>data()
+            .data(service.changeStatus(projectId))
+            .build();
     }
 }

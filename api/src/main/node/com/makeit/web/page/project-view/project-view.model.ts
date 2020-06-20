@@ -2,7 +2,7 @@ import { FormikProps } from "formik";
 import { action, computed, observable, toJS } from "mobx";
 import { inject, injectable } from "@page/decorator";
 
-import { AxiosCommentClient, AxiosProjectClient, CommentDto, CommentType, ProjectDto } from "@client/api-client";
+import { AxiosCommentClient, AxiosProjectClient, CommentDto, CommentType, ProjectDto, UserDto, UserStatusType, AxiosFreelancerClient } from '@client/api-client';
 
 import { AppModel } from "@page/app-layout";
 
@@ -12,7 +12,8 @@ export class ProjectViewModel {
     constructor(
         @inject(AppModel) public appModel: AppModel,
         @inject(AxiosProjectClient) private projectClient: AxiosProjectClient,
-        @inject(AxiosCommentClient) private commentClient: AxiosCommentClient
+        @inject(AxiosCommentClient) private commentClient: AxiosCommentClient,
+        @inject(AxiosFreelancerClient) private freelancerClient: AxiosFreelancerClient,
     ) {
     }
 
@@ -20,6 +21,15 @@ export class ProjectViewModel {
 
     @observable
     public project: ProjectDto;
+
+    @observable
+    public hiringUsers: UserDto[] = [];
+
+    @observable
+    public hiredUsers: UserDto[] = [];
+
+    @observable
+    public declinedUsers: UserDto[] = [];
 
     @observable
     public comments: CommentDto[] = [];
@@ -39,6 +49,32 @@ export class ProjectViewModel {
     }
 
     @action
+    public async declineFreelancer(user: UserDto) {
+        const {tokenType, accessToken} = this.appModel.jwt;
+        const response = await this.freelancerClient.declineFreelancer({
+            projectId: this.project.id,
+            userId: user.id
+        }, {headers: {Authorization: `${tokenType} ${accessToken}`}}).then(value => value.data.data);
+
+        if (response) {
+            await this.updateAll();
+        }
+    }
+
+    @action
+    public async acceptFreelancer(user: UserDto) {
+        const {tokenType, accessToken} = this.appModel.jwt;
+        const response = await this.freelancerClient.acceptFreelancer({
+            projectId: this.project.id,
+            userId: user.id
+        }, {headers: {Authorization: `${tokenType} ${accessToken}`}}).then(value => value.data.data);
+
+        if (response) {
+            await this.updateAll();
+        }
+    }
+
+    @action
     public async getProjectInfo(id: number) {
         try {
             this.isLoading = true;
@@ -55,9 +91,37 @@ export class ProjectViewModel {
     }
 
     @action
+    public async updateAll() {
+        await this.getHiredUsers();
+        await this.getHiringUsers();
+        await this.getDeclinedUsers();
+    }
+
+    @action
     public async getComments() {
         const response = await this.commentClient.getProjectComments(this.project.id, {page: 0, size: 1000}).then(value => value.data);
         this.comments = this.createCommentTree(response.data.content || []);
+    }
+
+    @action
+    public async getHiringUsers() {
+        this.hiringUsers = await this.projectClient.getUserProjects(this.project.id, {status: UserStatusType.HIRE_ME})
+            .then(value => value.data)
+            .then(value => value.data);
+    }
+
+    @action
+    public async getHiredUsers() {
+        this.hiredUsers = await this.projectClient.getUserProjects(this.project.id, {status: UserStatusType.HIRED})
+            .then(value => value.data)
+            .then(value => value.data);
+    }
+
+    @action
+    public async getDeclinedUsers() {
+        this.declinedUsers = await this.projectClient.getUserProjects(this.project.id, {status: UserStatusType.DECLINED})
+            .then(value => value.data)
+            .then(value => value.data);
     }
 
     @action

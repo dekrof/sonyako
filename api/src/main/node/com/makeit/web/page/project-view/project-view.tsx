@@ -1,9 +1,9 @@
 import * as React from "react";
 import { RouteComponentProps } from "react-router";
-
+import { Link } from "react-router-dom";
 import { injectIntl, WrappedComponentProps } from "react-intl";
 
-import { Button, Comment, Divider, Form, Input, List, Modal, notification, Popconfirm, Rate, Space, Typography } from "antd";
+import { Button, Comment, Divider, Form, Input, List, Modal, notification, Popconfirm, Rate, Space, Typography, Dropdown, Menu, Avatar, Card } from 'antd';
 
 import Time from "react-time";
 import TimeAgo, { TimeAgoProps } from "timeago-react/lib/timeago-react";
@@ -12,7 +12,7 @@ import uk from "timeago.js/lib/lang/uk";
 import ru from "timeago.js/lib/lang/ru";
 import en from "timeago.js/lib/lang/en_US";
 
-import { BaseProfileDto, CommentDto, ProjectDto } from "@client/api-client";
+import { BaseProfileDto, CommentDto, ProjectDto, UserDto, UserStatusType } from '@client/api-client';
 import { ProjectViewModel, ProjectViewModule } from "@page/project-view";
 import { context, observable, observer, page, resolve } from "@page/decorator";
 import { Footer, Title } from "@page/app-layout";
@@ -61,13 +61,16 @@ class ProjectView extends React.Component<WrappedComponentProps & RouteComponent
     private textarea = React.createRef<Input.TextArea>();
 
     public async UNSAFE_componentWillMount() {
-        const {id} = this.props.match.params as any;
+        const { id } = this.props.match.params as any;
         const projectId = parseInt(id, 10);
         await this.model.getProjectInfo(projectId);
+        await this.model.getHiredUsers();
+        await this.model.getHiringUsers();
+        await this.model.getDeclinedUsers();
     }
 
     public render() {
-        const {projectNotFound, project} = this.model;
+        const { projectNotFound, project } = this.model;
         return (
             <>
                 <Title>Project View</Title>
@@ -76,14 +79,16 @@ class ProjectView extends React.Component<WrappedComponentProps & RouteComponent
                         projectNotFound || !project ? null : this.renderProjectArticle()
                     }
                 </section>
-                <Footer/>
+                <Footer />
             </>
         );
     }
 
     private renderProjectArticle() {
-        const {project} = this.model;
-        const {profile} = project?.owner;
+        console.log(this.model.appModel.jwtData);
+        const { project, hiredUsers, hiringUsers, declinedUsers } = this.model;
+        const { profile } = project?.owner;
+
         return (
             <Space direction="horizontal" size={20}>
                 <article>
@@ -92,37 +97,126 @@ class ProjectView extends React.Component<WrappedComponentProps & RouteComponent
                             src={project.logo}
                             width={120}
                             height={120}
-                            style={{padding: 6, borderRadius: 2, border: "1px solid #f0f0f0"}} />
+                            style={{ padding: 6, borderRadius: 2, border: "1px solid #f0f0f0" }} />
                         <Space
                             direction="vertical"
                             align="start"
                             size={0}
-                            style={{width: "calc(100% - 140px)", float: "right"}}>
+                            style={{ width: "calc(100% - 140px)", float: "right" }}>
                             <Typography.Text><h3>{project.name}</h3> </Typography.Text>
-                            <Rate defaultValue={project.rating} allowHalf/>
+                            <Rate defaultValue={project.rating} allowHalf />
                         </Space>
                     </div>
                     <br />
                     <Typography.Text>
-                        <p dangerouslySetInnerHTML={{__html: project.description}}/>
+                        <p dangerouslySetInnerHTML={{ __html: project.description }} />
                     </Typography.Text>
+                    {
+                        hiredUsers.length > 0 || hiringUsers.length > 0 || declinedUsers.length > 0
+                            ? this.renderUsers()
+                            : null
+                    }
                     {
                         this.renderProjectComments()
                     }
                 </article>
                 <summary>
                     {this.renderProjectDetails(project)}
-                    <Divider plain dashed/>
-                    <Space direction="vertical" size={20} align="center">
-                        <Button type="primary">Submit Proposal</Button>
-                        <Button danger>Flag as inappropriate</Button>
-                    </Space>
-                    <Divider plain dashed/>
-                    <br/>
+                    {
+                        Number(this.model.appModel.jwtData?.sub) === project.owner.id
+                            ?
+                            <>
+                                <Divider plain dashed />
+                                <Space direction="vertical" size={20} align="center">
+                                    <Button danger>Close Project</Button>
+                                </Space>
+                            </>
+                            : null
+                    }
+
+                    <Divider plain dashed />
+                    <br />
                     {this.renderClientDetails(profile)}
                 </summary>
             </Space>
         )
+    }
+    private renderUsers() {
+        const { hiredUsers, hiringUsers, declinedUsers } = this.model;
+        return (
+            <>
+                {
+                    hiredUsers.length > 0
+                        ? this.renderUserList(hiredUsers, "Users on project", UserStatusType.HIRED)
+                        : null
+                }
+                {
+                    hiringUsers.length > 0
+                        ? this.renderUserList(hiringUsers, "New user proposals", UserStatusType.HIRE_ME)
+                        : null
+                }
+                {
+                    declinedUsers.length > 0
+                        ? this.renderUserList(declinedUsers, "Declined users", UserStatusType.DECLINED)
+                        : null
+                }
+            </>
+        )
+    }
+    private renderUserList(hiredUsers: UserDto[], title: string, status: UserStatusType) {
+        return (
+            <>
+                <Divider orientation="left"><h3>{title}</h3></Divider>
+                <div>
+                    <List
+                        dataSource={hiredUsers}
+                        grid={{ gutter: 20 }}
+                        renderItem={user => this.renderUser(user, status)} />
+                </div>
+            </>
+        )
+    }
+
+    private handleUserSelection(key, user) {
+        switch(key) {
+            case UserStatusType.HIRED: this.model.acceptFreelancer(user); break;
+            case UserStatusType.DECLINED: this.model.declineFreelancer(user); break;
+        }
+    }
+
+    private renderUser(user: UserDto, status: UserStatusType) {
+        const menu = <Menu onClick={({key}) => this.handleUserSelection(key, user)}>
+            <Menu.Item><Link to={`/profile/view/${user.id}`}>View Profile</Link></Menu.Item>
+            <Menu.Item
+                key={UserStatusType.HIRED}
+                disabled={status === UserStatusType.HIRED}>Accept User</Menu.Item>
+            <Menu.Item
+                key={UserStatusType.DECLINED}
+                disabled={status === UserStatusType.DECLINED}>Decline User</Menu.Item>
+        </Menu>
+        return (
+            <>
+                <Space align="center" direction="vertical" style={{ textAlign: "center" }}>
+                    <List.Item>
+                        <Dropdown trigger={["hover"]} overlay={menu}>
+                        <Card
+                            style={{width: "120px"}}
+                            hoverable
+                            cover={<img
+                                src={user.profile.avatarUrl}
+                                style={status === UserStatusType.DECLINED
+                                    ? {filter: "grayscale(1)"}
+                                    : null
+                            } />}>
+                            <Card.Meta title={
+                                <span>{user.profile.name}<br/>{user.profile.surname}</span>
+                            }/>
+                        </Card>
+                        </Dropdown>
+                    </List.Item>
+                </Space>
+            </>
+        );
     }
 
     private renderClientDetails(profile: BaseProfileDto) {
@@ -135,13 +229,13 @@ class ProjectView extends React.Component<WrappedComponentProps & RouteComponent
                     <dl>
                         <li>
                             <div>
-                                <img src={profile.avatarUrl} width={60} height={60} style={{float: "left"}}/>
+                                <img src={profile.avatarUrl} width={60} height={60} style={{ float: "left" }} />
                             </div>
                             <Space
                                 direction="vertical"
                                 align="start"
                                 size={0}
-                                style={{width: "calc(100% - 80px)", float: "right"}}>
+                                style={{ width: "calc(100% - 80px)", float: "right" }}>
                                 <strong>{profile.name} {profile.surname}</strong>
                                 <span>{profile.email}</span>
                             </Space>
@@ -174,27 +268,27 @@ class ProjectView extends React.Component<WrappedComponentProps & RouteComponent
     }
 
     private renderProjectComments() {
-        const {comments, isCommentBeingSaved} = this.model;
+        const { comments, isCommentBeingSaved } = this.model;
         return (
             <div>
-                <Divider plain dashed/>
+                <Divider plain dashed />
                 <Typography.Text>
                     <h3>
                         Project&apos;s recent history
                     </h3>
                 </Typography.Text>
                 <List dataSource={comments}
-                      bordered={false}
-                      itemLayout="horizontal"
-                      renderItem={comment => this.renderProjectComment(comment)}
-                      footer={this.renderCommentForm()}
+                    bordered={false}
+                    itemLayout="horizontal"
+                    renderItem={comment => this.renderProjectComment(comment)}
+                    footer={this.renderCommentForm()}
                 />
             </div>
         );
     }
 
     private renderCommentForm(currentComment: CommentDto = null) {
-        const {comments, isCommentBeingSaved} = this.model;
+        const { comments, isCommentBeingSaved } = this.model;
         return (
             <Form>
                 <Form.Item>
@@ -218,7 +312,7 @@ class ProjectView extends React.Component<WrappedComponentProps & RouteComponent
     }
 
     private renderProjectComment(comment: CommentDto) {
-        const {locale} = this.props.intl;
+        const { locale } = this.props.intl;
         const author = comment.commentator
             ? `${comment.commentator.profile.name} ${comment.commentator.profile.surname}`
             : "anonymous";
@@ -229,8 +323,8 @@ class ProjectView extends React.Component<WrappedComponentProps & RouteComponent
                     key={`list-item-comment-${comment.id}`}
                     actions={[
                         <a key="comment-nested-reply-to"
-                           onClick={ev => this.renderCommentPopup(comment)}>Reply to {author}</a>,
-                        <Divider type="vertical" key={Math.random()}/>,
+                            onClick={ev => this.renderCommentPopup(comment)}>Reply to {author}</a>,
+                        <Divider type="vertical" key={Math.random()} />,
                         <Popconfirm
                             key={Math.random()}
                             overlayClassName="delete-project-popconfirm"
@@ -244,9 +338,9 @@ class ProjectView extends React.Component<WrappedComponentProps & RouteComponent
                     avatar={comment.commentator?.profile?.avatarUrl}
                     content={comment.description}
                     datetime={<span>
-                        <Time value={comment.createdAt} format="YYYY-MM-DD HH:mm" style={{color: "#a6a6a9"}}/>
+                        <Time value={comment.createdAt} format="YYYY-MM-DD HH:mm" style={{ color: "#a6a6a9" }} />
                         <span>&nbsp;&rarr;&nbsp;</span>
-                        <SinceOfTime datetime={comment.createdAt} live locale={locale}/>
+                        <SinceOfTime datetime={comment.createdAt} live locale={locale} />
                     </span>}>
                     <ul key={`list-item-comment-replies-${comment.id}`}>
                         {
@@ -264,7 +358,7 @@ class ProjectView extends React.Component<WrappedComponentProps & RouteComponent
         Modal.info({
             width: 600,
             centered: true,
-            maskStyle: {background: "transparent"},
+            maskStyle: { background: "transparent" },
             maskClosable: false,
             icon: null,
             title: "Reply on comment",
@@ -273,7 +367,7 @@ class ProjectView extends React.Component<WrappedComponentProps & RouteComponent
     }
 
     private async deleteComment(comment: CommentDto) {
-        const {jwt, helper} = this.model.appModel;
+        const { jwt, helper } = this.model.appModel;
 
         if (!jwt) {
             notification.warn({
@@ -286,7 +380,7 @@ class ProjectView extends React.Component<WrappedComponentProps & RouteComponent
     }
 
     private async addComment(parent: CommentDto = null) {
-        const {jwt, helper} = this.model.appModel;
+        const { jwt, helper } = this.model.appModel;
 
         if (!jwt) {
             notification.warn({
@@ -296,8 +390,8 @@ class ProjectView extends React.Component<WrappedComponentProps & RouteComponent
             return;
         }
 
-        const {sub, id, avatarUrl, name, surname} = helper.decodeToken(jwt.accessToken);
-        this.comment.commentator = {id: parseInt(sub, 10), profile: {id, avatarUrl, name, surname} as any} as any;
+        const { sub, id, avatarUrl, name, surname } = helper.decodeToken(jwt.accessToken);
+        this.comment.commentator = { id: parseInt(sub, 10), profile: { id, avatarUrl, name, surname } as any } as any;
 
         if (parent !== null) {
             if (!parent.replies) {
@@ -314,7 +408,7 @@ class ProjectView extends React.Component<WrappedComponentProps & RouteComponent
             this.comment = new CommentDto();
             this.forceUpdate();
         });
-        this.textarea.current?.setState({value: ""});
+        this.textarea.current?.setState({ value: "" });
     }
 }
 

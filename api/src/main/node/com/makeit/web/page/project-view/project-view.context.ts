@@ -2,8 +2,9 @@ import "reflect-metadata";
 import axios from "axios";
 
 import { Context } from "@page/decorator";
-import { AxiosCommentClient, AxiosProjectClient } from "@client/api-client";
+import { AxiosCommentClient, AxiosProjectClient, AxiosFreelancerClient } from "@client/api-client";
 import { ProjectViewModel } from "@page/project-view/project-view.model";
+
 
 export const ProjectViewModule: Context = {
     bootstrap: (ctx) => {
@@ -12,6 +13,10 @@ export const ProjectViewModule: Context = {
             axios.create()
         ));
         ctx.bind<AxiosCommentClient>(AxiosCommentClient).toConstantValue(new AxiosCommentClient(
+            process.env.API_BASE_URL,
+            axios.create()
+        ));
+        ctx.bind<AxiosFreelancerClient>(AxiosFreelancerClient).toConstantValue(new AxiosFreelancerClient(
             process.env.API_BASE_URL,
             axios.create()
         ));

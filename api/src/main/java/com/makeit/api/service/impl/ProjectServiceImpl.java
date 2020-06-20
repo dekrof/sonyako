@@ -9,6 +9,7 @@ import com.makeit.api.service.ProjectService;
 import com.makeit.dao.model.Project;
 import com.makeit.dao.model.UserProject;
 import com.makeit.dao.model.UserProjectId;
+import com.makeit.dao.model.UserStatusType;
 import com.makeit.dao.repository.ProjectRepository;
 import com.makeit.dao.repository.UserProjectRepository;
 import com.makeit.dao.repository.UserRepository;
@@ -141,5 +142,24 @@ public class ProjectServiceImpl implements ProjectService {
         return userProjectRepository.getLastTenProjects()
             .map(mapper)
             .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserDto> getUserProjects(Long projectId, UserStatusType status) {
+        return userProjectRepository.findById_ProjectId(projectId).stream()
+            .filter(userProject -> userProject.getUserStatus() == status)
+            .map(UserProject::getUser)
+            .map(user -> objectMapper.convertValue(user, UserDto.class))
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    public Boolean changeStatus(Long projectId) {
+        var project = repository.getOne(projectId);
+        return repository.save(project
+            .toBuilder()
+            .active(!project.isActive())
+            .build()
+        ).isActive();
     }
 }

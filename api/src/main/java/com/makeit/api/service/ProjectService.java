@@ -2,6 +2,8 @@ package com.makeit.api.service;
 
 import com.makeit.api.model.ProjectDto;
 import com.makeit.api.model.TopProjectDto;
+import com.makeit.api.model.UserDto;
+import com.makeit.dao.model.UserStatusType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -25,4 +27,8 @@ public interface ProjectService {
     Page<ProjectDto> getProjectsByCategory(Pageable pageable, Long categoryId);
 
     List<TopProjectDto> getLastTenProjects();
+
+    List<UserDto> getUserProjects(Long projectId, UserStatusType status);
+
+    Boolean changeStatus(Long projectId);
 }

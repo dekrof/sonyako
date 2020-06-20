@@ -345,11 +345,27 @@ export class ProjectClient<O> {
     }
 
     /**
+     * HTTP PATCH /api/project/change/status/{projectId}
+     * Java method: com.makeit.api.controller.ProjectController.changeStatus
+     */
+    changeStatus(projectId: number, options?: O): RestResponse<ApiResponse<boolean>> {
+        return this.httpClient.request({ method: "PATCH", url: uriEncoding`api/project/change/status/${projectId}`, options: options });
+    }
+
+    /**
      * HTTP GET /api/project/of/category/{categoryId}
      * Java method: com.makeit.api.controller.ProjectController.getProjects
      */
     getProjects(categoryId: number, queryParams?: { page?: number; size?: number; sort?: string; }, options?: O): RestResponse<ApiResponse<Page<ProjectDto>>> {
         return this.httpClient.request({ method: "GET", url: uriEncoding`api/project/of/category/${categoryId}`, queryParams: queryParams, options: options });
+    }
+
+    /**
+     * HTTP GET /api/project/projects/{projectId}
+     * Java method: com.makeit.api.controller.ProjectController.getUserProjects
+     */
+    getUserProjects(projectId: number, queryParams: { status: UserStatusType; }, options?: O): RestResponse<ApiResponse<UserDto[]>> {
+        return this.httpClient.request({ method: "GET", url: uriEncoding`api/project/projects/${projectId}`, queryParams: queryParams, options: options });
     }
 
     /**
@@ -1091,10 +1107,10 @@ export interface Page<T> {
 export interface Pageable {
     offset: number;
     sort: Sort;
+    pageNumber: number;
     paged: boolean;
     unpaged: boolean;
     pageSize: number;
-    pageNumber: number;
 }
 
 /**
