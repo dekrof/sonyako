@@ -14,6 +14,7 @@ import {
 } from "@client/api-client";
 import { action, observable, computed } from "mobx";
 import { delay, memo } from 'helpful-decorators';
+import { notification } from 'antd';
 
 @injectable()
 export class CategoryListModel {
@@ -91,7 +92,7 @@ export class CategoryListModel {
                     if (isOwner) {
                         return [{id: 0, name: "Owners cannot be hired to project"}];
                     } else {
-                        return [{id: -1, name: "Click to confirm your choose"}];
+                        return [{id: project.id, name: project.name}];
                     }
                 }
 
@@ -114,6 +115,21 @@ export class CategoryListModel {
                 return [{id: 0, name: "No actions provided"}]
             }
         }
+    }
+
+    @action
+    public async hireFreelancer(userId: number, projectId: number) {
+        const {tokenType, accessToken} = this.appModel.jwt;
+        const hired = await this.freelancerClient.hireFreelancer({userId, projectId}, {headers: {Authorization: `${tokenType} ${accessToken}`}})
+            .then(value => value.data)
+            .then(value => value.data)
+
+        notification.info({
+            message: "Hire Me",
+            description: hired
+                ? "Your proposal is successfully accepted"
+                : "Your proposal is not accepted"
+        });
     }
 
     @action @delay(300)

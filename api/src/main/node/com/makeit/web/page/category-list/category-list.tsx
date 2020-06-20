@@ -320,7 +320,13 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
             <Dropdown overlayClassName="hire-me-dropdown" trigger={["click"]} overlay={<Menu>
                 {
                     !real ? null : <>
-                        <li><strong>Select Your Projects</strong></li>
+                        <li>
+                            <strong>
+                            {
+                                !!props.project ? "Confirm project before send" : "Select Your Projects"
+                            }
+                            </strong>
+                        </li>
                         <Divider plain/>
                     </>
                 }
@@ -335,17 +341,17 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
         )
     }
 
-    private handleHire(value, project, freelancer) {
+    private async handleHire(value, project, freelancer) {
         if (!value || value.id === 0) {
             return;
         }
 
         if (value && freelancer) {
-            console.log("hire on behalf of owner");
+            await this.model.hireFreelancer(freelancer.id, value.id);
         }
 
         if (value && project) {
-            console.log("hire on behalf of freelancer");
+            await this.model.hireFreelancer(value.id, project.id);
         }
     }
 
