@@ -1,18 +1,18 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
-import { FormattedMessage, injectIntl, WrappedComponentProps } from "react-intl";
+import {Link} from "react-router-dom";
+import {FormattedMessage, injectIntl, WrappedComponentProps} from "react-intl";
 
 import Avatars from "@dicebear/avatars";
 
-import { Formik } from "formik";
-import { QuestionCircleTwoTone } from "@ant-design/icons";
-import { Divider, message, Space, Tooltip, Upload } from "antd";
-import { DatePicker, Form, FormItem, Input, Select } from "formik-antd";
-import { FrownOutlined, PhoneOutlined, MailOutlined } from "@ant-design/icons"
+import {Formik} from "formik";
+import {QuestionCircleTwoTone} from "@ant-design/icons";
+import {Divider, message, Space, Tooltip, Upload} from "antd";
+import {DatePicker, Form, FormItem, Input, Select} from "formik-antd";
+import {FrownOutlined, PhoneOutlined, MailOutlined} from "@ant-design/icons"
 
-import { observer, resolve, observable } from "@page/decorator";
-import { Gender, UserType, PhoneNumberResult, UserModel } from "@page/sign-up/tab/user";
-import { bind } from "helpful-decorators";
+import {observer, resolve, observable} from "@page/decorator";
+import {Gender, UserType, PhoneNumberResult, UserModel} from "@page/sign-up/tab/user";
+import {bind} from "helpful-decorators";
 
 function getBase64(img: Blob | any, callback: Function) {
     const reader = new FileReader();
@@ -45,24 +45,24 @@ const avatarRef = React.createRef<HTMLImageElement>();
 
 const AvatarImage = (props: { src: string }) => (
     <div>
-        <img ref={avatarRef} width={AVATAR_SIZE} height={AVATAR_SIZE} src={props.src} />
+        <img ref={avatarRef} width={AVATAR_SIZE} height={AVATAR_SIZE} src={props.src}/>
     </div>
 );
 
 const UploadButton = (props: { loading: boolean; avatarUrl: string }) => (
     <div>
-        <AvatarImage src={props.avatarUrl} />
+        <AvatarImage src={props.avatarUrl}/>
     </div>
 );
 
 const FormLabel = (props: { label: string; message: string }) => (
     <span>
-        <FormattedMessage id={props.label} defaultMessage={props.label} />
+        <FormattedMessage id={props.label} defaultMessage={props.label}/>
         &nbsp;
         <Tooltip
-            style={{ left: 20 }}
-            title={<span dangerouslySetInnerHTML={{ __html: props.message }} />}>
-            <QuestionCircleTwoTone twoToneColor="#9a2c80" />
+            style={{left: 20}}
+            title={<span dangerouslySetInnerHTML={{__html: props.message}}/>}>
+            <QuestionCircleTwoTone twoToneColor="#9a2c80"/>
         </Tooltip>
     </span>
 );
@@ -74,11 +74,11 @@ class UserPanel extends React.Component<WrappedComponentProps> {
     private model: UserModel;
 
     @observable
-    private phoneNumberSuffix: any = <PhoneOutlined />;
+    private phoneNumberSuffix: any = <PhoneOutlined/>;
 
     public render() {
-        const t = (key: string) => this.props.intl.formatMessage({ id: key });
-        const { avatarUrl, username, loading, gender } = this.model;
+        const t = (key: string) => this.props.intl.formatMessage({id: key});
+        const {avatarUrl, username, loading, gender} = this.model;
 
         const hasSvgAvatar = Boolean(avatarUrl && avatarUrl.indexOf("image/svg") > 0);
 
@@ -87,7 +87,7 @@ class UserPanel extends React.Component<WrappedComponentProps> {
             : avatarUrl;
 
         return <>
-            <Formik initialValues={this.model} onSubmit={(_values, helpers) => helpers.setSubmitting(false)} >
+            <Formik initialValues={this.model} onSubmit={(_values, helpers) => helpers.setSubmitting(false)}>
                 {
                     (props) => (
                         <Form layout="vertical" className="signup-form profile-form">
@@ -98,7 +98,8 @@ class UserPanel extends React.Component<WrappedComponentProps> {
                                     return null;
                                 })()
                             }
-                            <Divider orientation="left">Contact Information</Divider>
+                            <Divider orientation="left">{<FormattedMessage
+                                id="com.makeit.web.page.sign-up.contact.information"/>}</Divider>
                             <Space direction="horizontal" align="start" size={20} className="signup-form-avatar-space">
                                 <div className="signup-form-user-avatar">
                                     <Upload
@@ -108,22 +109,22 @@ class UserPanel extends React.Component<WrappedComponentProps> {
                                         showUploadList={false}
                                         beforeUpload={beforeUpload}
                                         onChange={this.handleChange}>
-                                        <UploadButton loading={loading} avatarUrl={this.model.avatarUrl} />
+                                        <UploadButton loading={loading} avatarUrl={this.model.avatarUrl}/>
                                     </Upload>
                                 </div>
                                 <div>
                                     <p>
-                                        <Link to="/">Make IT</Link> doing the best to provide a quality avatar picture for
-                                    your profile.
-                                    Every time, while you entering the new username the new unique avatar will be
-                                    immediately ready for your choice.
-                                </p>
-                                    <Divider />
+                                        <Link to="/">Make IT</Link> {<FormattedMessage
+                                        id="com.makeit.web.page.sign-up.avatar.description"/>}
+                                    </p>
+                                    <Divider/>
                                     <p>
-                                        Click on picture to upload your own avatar, or <span>
+                                        {<FormattedMessage
+                                            id="com.makeit.web.page.sign-up.avatar.load.description"/>}  <span>
                                             <a onClick={ev => this.resetAvatar(ev)}>
                                                 reset
-                                        </a> to generate a new one.
+                                        </a> {<FormattedMessage
+                                        id="com.makeit.web.page.sign-up.avatar.or.load.description"/>}
                                     </span>
                                     </p>
                                 </div>
@@ -138,15 +139,15 @@ class UserPanel extends React.Component<WrappedComponentProps> {
                                             message={
                                                 `The username should have length between 6 and 12 symbols,
                                         without special characters and <b>@</b> symbol`
-                                            } />
+                                            }/>
                                     }>
                                     <Input
                                         name="username"
                                         placeholder={t("login.username.placeholder")}
-                                        onChange={ev => this.model.username = ev.currentTarget.value} />
+                                        onChange={ev => this.model.username = ev.currentTarget.value}/>
                                 </FormItem>
                                 <FormItem
-                                    label="Account Role"
+                                    label={<FormattedMessage id="com.makeit.web.page.sign-up.user.type"/>}
                                     name="userType">
                                     <Select
                                         name="userType"
@@ -163,7 +164,7 @@ class UserPanel extends React.Component<WrappedComponentProps> {
                                     validate={value => this.model.validatePrimaryPassword(value)}
                                     label={
                                         <FormLabel
-                                            label="Password"
+                                            label={t("login.password")}
                                             message={
                                                 `Password should contains at least 2 uppercase letters and digits and not have size less than 8 symbols.
                                             <hr/>
@@ -177,32 +178,32 @@ class UserPanel extends React.Component<WrappedComponentProps> {
                                                     <td><s>qwerty12345</s></td>
                                                 </tr>
                                             </table>`
-                                            } />
+                                            }/>
                                     }>
                                     <Input.Password
                                         name="primaryPassword"
                                         onChange={(ev) => this.model.primaryPassword = ev.currentTarget.value}
-                                        placeholder="Please enter your password" />
+                                        placeholder="Please enter your password"/>
                                 </FormItem>
                                 <FormItem
                                     name="confirmPassword"
-                                    label="Confirm Password">
+                                    label={<FormattedMessage id="com.makeit.web.page.sign-up.confirm.password"/>}>
                                     <Input.Password
                                         name="confirmPassword"
                                         onChange={(ev) => this.model.confirmPassword = ev.currentTarget.value}
-                                        placeholder="Type password again to confirm" />
+                                        placeholder="Type password again to confirm"/>
                                 </FormItem>
                             </Space>
                             <Space direction="horizontal" align="center" size={20}>
                                 <FormItem
                                     name="email"
                                     validate={value => this.model.validateEmail(value)}
-                                    label="E-mail">
+                                    label={<FormattedMessage id="com.makeit.web.page.sign-up.email"/>}>
                                     <Input
                                         name="email"
-                                        suffix={<MailOutlined />}
+                                        suffix={<MailOutlined/>}
                                         onChange={(ev) => this.model.email = ev.currentTarget.value}
-                                        placeholder="Enter your e-mail" />
+                                        placeholder="Enter your e-mail"/>
                                 </FormItem>
                                 <FormItem
                                     name="phoneNumber"
@@ -215,38 +216,39 @@ class UserPanel extends React.Component<WrappedComponentProps> {
                                             and includes the country code.
                                             <hr />
                                             <b>Preferable format</b>: +38 (066) 123-45-67`
-                                            } />
+                                            }/>
                                     }>
                                     <Input
                                         name="phoneNumber"
                                         suffix={this.phoneNumberSuffix}
                                         onChange={(ev) => this.model.phoneNumber = ev.currentTarget.value}
-                                        placeholder="Enter your phone number" />
+                                        placeholder="Enter your phone number"/>
                                 </FormItem>
                             </Space>
-                            <Divider orientation="left">Personal Information</Divider>
+                            <Divider orientation="left">{<FormattedMessage
+                                id="com.makeit.web.page.sign-up.personal.information"/>}</Divider>
                             <Space direction="horizontal" align="center" size={20}>
                                 <FormItem
                                     name="name"
-                                    label="First Name">
+                                    label={<FormattedMessage id="com.makeit.web.page.sign-up.first.name"/>}>
                                     <Input
                                         name="name"
                                         validate={value => this.model.validateNames(value, "name")}
-                                        onChange={(ev) => this.model.name = ev.currentTarget.value} />
+                                        onChange={(ev) => this.model.name = ev.currentTarget.value}/>
                                 </FormItem>
                                 <FormItem
                                     name="surname"
-                                    label="Last Name">
+                                    label={<FormattedMessage id="com.makeit.web.page.sign-up.last.name"/>}>
                                     <Input
                                         name="surname"
                                         validate={value => this.model.validateNames(value, "last name")}
-                                        onChange={(ev) => this.model.surname = ev.currentTarget.value} />
+                                        onChange={(ev) => this.model.surname = ev.currentTarget.value}/>
                                 </FormItem>
                             </Space>
                             <Space direction="horizontal" align="center" size={20}>
                                 <FormItem
                                     name="gender"
-                                    label="Gender">
+                                    label={<FormattedMessage id="com.makeit.web.page.sign-up.gender"/>}>
                                     <Select
                                         name="gender"
                                         placeholder="Please select your gender"
@@ -259,13 +261,13 @@ class UserPanel extends React.Component<WrappedComponentProps> {
                                 </FormItem>
                                 <FormItem
                                     name="birthday"
-                                    label="Birthday">
+                                    label={<FormattedMessage id="com.makeit.web.page.sign-up.birthday"/>}>
                                     <DatePicker
                                         name="birthday"
                                         showTime={false}
-                                        style={{ width: "100%" }}
+                                        style={{width: "100%"}}
                                         disabledDate={(moment) => moment.year() > new Date().getFullYear() - 10}
-                                        onChange={(ev) => this.model.birthday = ev.startOf("day").toDate()} />
+                                        onChange={(ev) => this.model.birthday = ev.startOf("day").toDate()}/>
                                 </FormItem>
                             </Space>
                         </Form>
@@ -288,16 +290,23 @@ class UserPanel extends React.Component<WrappedComponentProps> {
     @bind
     private handlePhoneValidation(result: PhoneNumberResult) {
         switch (result) {
-            case PhoneNumberResult.EMPTY: this.phoneNumberSuffix = <FrownOutlined />; break;
-            case PhoneNumberResult.NOT_VALID: this.phoneNumberSuffix = <FrownOutlined />; break;
-            case PhoneNumberResult.SUCCESS: this.phoneNumberSuffix = <span>{this.model.phoneNumberCountry}</span>; break;
-            default: this.phoneNumberSuffix = <PhoneOutlined />;
+            case PhoneNumberResult.EMPTY:
+                this.phoneNumberSuffix = <FrownOutlined/>;
+                break;
+            case PhoneNumberResult.NOT_VALID:
+                this.phoneNumberSuffix = <FrownOutlined/>;
+                break;
+            case PhoneNumberResult.SUCCESS:
+                this.phoneNumberSuffix = <span>{this.model.phoneNumberCountry}</span>;
+                break;
+            default:
+                this.phoneNumberSuffix = <PhoneOutlined/>;
         }
     }
 
     private resetAvatar(ev: React.MouseEvent) {
         ev.preventDefault();
-        const { gender, username } = this.model;
+        const {gender, username} = this.model;
         // force to update;
         this.model.loading = true;
         this.model.avatarUrl = new Avatars(Gender.getSprites(gender), avatarOptions).create(username);

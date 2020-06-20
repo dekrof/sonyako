@@ -1,13 +1,13 @@
 import * as React from "react";
-import { injectIntl, WrappedComponentProps } from "react-intl";
+import {FormattedMessage, injectIntl, WrappedComponentProps} from "react-intl";
 
-import { Formik } from 'formik';
-import { Divider, Space } from "antd";
-import { Form, FormItem, Input } from "formik-antd";
+import {Formik} from 'formik';
+import {Divider, Space, Typography} from "antd";
+import {Form, FormItem, Input} from "formik-antd";
 
-import { LocationInput, RegionSelect, SettlementSelect, StreetSelect, StateSelect } from "@component/address";
-import { AddressModel } from "@page/sign-up/tab/address";
-import { observer, resolve } from "@page/decorator";
+import {LocationInput, RegionSelect, SettlementSelect, StreetSelect, StateSelect} from "@component/address";
+import {AddressModel} from "@page/sign-up/tab/address";
+import {observer, resolve} from "@page/decorator";
 
 @observer
 class AddressPanel extends React.Component<WrappedComponentProps> {
@@ -28,63 +28,64 @@ class AddressPanel extends React.Component<WrappedComponentProps> {
                                     return null;
                                 })()
                             }
-                            <Divider orientation="left">Address Information</Divider>
+                           <Divider orientation="left">{<FormattedMessage id="com.makeit.web.page.sign-up.address.information"/>}</Divider>
                             <Space direction="horizontal" size={20}>
                                 <FormItem
-                                    label="Region"
+                                    label={<FormattedMessage id="com.makeit.web.page.sign-up.region"/>}
                                     validate={() => this.model.validateRegion()}
                                     name="region">
-                                    <RegionSelect />
+                                    <RegionSelect/>
                                 </FormItem>
                                 <FormItem
-                                    label="District"
+                                    label={<FormattedMessage id="com.makeit.web.page.sign-up.district"/>}
                                     validate={() => this.model.validateState()}
                                     name="district">
-                                    <StateSelect region={this.model.regionId} />
+                                    <StateSelect region={this.model.regionId}/>
                                 </FormItem>
                             </Space>
                             <Space direction="horizontal" size={20}>
                                 <FormItem
-                                    label="Settlement"
+                                    label={<FormattedMessage id="com.makeit.web.page.sign-up.settelment"/>}
                                     validate={() => this.model.validateCity()}
                                     name="city">
-                                    <SettlementSelect region={this.model.regionId} district={this.model.districtId} />
+                                    <SettlementSelect region={this.model.regionId} district={this.model.districtId}/>
                                 </FormItem>
                                 <FormItem
-                                    label="Street & House"
+                                    label={<FormattedMessage id="com.makeit.web.page.sign-up.street.&.House"/>}
                                     validate={() => this.model.validateStreet()}
                                     name="street">
                                     <StreetSelect region={this.model.regionId} district={this.model.districtId}
-                                        city={this.model.cityId} />
+                                                  city={this.model.cityId}/>
                                 </FormItem>
                             </Space>
                             <Space direction="horizontal" size={20}>
                                 <FormItem
-                                    label="Postal Code"
+                                    label={<FormattedMessage id="com.makeit.web.page.sign-up.postal.code"/>}
                                     validate={() => this.model.validatePostalCode()}
                                     name="postalCode">
                                     <Input
                                         name="postalCode"
-                                        style={{ width: 122 }}
+                                        style={{width: 122}}
                                         value={this.model.postalCode}
                                         disabled={!this.model.houseNumber}
-                                        onChange={ev => this.model.postalCode = ev.currentTarget.value} />
+                                        onChange={ev => this.model.postalCode = ev.currentTarget.value}/>
                                 </FormItem>
                                 <FormItem
-                                    label="Entrance & Appartaments"
+                                    label={<FormattedMessage
+                                        id="com.makeit.web.page.sign-up.entrance.and.appparament"/>}
                                     name="entranceAndAppparaments">
                                     <Input
                                         name="entranceAndAppparaments"
                                         disabled={!this.model.houseNumber}
                                         value={this.model.entranceAndAppparaments}
-                                        onChange={ev => this.model.entranceAndAppparaments = ev.currentTarget.value} />
+                                        onChange={ev => this.model.entranceAndAppparaments = ev.currentTarget.value}/>
                                 </FormItem>
                             </Space>
                             <FormItem
-                                label="Location"
+                                label={<FormattedMessage id="com.makeit.web.page.sign-up.entrance.and.location"/>}
                                 validate={() => this.model.validateLocation()}
                                 name="location">
-                                <LocationInput postalCode={this.model.postalCode} />
+                                <LocationInput postalCode={this.model.postalCode}/>
                             </FormItem>
                         </Form>
                     )

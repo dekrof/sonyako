@@ -43,7 +43,7 @@ class HomePage extends React.Component<WrappedComponentProps & RouteComponentPro
                         <Space size={20} direction="horizontal" align="center">
                             <div className="home-perspectives-head">
                                 <Typography.Title>
-                                    <FormattedMessage id="com.makeit.web.page.home.perspectives-head" />
+                                    <FormattedHTMLMessage id="com.makeit.web.page.home.perspectives-head" />
                                 </Typography.Title>
                             </div>
                             {

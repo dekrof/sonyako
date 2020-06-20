@@ -34,6 +34,31 @@ export default {
     // sign-up page
     "sign-up.title": "Регистрация",
 
+    //contact information
+    "com.makeit.web.page.sign-up.contact.information": "Контактная информация",
+    "com.makeit.web.page.sign-up.user.type": "Тип пользователя",
+    "com.makeit.web.page.sign-up.avatar.description": `
+    делает все возможное, чтобы обеспечить качественную аватарку для Вашего профиля.
+    Каждый раз, когда вы вводите новое имя пользователя, новый уникальный аватар будет
+    сразу готов к вашему выбору..`,
+    "com.makeit.web.page.sign-up.confirm.password":"Подтвердите пароль",
+    "com.makeit.web.page.sign-up.email":"Email",
+    "com.makeit.web.page.sign-up.personal.information":"Персональная информация",
+    "com.makeit.web.page.sign-up.first.name":"Имя",
+    "com.makeit.web.page.sign-up.last.name":"Фамилия",
+    "com.makeit.web.page.sign-up.gender":"Пол",
+    "com.makeit.web.page.sign-up.birthday":"Дата рождения",
+    "com.makeit.web.page.sign-up.avatar.load.description":"Нажмите на картинку, чтобы загрузить свой аватар, или",
+    "com.makeit.web.page.sign-up.avatar.or.load.description":"чтобы создать новый",
+    //address
+    "com.makeit.web.page.sign-up.region": "Область",
+    "com.makeit.web.page.sign-up.district": "Район",
+    "com.makeit.web.page.sign-up.settelment": "Место жительства",
+    "com.makeit.web.page.sign-up.street.&.House": "Улица&Дом",
+    "com.makeit.web.page.sign-up.postal.code": "Индекс",
+    "com.makeit.web.page.sign-up.entrance.and.appparament": "Подъезд&Квартира",
+    "com.makeit.web.page.sign-up.entrance.and.location": "Локация",
+    "com.makeit.web.page.sign-up.address.information": "Информация об адресе",
     // home page
     "com.makeit.web.page.home.title": "Главная страница",
     "com.makeit.web.page.home.find-developers": "Найдите опытных фрилансеров<br /> и агентства<br /> для вашего проекта",

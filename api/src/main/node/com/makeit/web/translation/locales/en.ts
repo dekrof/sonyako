@@ -1,3 +1,7 @@
+import {FormattedMessage} from "react-intl";
+import {FormItem} from "formik-antd";
+import * as React from "react";
+
 export default {
     // app-layout
     "app.header.sign-in": "LOG IN",
@@ -34,7 +38,33 @@ export default {
     "login.sign-up.disclaimer": "Discover the world’s top Developers & Creatives",
 
     // sign-up page
-    "sign-up.title": "Sign Up",
+      "sign-up.title": "Sign Up",
+
+    //contact information
+    "com.makeit.web.page.sign-up.user.type":"User type",
+    "com.makeit.web.page.sign-up.contact.information":"Contact information",
+    "com.makeit.web.page.sign-up.avatar.description": `doing the best to provide a quality avatar picture 
+    for your profile.
+    Every time, while you entering the new username the new unique avatar will be
+    immediately ready for your choice.`,
+    "com.makeit.web.page.sign-up.confirm.password":"Сonfirm password",
+    "com.makeit.web.page.sign-up.email":"Email",
+    "com.makeit.web.page.sign-up.personal.information":"Personal information",
+    "com.makeit.web.page.sign-up.first.name":"First name",
+    "com.makeit.web.page.sign-up.last.name":"Last name",
+    "com.makeit.web.page.sign-up.gender":"Gender",
+    "com.makeit.web.page.sign-up.birthday":"Birthday",
+    "com.makeit.web.page.sign-up.avatar.load.description":"Click on picture to upload your own avatar, or",
+    "com.makeit.web.page.sign-up.avatar.or.load.description":"to generate a new one.",
+    //address
+    "com.makeit.web.page.sign-up.region":"Region",
+    "com.makeit.web.page.sign-up.district":"District",
+    "com.makeit.web.page.sign-up.settelment":"Settlement",
+    "com.makeit.web.page.sign-up.street.&.House":"Street&House",
+    "com.makeit.web.page.sign-up.postal.code":"Postal code",
+    "com.makeit.web.page.sign-up.entrance.and.appparament":"Entrance&Appparament",
+    "com.makeit.web.page.sign-up.entrance.and.location":"Location",
+    "com.makeit.web.page.sign-up.address.information":"Address information",
 
     // home page
     "com.makeit.web.page.home.title": "Home",

@@ -35,6 +35,31 @@ export default {
     // sign-up page
     "sign-up.title": "Реєстрація",
 
+    //contact information
+    "com.makeit.web.page.sign-up.contact.information":"Контактна інформація",
+    "com.makeit.web.page.sign-up.user.type":"Тип користувача",
+    "com.makeit.web.page.sign-up.avatar.description": `
+    робить все можливе, щоб забезпечити якісну аватарку для Вашого профілю.
+    Кожен раз, коли ви вводите нове ім'я користувача, новий унікальний аватар буде
+    відразу готовий до вашого вибору.`,
+    "com.makeit.web.page.sign-up.confirm.password":"Підтвердіть пароль",
+    "com.makeit.web.page.sign-up.email":"Email",
+    "com.makeit.web.page.sign-up.personal.information":"Персональна інформація",
+    "com.makeit.web.page.sign-up.first.name":"Ім'я",
+    "com.makeit.web.page.sign-up.last.name":"Фамілія",
+    "com.makeit.web.page.sign-up.gender":"Стать",
+    "com.makeit.web.page.sign-up.birthday":"Дата народження",
+    "com.makeit.web.page.sign-up.avatar.load.description":"Нажміть на картинку, щоб загрузити свій аватар, або",
+    "com.makeit.web.page.sign-up.avatar.or.load.description":"щоб створити новий",
+    //address
+    "com.makeit.web.page.sign-up.region":"Область",
+    "com.makeit.web.page.sign-up.district":"Район",
+    "com.makeit.web.page.sign-up.settelment":"Місце проживання",
+    "com.makeit.web.page.sign-up.street.&.House":"Вулиця&Будинок",
+    "com.makeit.web.page.sign-up.postal.code":"Індекс",
+    "com.makeit.web.page.sign-up.entrance.and.appparament":"Під'їзд&Квартира",
+    "com.makeit.web.page.sign-up.entrance.and.location":"Локація",
+    "com.makeit.web.page.sign-up.address.information":"Інформація про адресу",
     // home page
     "com.makeit.web.page.home.title": "Головна строрінка",
     "com.makeit.web.page.home.find-developers": "Знайдіть відомих фрілансерів<br /> та агентства<br /> для вашого проекту",
