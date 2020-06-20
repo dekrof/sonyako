@@ -6,8 +6,115 @@
     width: 100%;
     min-height: calc(100vh - 113px);
 
-    padding: 20px;
+    padding: 0 20px;
     border-left: 1px solid #f0f0f0;
     border-right: 1px solid #f0f0f0;
     background-color: #ffffff;
+
+    & > .ant-space {
+        align-items: flex-start;
+    }
+
+    & > .ant-space > .ant-space-item {
+        width: auto;
+        min-height: 100%;
+
+        &:first-child {
+            width: calc(68% - 11px);
+            padding-right: 20px;
+            border-right: 1px solid #f0f0f0;
+        }
+
+        &:last-child {
+            width: calc(32% - 10px);
+            min-height: 100%;
+        }
+    }
+
+    article {
+        background: #fdfdfd;
+
+        .ant-empty p {
+            text-align: center;
+            text-align-last: center;
+        }
+    }
+
+    article, summary {
+        padding-top: 20px;
+        background: white;
+
+        .ant-typography {
+            h3 {
+                font-weight: normal !important;
+            }
+        }
+
+        p {
+            text-align: justify;
+            text-align-last: left;
+            hyphens: auto;
+        }
+    }
+
+    summary {
+
+        .ant-btn {
+            width: 100% !important;
+            text-transform: uppercase;
+        }
+
+        h4 {
+            font-weight: normal;
+            clear: right;
+        }
+
+        dl {
+            list-style: none;
+
+            li > strong {
+                display: inline-block;
+                width: 100px;
+            }
+        }
+    }
+
+    .ant-list {
+        width: 100%;
+    }
+
+
+    .ant-list-items > .ant-list-item {
+        border-top: none !important;
+    }
+
+    .ant-list-item:first-child {
+        border-top: 1px solid #f0f0f0;
+    }
+
+    .ant-comment {
+        width: 100%;
+
+        ul {
+            padding-left: 0;
+        }
+
+        &-avatar img {
+            border-radius: 2px !important;
+        }
+
+        &-nested .ant-list-item {
+            padding-bottom: 0;
+        }
+
+        &-content-detail {
+            text-align: justify;
+            text-align-last: left;
+            hyphens: auto;
+        }
+    }
+
+    .mapboxgl-ctrl-logo, .mapboxgl-ctrl-bottom-right {
+        display: none !important;
+    }
 }

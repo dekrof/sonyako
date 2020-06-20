@@ -46,6 +46,7 @@ public class User extends AbstractEntity {
     @NullOrNotBlank(message = "Username should not be blank")
     private String username;
 
+    @JsonIgnore
     @Column
     @NotNull(message = "Password should not be null")
     private String password;

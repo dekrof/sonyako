@@ -1771,7 +1771,6 @@ export class User {
     updatedBy: string;
     id: number;
     username: string;
-    password: string;
     profile: Profile;
     active: boolean;
     emailVerified: boolean;
@@ -1789,7 +1788,6 @@ export class User {
         instance.updatedBy = data.updatedBy;
         instance.id = data.id;
         instance.username = data.username;
-        instance.password = data.password;
         instance.profile = Profile.fromData(data.profile);
         instance.active = data.active;
         instance.emailVerified = data.emailVerified;
