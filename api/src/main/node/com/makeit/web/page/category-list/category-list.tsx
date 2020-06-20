@@ -22,7 +22,6 @@ import { FolderViewOutlined, CrownOutlined, UserAddOutlined, SendOutlined, Conta
 import { ProjectDto, TopDeveloperDto, CurrencyType } from '@client/api-client';
 
 import "@page/category-list/category-list.less";
-import { once } from "helpful-decorators";
 
 timeago.register("uk", uk);
 timeago.register("en", en);

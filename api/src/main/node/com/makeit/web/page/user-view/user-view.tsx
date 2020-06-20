@@ -1,8 +1,9 @@
 import * as React from "react";
 import { injectIntl, WrappedComponentProps } from 'react-intl';
 import { RouteComponentProps } from 'react-router';
+import {Link} from "react-router-dom";
 
-import MapGL, { DragEvent, Marker } from "react-map-gl";
+import MapGL, {Marker } from "react-map-gl";
 
 import Time from "react-time";
 import TimeAgo, { TimeAgoProps } from "timeago-react/lib/timeago-react";
@@ -12,17 +13,19 @@ import ru from "timeago.js/lib/lang/ru";
 import en from "timeago.js/lib/lang/en_US";
 
 import { flow, observable } from "mobx";
-import { Space, Typography, Divider, List, Form, Input, Button, notification, Modal, Comment, Popconfirm } from "antd";
+import { Space, Typography, Divider, List, Form, Input, Button, notification, Modal, Comment, Popconfirm, Empty } from "antd";
+import { CrownFilled } from "@ant-design/icons";
 
 import { context, page, observer, resolve } from "@page/decorator";
 import { UserViewModel, UserViewModule } from "@page/user-view";
 import { Title, Footer } from "@page/app-layout";
 
-import { Payment, Address, CurrencyType, CommentDto } from '@client/api-client';
+import { Payment, Address, User, CurrencyType, CommentDto, ProjectDto, RoleName, UserStatusType } from '@client/api-client';
 import { AxiosVisicomClient, Location } from "@client/visicom-client";
 
 import MapPointer from "@svg/map-pointer.svg";
 import "@page/user-view/user-view.less";
+import { ProjectStatusDto } from './user-view.model';
 
 timeago.register("uk", uk);
 timeago.register("en", en);
@@ -113,10 +116,10 @@ class UserView extends React.Component<WrappedComponentProps & RouteComponentPro
                                 size={0}
                                 style={{ width: "calc(100% - 140px)", float: "right" }}>
                                 <Typography.Text>
-                                    <h3 style={{lineHeight: "16px", paddingBottom: 10, paddingTop: 8}}>
+                                    <h3 style={{ lineHeight: "16px", paddingBottom: 10, paddingTop: 8 }}>
                                         {profile.name} {profile.surname}
                                         <br />
-                                        <sub  style={{color: "#a6a6a9", fontSize: 11}}>
+                                        <sub style={{ color: "#a6a6a9", fontSize: 11 }}>
                                             Last update: <Time value={user.updatedAt} format="YYYY-MM-DD HH:mm" />
                                         </sub>
                                     </h3>
@@ -127,6 +130,9 @@ class UserView extends React.Component<WrappedComponentProps & RouteComponentPro
                             </Space>
                         </div>
                         <br />
+                        {
+                            this.renderUserProjects(user)
+                        }
                         {
                             this.renderUserComments()
                         }
@@ -139,28 +145,77 @@ class UserView extends React.Component<WrappedComponentProps & RouteComponentPro
         )
     }
 
-    private renderUserComments() {
-        const {comments} = this.model;
+    private renderUserProjects(user: User) {
+        const { projects } = this.model;
         return (
             <div>
-                <Divider plain dashed/>
+                <Divider plain dashed />
+                <Typography.Text>
+                    <h3>
+                        User&apos;s projects
+                    </h3>
+                </Typography.Text>
+                <div>
+                    {
+                        projects.length === 0
+                            ? <Empty description="User do not have any projects" />
+                            : <List
+                                dataSource={projects}
+                                renderItem={(project) => this.renderUserProject(project, user)}
+                            />
+                    }
+                </div>
+            </div>
+        );
+    }
+
+    private renderUserProject(project: ProjectStatusDto, user: User) {
+        const { locale } = this.props.intl;
+        const isOwner = !!(user.roles.find(role => role.roleName == RoleName.ROLE_OWNER));
+        return (
+            <List.Item>
+                <List.Item.Meta
+                    title={<span> {isOwner ?  <CrownFilled /> : null} {`${project.name}`}</span>}
+                    description= {
+                        <>
+                            {project.status ? <sub style={{fontSize: 12}}> Status: <strong>{project.status}</strong></sub> : null}
+                            <sub style={{fontSize: 12}}> Created At: <SinceOfTime datetime={project.createdAt} locale={locale} /></sub>
+                        </>
+                    }
+                    avatar={
+                        <Link to={`/project/view/${project.id}`}>
+                            <img src={project.logo}
+                            width={60}
+                            height={60}
+                            style={{ padding: 6, borderRadius: 2, border: "1px solid #f0f0f0", background: "#fff" }} />
+                        </Link>
+                    } />
+            </List.Item>
+        )
+    }
+
+    private renderUserComments() {
+        const { comments } = this.model;
+        return (
+            <div>
+                <Divider plain dashed />
                 <Typography.Text>
                     <h3>
                         User&apos;s recent history
                     </h3>
                 </Typography.Text>
                 <List dataSource={comments}
-                      bordered={false}
-                      itemLayout="horizontal"
-                      renderItem={comment => this.renderUserComment(comment)}
-                      footer={this.renderCommentForm()}
+                    bordered={false}
+                    itemLayout="horizontal"
+                    renderItem={comment => this.renderUserComment(comment)}
+                    footer={this.renderCommentForm()}
                 />
             </div>
         );
     }
 
     private renderUserComment(comment: CommentDto) {
-        const {locale} = this.props.intl;
+        const { locale } = this.props.intl;
         const author = comment.commentator
             ? `${comment.commentator.profile.name} ${comment.commentator.profile.surname}`
             : "anonymous";
@@ -171,8 +226,8 @@ class UserView extends React.Component<WrappedComponentProps & RouteComponentPro
                     key={`list-item-comment-${comment.id}`}
                     actions={[
                         <a key="comment-nested-reply-to"
-                           onClick={ev => this.renderCommentPopup(comment)}>Reply to {author}</a>,
-                        <Divider type="vertical" key={Math.random()}/>,
+                            onClick={ev => this.renderCommentPopup(comment)}>Reply to {author}</a>,
+                        <Divider type="vertical" key={Math.random()} />,
                         <Popconfirm
                             key={Math.random()}
                             overlayClassName="delete-project-popconfirm"
@@ -186,9 +241,9 @@ class UserView extends React.Component<WrappedComponentProps & RouteComponentPro
                     avatar={comment.commentator?.profile?.avatarUrl}
                     content={comment.description}
                     datetime={<span>
-                        <Time value={comment.createdAt || Date.now()} format="YYYY-MM-DD HH:mm" style={{color: "#a6a6a9"}}/>
+                        <Time value={comment.createdAt || Date.now()} format="YYYY-MM-DD HH:mm" style={{ color: "#a6a6a9" }} />
                         <span>&nbsp;&rarr;&nbsp;</span>
-                        <SinceOfTime datetime={comment.createdAt} live locale={locale}/>
+                        <SinceOfTime datetime={comment.createdAt} live locale={locale} />
                     </span>}>
                     <ul key={`list-item-comment-replies-${comment.id}`}>
                         {
@@ -206,7 +261,7 @@ class UserView extends React.Component<WrappedComponentProps & RouteComponentPro
         Modal.info({
             width: 600,
             centered: true,
-            maskStyle: {background: "transparent"},
+            maskStyle: { background: "transparent" },
             maskClosable: false,
             icon: null,
             title: "Reply on comment",
@@ -215,7 +270,7 @@ class UserView extends React.Component<WrappedComponentProps & RouteComponentPro
     }
 
     private renderCommentForm(currentComment: CommentDto = null) {
-        const {comments, isCommentBeingSaved} = this.model;
+        const { comments, isCommentBeingSaved } = this.model;
         return (
             <Form>
                 <Form.Item>
@@ -252,8 +307,8 @@ class UserView extends React.Component<WrappedComponentProps & RouteComponentPro
                     {
                         !payment.remittanceInfo ? null : <p>{payment.remittanceInfo}</p>
                     }
-                    <p style={{paddingBottom: 10}}>
-                        <sub  style={{color: "#a6a6a9", float: "right"}}>
+                    <p style={{ paddingBottom: 10 }}>
+                        <sub style={{ color: "#a6a6a9", float: "right" }}>
                             Last update: <Time value={payment.updatedAt} format="YYYY-MM-DD HH:mm" />
                         </sub>
                     </p>
@@ -263,26 +318,26 @@ class UserView extends React.Component<WrappedComponentProps & RouteComponentPro
                     <h3>User location</h3>
                 </Typography.Text>
                 <dl>
-                        <li>{address.countryCode}, {address.city}</li>
-                        <li>{address.region}, {address.district}</li>
-                        <li>
-                            {`${address.streetType}`.toLowerCase()} {address.street}, {address.houseNumber}
-                        </li>
-                        <li>{address.postalCode}</li>
+                    <li>{address.countryCode}, {address.city}</li>
+                    <li>{address.region}, {address.district}</li>
+                    <li>
+                        {`${address.streetType}`.toLowerCase()} {address.street}, {address.houseNumber}
+                    </li>
+                    <li>{address.postalCode}</li>
                 </dl>
                 <MapGL
-                      {...this.viewport}
-                       width="100%"
-                       height="250px"
-                       maxPitch={85}
-                       mapStyle={process.env.MAP_STYLE}
-                       mapboxApiAccessToken={process.env.TOKEN}>
-                     <Marker {...this.marker} draggable={false} offsetTop={-20} offsetLeft={-20}>
-                            <MapPointer width={40} height={40}/>
+                    {...this.viewport}
+                    width="100%"
+                    height="250px"
+                    maxPitch={85}
+                    mapStyle={process.env.MAP_STYLE}
+                    mapboxApiAccessToken={process.env.TOKEN}>
+                    <Marker {...this.marker} draggable={false} offsetTop={-20} offsetLeft={-20}>
+                        <MapPointer width={40} height={40} />
                     </Marker>
                 </MapGL>
-                <p style={{paddingTop: 20, paddingBottom: 10}}>
-                    <sub  style={{color: "#a6a6a9", float: "right"}}>
+                <p style={{ paddingTop: 20, paddingBottom: 10 }}>
+                    <sub style={{ color: "#a6a6a9", float: "right" }}>
                         Last update: <Time value={payment.updatedAt} format="YYYY-MM-DD HH:mm" />
                     </sub>
                 </p>
@@ -292,7 +347,7 @@ class UserView extends React.Component<WrappedComponentProps & RouteComponentPro
 
     private formatCreditCard(cardNumber: string) {
         const chunks = cardNumber.match(/.{1,4}/g);
-        return chunks.map((chunk, it) =>  it === 0 || it === chunks.length -1 ? chunk : "****").join(" ");
+        return chunks.map((chunk, it) => it === 0 || it === chunks.length - 1 ? chunk : "****").join(" ");
     }
 
     private receiveLocation = flow(function* (address: Address) {
@@ -318,7 +373,7 @@ class UserView extends React.Component<WrappedComponentProps & RouteComponentPro
     }
 
     private async deleteComment(comment: CommentDto) {
-        const {jwt, helper} = this.model.appModel;
+        const { jwt, helper } = this.model.appModel;
 
         if (!jwt) {
             notification.warn({
@@ -331,7 +386,7 @@ class UserView extends React.Component<WrappedComponentProps & RouteComponentPro
     }
 
     private async addComment(parent: CommentDto = null) {
-        const {jwt, helper} = this.model.appModel;
+        const { jwt, helper } = this.model.appModel;
 
         if (!jwt) {
             notification.warn({
@@ -341,8 +396,8 @@ class UserView extends React.Component<WrappedComponentProps & RouteComponentPro
             return;
         }
 
-        const {sub, id, avatarUrl, name, surname} = helper.decodeToken(jwt.accessToken);
-        this.comment.commentator = {id: parseInt(sub, 10), profile: {id, avatarUrl, name, surname} as any} as any;
+        const { sub, id, avatarUrl, name, surname } = helper.decodeToken(jwt.accessToken);
+        this.comment.commentator = { id: parseInt(sub, 10), profile: { id, avatarUrl, name, surname } as any } as any;
 
         if (parent !== null) {
             if (!parent.replies) {
@@ -359,7 +414,7 @@ class UserView extends React.Component<WrappedComponentProps & RouteComponentPro
             this.comment = new CommentDto();
             this.forceUpdate();
         });
-        this.textarea.current?.setState({value: ""});
+        this.textarea.current?.setState({ value: "" });
     }
 }
 

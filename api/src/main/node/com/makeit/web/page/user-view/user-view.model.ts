@@ -1,8 +1,13 @@
 import { injectable, inject } from "inversify";
 import { observable, action, toJS, computed } from 'mobx';
 
-import { AxiosUserClient, AxiosFreelancerClient, AxiosCommentClient, User, CommentDto, CommentType } from '@client/api-client';
+import { AxiosUserClient, AxiosFreelancerClient, AxiosCommentClient, User, CommentDto, CommentType, RoleName, UserStatusType } from '@client/api-client';
 import { AppModel } from "@page/app-layout";
+import { ProjectDto } from '../../client/api-client';
+
+export interface ProjectStatusDto extends ProjectDto {
+    status?: UserStatusType;
+}
 
 @injectable()
 export class UserViewModel {
@@ -28,6 +33,9 @@ export class UserViewModel {
     public comments: CommentDto[] = [];
 
     @observable
+    public projects: ProjectStatusDto[] = [];
+
+    @observable
     public isCommentBeingSaved: false;
 
     @computed
@@ -42,6 +50,7 @@ export class UserViewModel {
             const response = await this.freelancerClient.getFreelancer(id).then(value => value.data);
             if (response.success && response.data) {
                 this.user = response.data;
+                await this.getProjects();
                 await this.getComments();
             } else {
                 this.userNotFound = true;
@@ -55,6 +64,37 @@ export class UserViewModel {
     public async getComments() {
         const response = await this.commentClient.getUserComments(this.user.id, {page: 0, size: 1000}).then(value => value.data);
         this.comments = this.createCommentTree(response.data.content || []);
+    }
+
+    @action
+    public async getProjects() {
+        if (this.user.roles.find(role => role.roleName == RoleName.ROLE_OWNER)) {
+            this.projects = await this.freelancerClient.getUserProjects(this.user.id, {status: null})
+                .then(value => value.data.data);
+        } else {
+            const hiring = await this.freelancerClient.getUserProjects(this.user.id, {status: UserStatusType.HIRE_ME})
+                .then(value => value.data.data)
+                .then(value => value.map(project => {
+                    (project as ProjectStatusDto).status = UserStatusType.HIRE_ME
+                    return project;
+                }));
+
+            const hired = await this.freelancerClient.getUserProjects(this.user.id, {status: UserStatusType.HIRED})
+                .then(value => value.data.data)
+                .then(value => value.map(project => {
+                    (project as ProjectStatusDto).status = UserStatusType.HIRED
+                    return project;
+                }));
+
+            const declined = await this.freelancerClient.getUserProjects(this.user.id, {status: UserStatusType.DECLINED})
+                .then(value => value.data.data)
+                .then(value => value.map(project => {
+                    (project as ProjectStatusDto).status = UserStatusType.DECLINED
+                    return project;
+                }));
+
+            this.projects = [...hiring, ...hired, ...declined];
+        }
     }
 
     @action
