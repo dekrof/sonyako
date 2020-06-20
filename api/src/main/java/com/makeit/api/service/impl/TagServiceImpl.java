@@ -1,12 +1,9 @@
 package com.makeit.api.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.makeit.api.model.CategoryDto;
 import com.makeit.api.model.TagDto;
 import com.makeit.api.service.TagService;
-import com.makeit.dao.model.Category;
 import com.makeit.dao.model.Tag;
-import com.makeit.dao.repository.CategoryRepository;
 import com.makeit.dao.repository.TagRepository;
 import lombok.*;
 import org.springframework.data.domain.Page;
@@ -25,6 +22,7 @@ import java.util.function.UnaryOperator;
  * @since 1.0.0
  */
 @Service
+@Transactional
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class TagServiceImpl implements TagService {
 
@@ -41,7 +39,6 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    @Transactional
     public TagDto saveOrUpdateTag(TagDto dto) {
         return toEntity
             .andThen(repository::save)
@@ -50,7 +47,6 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    @Transactional
     public TagDto deleteTag(Long id) {
         UnaryOperator<Tag> mapper = tag -> {
             repository.delete(tag);

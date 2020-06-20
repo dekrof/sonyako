@@ -1,7 +1,6 @@
 package com.makeit.api.controller;
 
 import com.makeit.api.model.ApiResponse;
-import com.makeit.api.model.CategoryDto;
 import com.makeit.api.model.TagDto;
 import com.makeit.api.service.TagService;
 import lombok.*;
@@ -34,7 +33,7 @@ public class TagController {
 
     private final TagService service;
 
-    @PostMapping("/")
+    @PostMapping("")
     public ApiResponse<TagDto> saveTag(@Valid @RequestBody TagDto dto) {
         if (dto == null) {
             return ApiResponse.<TagDto>error()
@@ -60,7 +59,7 @@ public class TagController {
         }
     }
 
-    @PutMapping("/")
+    @PutMapping("")
     public ApiResponse<TagDto> updateTag(@Valid @RequestBody TagDto dto) {
         if (dto == null) {
             return ApiResponse.<TagDto>error()
@@ -118,7 +117,7 @@ public class TagController {
         }
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public ApiResponse<Page<TagDto>> getTags(@NotNull Pageable pageable) {
         try {
             return ApiResponse.<Page<TagDto>>data()

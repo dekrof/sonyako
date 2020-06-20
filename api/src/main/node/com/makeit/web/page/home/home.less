@@ -333,39 +333,3 @@
         }
     }
 }
-
-.ant-drawer-top.contact-owner-drawer {
-    & * {
-        z-index: 98 !important;
-    }
-
-    p > sub {
-        padding-top: 10px;
-        color: rgba(0, 0, 10, 0.35);
-        font-size: 12px;
-        float: right;
-    }
-
-    .ant-comment-avatar img {
-        border-radius: 2px;
-    }
-
-    .ant-drawer-content-wrapper {
-        z-index: 99;
-        @width: 1000px;
-        width: @width;
-        left: calc((100vw - @width) / 2);
-        border: 1px solid #d9d9d9;
-        border-top: none;
-    }
-
-    .ant-drawer-footer {
-        border-top: 1px solid #d9d9d9;
-        background-color: #f3f3f3;
-        padding: 16px 68px;
-
-        a {
-            margin-left: 20px;
-        }
-    }
-}

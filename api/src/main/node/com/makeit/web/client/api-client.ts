@@ -251,11 +251,35 @@ export class FreelancerClient<O> {
     }
 
     /**
+     * HTTP POST /api/freelancer/accept/freelancer
+     * Java method: com.makeit.api.controller.FreelancerController.acceptFreelancer
+     */
+    acceptFreelancer(userProject: UserProjectDto, options?: O): RestResponse<ApiResponse<boolean>> {
+        return this.httpClient.request({ method: "POST", url: uriEncoding`api/freelancer/accept/freelancer`, data: userProject, options: options });
+    }
+
+    /**
+     * HTTP POST /api/freelancer/decline/freelancer
+     * Java method: com.makeit.api.controller.FreelancerController.declineFreelancer
+     */
+    declineFreelancer(userProject: UserProjectDto, options?: O): RestResponse<ApiResponse<boolean>> {
+        return this.httpClient.request({ method: "POST", url: uriEncoding`api/freelancer/decline/freelancer`, data: userProject, options: options });
+    }
+
+    /**
      * HTTP GET /api/freelancer/get/top/nine/freelancers
      * Java method: com.makeit.api.controller.FreelancerController.getTopNineFreelancers
      */
     getTopNineFreelancers(options?: O): RestResponse<TopDeveloperDto[]> {
         return this.httpClient.request({ method: "GET", url: uriEncoding`api/freelancer/get/top/nine/freelancers`, options: options });
+    }
+
+    /**
+     * HTTP POST /api/freelancer/hire/freelancer
+     * Java method: com.makeit.api.controller.FreelancerController.hireFreelancer
+     */
+    hireFreelancer(userProject: UserProjectDto, options?: O): RestResponse<ApiResponse<boolean>> {
+        return this.httpClient.request({ method: "POST", url: uriEncoding`api/freelancer/hire/freelancer`, data: userProject, options: options });
     }
 
     /**
@@ -267,10 +291,18 @@ export class FreelancerClient<O> {
     }
 
     /**
+     * HTTP GET /api/freelancer/projects/{userId}
+     * Java method: com.makeit.api.controller.FreelancerController.getUserProjects
+     */
+    getUserProjects(userId: number, queryParams?: { status?: UserStatusType; }, options?: O): RestResponse<ApiResponse<ProjectDto[]>> {
+        return this.httpClient.request({ method: "GET", url: uriEncoding`api/freelancer/projects/${userId}`, queryParams: queryParams, options: options });
+    }
+
+    /**
      * HTTP GET /api/freelancer/{id}
      * Java method: com.makeit.api.controller.FreelancerController.getFreelancer
      */
-    getFreelancer(id: string, options?: O): RestResponse<ApiResponse<UserDto>> {
+    getFreelancer(id: number, options?: O): RestResponse<ApiResponse<User>> {
         return this.httpClient.request({ method: "GET", url: uriEncoding`api/freelancer/${id}`, options: options });
     }
 }
@@ -372,6 +404,60 @@ export class RoleClient<O> {
      */
     getRole(id: number, options?: O): RestResponse<ApiResponse<RoleDto>> {
         return this.httpClient.request({ method: "GET", url: uriEncoding`api/role/${id}`, options: options });
+    }
+}
+
+export class SkillClient<O> {
+
+    constructor(protected httpClient: HttpClient<O>) {
+    }
+
+    /**
+     * HTTP GET /api/skill
+     * Java method: com.makeit.api.controller.SkillController.getSkills
+     */
+    getSkills(queryParams?: { page?: number; size?: number; sort?: string; }, options?: O): RestResponse<ApiResponse<Page<SkillDto>>> {
+        return this.httpClient.request({ method: "GET", url: uriEncoding`api/skill`, queryParams: queryParams, options: options });
+    }
+
+    /**
+     * HTTP POST /api/skill
+     * Java method: com.makeit.api.controller.SkillController.saveSkill
+     */
+    saveSkill(dto: SkillDto, options?: O): RestResponse<ApiResponse<SkillDto>> {
+        return this.httpClient.request({ method: "POST", url: uriEncoding`api/skill`, data: dto, options: options });
+    }
+
+    /**
+     * HTTP PUT /api/skill
+     * Java method: com.makeit.api.controller.SkillController.updateSkill
+     */
+    updateSkill(dto: SkillDto, options?: O): RestResponse<ApiResponse<SkillDto>> {
+        return this.httpClient.request({ method: "PUT", url: uriEncoding`api/skill`, data: dto, options: options });
+    }
+
+    /**
+     * HTTP POST /api/skill/all
+     * Java method: com.makeit.api.controller.SkillController.saveSkills
+     */
+    saveSkills(dtos: SkillDto[], options?: O): RestResponse<ApiResponse<SkillDto[]>> {
+        return this.httpClient.request({ method: "POST", url: uriEncoding`api/skill/all`, data: dtos, options: options });
+    }
+
+    /**
+     * HTTP DELETE /api/skill/{id}
+     * Java method: com.makeit.api.controller.SkillController.deleteSkill
+     */
+    deleteSkill(id: number, options?: O): RestResponse<ApiResponse<SkillDto>> {
+        return this.httpClient.request({ method: "DELETE", url: uriEncoding`api/skill/${id}`, options: options });
+    }
+
+    /**
+     * HTTP GET /api/skill/{id}
+     * Java method: com.makeit.api.controller.SkillController.getSkill
+     */
+    getSkill(id: number, options?: O): RestResponse<ApiResponse<SkillDto>> {
+        return this.httpClient.request({ method: "GET", url: uriEncoding`api/skill/${id}`, options: options });
     }
 }
 
@@ -1343,7 +1429,7 @@ export class Skill {
     id: number;
     name: string;
     description: string;
-    ratings: SkillRating[];
+    category: number;
 
     static fromData(data: Skill, target?: Skill): Skill {
         if (!data) {
@@ -1353,7 +1439,26 @@ export class Skill {
         instance.id = data.id;
         instance.name = data.name;
         instance.description = data.description;
-        instance.ratings = __getCopyArrayFn(SkillRating.fromData)(data.ratings);
+        instance.category = data.category;
+        return instance;
+    }
+}
+
+export class SkillDto {
+    id: number;
+    name: string;
+    description: string;
+    category: number;
+
+    static fromData(data: SkillDto, target?: SkillDto): SkillDto {
+        if (!data) {
+            return data;
+        }
+        const instance = target || new SkillDto();
+        instance.id = data.id;
+        instance.name = data.name;
+        instance.description = data.description;
+        instance.category = data.category;
         return instance;
     }
 }
@@ -1372,6 +1477,23 @@ export class SkillRating {
         instance.id = SkillRatingId.fromData(data.id);
         instance.user = User.fromData(data.user);
         instance.skill = Skill.fromData(data.skill);
+        instance.rating = data.rating;
+        return instance;
+    }
+}
+
+export class SkillRatingDto {
+    user: UserDto;
+    skill: SkillDto;
+    rating: number;
+
+    static fromData(data: SkillRatingDto, target?: SkillRatingDto): SkillRatingDto {
+        if (!data) {
+            return data;
+        }
+        const instance = target || new SkillRatingDto();
+        instance.user = UserDto.fromData(data.user);
+        instance.skill = SkillDto.fromData(data.skill);
         instance.rating = data.rating;
         return instance;
     }
@@ -1764,6 +1886,7 @@ export class UserProject {
     user: User;
     project: Project;
     rating: number;
+    userStatus: UserStatusType;
     userCreator: boolean;
     userOwner: boolean;
 
@@ -1776,8 +1899,24 @@ export class UserProject {
         instance.user = User.fromData(data.user);
         instance.project = Project.fromData(data.project);
         instance.rating = data.rating;
+        instance.userStatus = data.userStatus;
         instance.userCreator = data.userCreator;
         instance.userOwner = data.userOwner;
+        return instance;
+    }
+}
+
+export class UserProjectDto {
+    userId: number;
+    projectId: number;
+
+    static fromData(data: UserProjectDto, target?: UserProjectDto): UserProjectDto {
+        if (!data) {
+            return data;
+        }
+        const instance = target || new UserProjectDto();
+        instance.userId = data.userId;
+        instance.projectId = data.projectId;
         return instance;
     }
 }
@@ -1844,6 +1983,13 @@ export const enum StreetType {
 export const enum TokenStatusType {
     STATUS_PENDING = "STATUS_PENDING",
     STATUS_CONFIRMED = "STATUS_CONFIRMED",
+}
+
+export const enum UserStatusType {
+    HIRE_ME = "HIRE_ME",
+    HIRED = "HIRED",
+    DECLINED = "DECLINED",
+    UNKNOWN = "UNKNOWN",
 }
 
 function uriEncoding(template: TemplateStringsArray, ...substitutions: any[]): string {
@@ -1983,6 +2129,14 @@ export class AxiosProjectClient extends ProjectClient<Axios.AxiosRequestConfig> 
 }
 
 export class AxiosRoleClient extends RoleClient<Axios.AxiosRequestConfig> {
+
+    constructor(baseURL: string, axiosInstance: Axios.AxiosInstance = axios.create()) {
+        axiosInstance.defaults.baseURL = baseURL;
+        super(new AxiosHttpClient(axiosInstance));
+    }
+}
+
+export class AxiosSkillClient extends SkillClient<Axios.AxiosRequestConfig> {
 
     constructor(baseURL: string, axiosInstance: Axios.AxiosInstance = axios.create()) {
         axiosInstance.defaults.baseURL = baseURL;

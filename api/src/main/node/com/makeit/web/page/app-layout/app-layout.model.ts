@@ -1,12 +1,10 @@
 import { action, flow, IValueWillChange, observable, observe } from "mobx";
 import { persist } from "mobx-persist";
+import { inject, injectable } from "inversify";
 
-import { inject, injectable } from "@page/decorator";
-import { AxiosCategoryClient, AxiosUserClient, CategoryDto, DeviceType, JwtAuthenticationDto, RoleName } from "@client/api-client";
-
-import { JwtHelper } from "@model/jwt-helper";
+import { AxiosCategoryClient, AxiosUserClient, CategoryDto, DeviceType, JwtAuthenticationDto } from "@client/api-client";
 import { detectDevice, fingerprintDevice, Fingerprints } from "@model/device-detect";
-import { RoleDto } from '../../client/api-client';
+import { JwtHelper } from "@model/jwt-helper";
 
 @injectable()
 export class AppModel {

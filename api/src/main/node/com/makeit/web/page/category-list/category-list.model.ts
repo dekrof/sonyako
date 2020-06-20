@@ -1,8 +1,19 @@
 import { inject, injectable } from "inversify";
 import { AppModel } from "@page/app-layout";
-import { AxiosProjectClient, AxiosFreelancerClient, AxiosCommentClient, CategoryDto, CommentDto, CommentType, ProjectDto, TopDeveloperDto } from "@client/api-client";
+import {
+    AxiosProjectClient,
+    AxiosFreelancerClient,
+    AxiosCommentClient,
+    AxiosUserClient,
+    CategoryDto,
+    CommentDto,
+    CommentType,
+    ProjectDto,
+    TopDeveloperDto,
+    RoleName
+} from "@client/api-client";
 import { action, observable, computed } from "mobx";
-import { debounce } from "helpful-decorators";
+import { delay, once } from 'helpful-decorators';
 
 @injectable()
 export class CategoryListModel {
@@ -11,7 +22,8 @@ export class CategoryListModel {
         @inject(AppModel) private appModel: AppModel,
         @inject(AxiosProjectClient) private projectClient: AxiosProjectClient,
         @inject(AxiosFreelancerClient) private freelancerClient: AxiosFreelancerClient,
-        @inject(AxiosCommentClient) private commentClient: AxiosCommentClient
+        @inject(AxiosCommentClient) private commentClient: AxiosCommentClient,
+        @inject(AxiosUserClient) private userClient: AxiosUserClient
     ) {
     }
 
@@ -64,7 +76,44 @@ export class CategoryListModel {
             .then(value => value.data);
     }
 
-    @action @debounce(300)
+    @action
+    public async getUserProjects(project: ProjectDto = null, freelancer: TopDeveloperDto = null): Promise<Array<{id: number, name: string}>> {
+        if (!this.jwtData) {
+            return [{id: 0, name: "No actions provided. Please, sign-in to continue"}];
+        } else {
+            const userId = Number(this.jwtData.sub);
+            const response = await this.freelancerClient.getFreelancer(userId).then(value => value.data);
+            if (response.success) {
+                const isOwner = response.data.roles.find(role => role.roleName === RoleName.ROLE_OWNER);
+                if (project) {
+                    if (isOwner) {
+                        return [{id: 0, name: "Owners cannot be hired to project"}];
+                    } else {
+                        return [{id: -1, name: "Click to confirm your choose"}];
+                    }
+                }
+                if (freelancer) {
+                    if (isOwner) {
+                        const projects =  await this.freelancerClient.getUserProjects(userId, {status: null})
+                            .then(value => value.data)
+                            .then(value => value.data);
+
+                        if (!projects || projects.length === 0) {
+                            return [{id: 0, name: "You do not have any projects yet"}];
+                        } else {
+                            return projects.map(value => ({id: value.id, name: value.name}))
+                        }
+                    } else {
+                        return [{id: 0, name: "You are not allowed to hire anybody"}]
+                    }
+                }
+            } else {
+                return [{id: 0, name: "No actions provided"}]
+            }
+        }
+    }
+
+    @action @delay(300)
     public async getProjects(categoryUrl: string, page: number, size: number) {
         const retrieveProjects = async () => {
             const category = this.appModel.categories.find(category => category.url === categoryUrl);
@@ -95,7 +144,7 @@ export class CategoryListModel {
         }
     }
 
-    @action @debounce(300)
+    @action @delay(300)
     public async getFreelancers(categoryUrl: string, page: number, size: number) {
         const retrieveFreelancers = async () => {
             const category = this.appModel.categories.find(category => category.url === categoryUrl);

@@ -16,12 +16,13 @@ import { CategoryListModel, CategoryListModule } from "@page/category-list";
 import { Footer, Title } from "@page/app-layout";
 import { context, page, resolve } from "@page/decorator";
 
-import { Divider, List, Tabs, Drawer, Comment, Input, Button, notification } from "antd";
-import { FolderViewOutlined, LikeOutlined, PaperClipOutlined, UserAddOutlined, SendOutlined, ContactsOutlined } from "@ant-design/icons";
+import { Divider, List, Tabs, Drawer, Comment, Input, Button, Menu, Dropdown, notification } from "antd";
+import { FolderViewOutlined, PaperClipOutlined, UserAddOutlined, SendOutlined, ContactsOutlined } from "@ant-design/icons";
 
 import { ProjectDto, TopDeveloperDto, CurrencyType } from '@client/api-client';
 
 import "@page/category-list/category-list.less";
+import { once } from "helpful-decorators";
 
 timeago.register("uk", uk);
 timeago.register("en", en);
@@ -100,7 +101,7 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
                     <Tabs
                         className="category-list-tabs"
                         defaultActiveKey="projects"
-                        onChange={(key: TabKeys) => this.onTabChange(key)}>
+                        onChange={(key: TabKeys) => this.handleTabChange(key)}>
                         <Tabs.TabPane key="projects" tabKey="projects" tab="Projects">
                             <List
                                 itemLayout="vertical"
@@ -149,7 +150,7 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
                 <Drawer
                     closable={false}
                     placement="top"
-                    className="contact-owner-drawer"
+                    className="contact-user-drawer"
                     visible={this.model.isCommentDrawerOpen}
                     footer={this.renderDrawerFooter()}>
                     <Comment
@@ -165,7 +166,7 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
         );
     }
 
-    private onTabChange(key: TabKeys) {
+    private handleTabChange(key: TabKeys) {
         const { projects, freelancers } = this.model;
         if (key === "projects" && projects.length === 0) {
             this.loadProjects(this.category.url);
@@ -288,18 +289,60 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
     private renderProjectActions(project: ProjectDto) {
         return [
             <span key="view-project-action"><FolderViewOutlined /> <Link to={`/project/view/${project.id}`}>View Project</Link></span>,
-            <span key="like-project-action"><LikeOutlined /> Star project</span>,
             <span key="save-project-action"><PaperClipOutlined /> Save project</span>,
-            <span key="hire-project-action"><UserAddOutlined /> Hire Me</span>,
+            <span key="hire-me-action"><UserAddOutlined /><this.hireMenu project={project} /></span>
         ]
     }
 
     private renderFreelancerActions(freelancer: TopDeveloperDto) {
         return [
-            <span key="hire-me-action"><UserAddOutlined /> Hire Me</span>,
-            <span key="view-profile-action"><ContactsOutlined /> <Link to={`/freelancer/view/${freelancer?.id}`}>View Profile</Link></span>,
+            <span key="view-profile-action"><ContactsOutlined /> <Link to={`/profile/view/${freelancer?.id}`}>View Profile</Link></span>,
             <span key="contact-user-action"><a onClick={() => this.openContactDrawer(freelancer)}><SendOutlined /> Contact Freelancer</a></span>,
+            <span key="hire-me-action"><UserAddOutlined /><this.hireMenu freelancer={freelancer} /></span>
         ]
+    }
+
+    private hireMenu = (props: { project?: ProjectDto, freelancer?: TopDeveloperDto }) => {
+        const [menu, setMenu] = React.useState([]);
+        const [real, setReal] = React.useState(true);
+        React.useEffect(() => {
+            const getMenu = async () => {
+                const projects = await this.model.getUserProjects(props.project, props.freelancer);
+                if (projects.length === 1 && projects[0].id <= 0) {
+                    setReal(false);
+                }
+                setMenu(projects);
+            };
+            getMenu();
+        }, [props.project, props.freelancer]);
+
+        return (
+            <Dropdown overlayClassName="hire-me-dropdown" trigger={["click"]} overlay={<Menu>
+                {
+                    !real ? null : <>
+                        <li><strong>Select Your Projects</strong></li>
+                        <Divider plain/>
+                    </>
+                }
+                {
+                    menu.map((value) => (
+                        <Menu.Item prefix="ant-dropdown-menu" disabled={value.id === 0} key={`menu-${value.id}`}>
+                            <a onClick={()=>this.handleHire(value, props.project, props.freelancer)}>{value.name}</a>
+                        </Menu.Item>
+                    ))
+                }
+            </Menu>}><a>Hire Me</a></Dropdown>
+        )
+    }
+
+    private handleHire(value, project, freelancer) {
+        if (value && freelancer) {
+            console.log("hire on behalf of owner");
+        }
+
+        if (value && project) {
+            console.log("hire on behalf of freelancer");
+        }
     }
 
     private renderProjectDescription(project: ProjectDto) {

@@ -22,6 +22,8 @@ public interface UserProjectRepository extends JpaRepository<UserProject, UserPr
 
     List<UserProject> findById_ProjectId(@Param("projectId") Long projectId);
 
+    List<UserProject> findById_UserId(@Param("userId") Long userId);
+
     @Query(
         nativeQuery = true,
         value

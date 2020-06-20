@@ -9,12 +9,34 @@ import en from "@translation/locales/en";
 import uk from "@translation/locales/uk";
 import ru from "@translation/locales/ru";
 
-import { Avatar, Badge, Button, Drawer, Form, Input, Modal, notification, PageHeader, Radio, Space, Typography } from "antd";
-
 import { JwtAuthenticationDto, RoleName } from "@client/api-client";
-
-import { AppModel, AppModule, FooterTarget, Icons, LocaleProvider, LocaleSwitcher, TitleTarget, TopCategoriesMenu } from "@page/app-layout";
 import { context, resolve } from "@page/decorator";
+
+import {
+    Avatar,
+    Badge,
+    Button,
+    Drawer,
+    Form,
+    Input,
+    Modal,
+    notification,
+    PageHeader,
+    Radio,
+    Space,
+    Typography
+} from "antd";
+
+import {
+    AppModel,
+    AppModule,
+    FooterTarget,
+    Icons,
+    LocaleProvider,
+    LocaleSwitcher,
+    TitleTarget,
+    TopCategoriesMenu
+ } from "@page/app-layout";
 
 import {
     CategoryList,
@@ -24,7 +46,8 @@ import {
     ProjectCreate,
     ProjectView,
     SignInPage,
-    SignUpPage
+    SignUpPage,
+    UserView,
 } from "@page/pages";
 
 import "@css/theme.less";
@@ -96,6 +119,7 @@ export default class AppLayout extends React.Component {
                                     <Route path={["/email-verification"]} exact component={EmailVerification}/>
                                     <Route path={["/project/create"]} exact component={ProjectCreate}/>
                                     <Route path={["/project/view/:id"]} component={ProjectView}/>
+                                    <Route path={["/profile/view/:id"]} component={UserView}/>
                                     <Route path={["/category/:categoryUrl"]} component={CategoryList}/>
                                 </Switch>
                                 <Drawer

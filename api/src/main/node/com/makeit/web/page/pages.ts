@@ -6,10 +6,12 @@ import { EmailVerification } from "@page/email-verification";
 import { ProjectCreate } from "@page/project-create";
 import { ProjectView } from "@page/project-view";
 import { CategoryList } from "@page/category-list";
+import { UserView } from "@page/user-view";
 
 export {
     HomePage, SignInPage, SignUpPage,
     EmailConfirmation, EmailVerification,
     ProjectCreate, ProjectView,
     CategoryList,
+    UserView
 };
