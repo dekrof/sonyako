@@ -13,7 +13,7 @@ import {
     RoleName
 } from "@client/api-client";
 import { action, observable, computed } from "mobx";
-import { delay, once } from 'helpful-decorators';
+import { delay, memo } from 'helpful-decorators';
 
 @injectable()
 export class CategoryListModel {
@@ -76,15 +76,17 @@ export class CategoryListModel {
             .then(value => value.data);
     }
 
-    @action
+    @action @memo()
     public async getUserProjects(project: ProjectDto = null, freelancer: TopDeveloperDto = null): Promise<Array<{id: number, name: string}>> {
         if (!this.jwtData) {
             return [{id: 0, name: "No actions provided. Please, sign-in to continue"}];
         } else {
             const userId = Number(this.jwtData.sub);
             const response = await this.freelancerClient.getFreelancer(userId).then(value => value.data);
+
             if (response.success) {
                 const isOwner = response.data.roles.find(role => role.roleName === RoleName.ROLE_OWNER);
+
                 if (project) {
                     if (isOwner) {
                         return [{id: 0, name: "Owners cannot be hired to project"}];
@@ -92,6 +94,7 @@ export class CategoryListModel {
                         return [{id: -1, name: "Click to confirm your choose"}];
                     }
                 }
+
                 if (freelancer) {
                     if (isOwner) {
                         const projects =  await this.freelancerClient.getUserProjects(userId, {status: null})

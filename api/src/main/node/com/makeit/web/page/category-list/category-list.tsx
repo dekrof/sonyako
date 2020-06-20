@@ -327,7 +327,7 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
                 {
                     menu.map((value) => (
                         <Menu.Item prefix="ant-dropdown-menu" disabled={value.id === 0} key={`menu-${value.id}`}>
-                            <a onClick={()=>this.handleHire(value, props.project, props.freelancer)}>{value.name}</a>
+                            <span onClick={()=>this.handleHire(value, props.project, props.freelancer)}>{value.name}</span>
                         </Menu.Item>
                     ))
                 }
@@ -336,6 +336,10 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
     }
 
     private handleHire(value, project, freelancer) {
+        if (!value || value.id === 0) {
+            return;
+        }
+
         if (value && freelancer) {
             console.log("hire on behalf of owner");
         }
