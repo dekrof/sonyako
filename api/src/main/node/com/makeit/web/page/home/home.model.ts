@@ -1,7 +1,7 @@
 import { action, observable, autorun, comparer, computed, toJS } from 'mobx';
 import { inject, injectable } from "inversify";
 
-import { AxiosCommentClient, AxiosFreelancerClient,  AxiosProjectClient , CommentDto, CommentType, TopDeveloperDto, TopProjectDto } from '@client/api-client';
+import { AxiosCommentClient, AxiosFreelancerClient, AxiosProjectClient, CommentDto, CommentType, TopDeveloperDto, TopProjectDto, RoleName, ProjectDto } from '@client/api-client';
 import { AppModel } from "@page/app-layout";
 import { notification } from 'antd';
 
@@ -78,5 +78,60 @@ export class HomeModel {
         return await this.commentClient.saveComment(comment, {headers: {Authorization: `${tokenType} ${accessToken}`}})
             .then(value => value.data)
             .then(value => value.data);
+    }
+
+    @action
+    public async hireFreelancer(userId: number, projectId: number) {
+        const {tokenType, accessToken} = this.appModel.jwt;
+        const hired = await this.freelancerClient.hireFreelancer({userId, projectId}, {headers: {Authorization: `${tokenType} ${accessToken}`}})
+            .then(value => value.data)
+            .then(value => value.data)
+
+        notification.info({
+            message: "Hire Me",
+            description: hired
+                ? "Your proposal is successfully accepted"
+                : "Your proposal is not accepted"
+        });
+    }
+
+    @action
+    public async getUserProjects(project: TopProjectDto = null, freelancer: TopDeveloperDto = null): Promise<Array<{id: number, name: string}>> {
+        if (!this.jwtData) {
+            return [{id: 0, name: "No actions provided. Please, sign-in to continue"}];
+        } else {
+            const userId = Number(this.jwtData.sub);
+            const response = await this.freelancerClient.getFreelancer(userId).then(value => value.data);
+
+            if (response.success) {
+                const isOwner = response.data.roles.find(role => role.roleName === RoleName.ROLE_OWNER);
+
+                if (project) {
+                    if (isOwner) {
+                        return [{id: 0, name: "Owners cannot be hired to project"}];
+                    } else {
+                        return [{id: project.id, name: project.name}];
+                    }
+                }
+
+                if (freelancer) {
+                    if (isOwner) {
+                        const projects =  await this.freelancerClient.getUserProjects(userId, {status: null})
+                            .then(value => value.data)
+                            .then(value => value.data);
+
+                        if (!projects || projects.length === 0) {
+                            return [{id: 0, name: "You do not have any projects yet"}];
+                        } else {
+                            return projects.map(value => ({id: value.id, name: value.name}))
+                        }
+                    } else {
+                        return [{id: 0, name: "You are not allowed to hire anybody"}]
+                    }
+                }
+            } else {
+                return [{id: 0, name: "No actions provided"}]
+            }
+        }
     }
 }

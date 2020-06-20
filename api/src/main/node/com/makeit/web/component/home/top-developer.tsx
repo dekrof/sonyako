@@ -1,18 +1,23 @@
 import * as React from "react";
+import {Link} from "react-router-dom";
 import { observable } from "mobx";
 import { observer } from "mobx-react";
 import { injectIntl, WrappedComponentProps } from "react-intl";
-import { Avatar, Card, Divider, Rate, Space, Tag, Typography } from "antd";
-import { CurrencyType, TopDeveloperDto } from "@client/api-client";
+import { Avatar, Card, Divider, Rate, Space, Tag, Typography, Menu, Dropdown } from 'antd';
+import { ProjectDto, CurrencyType, TopDeveloperDto, TopProjectDto } from '@client/api-client';
+import { resolve } from "inversify-react";
+import { HomeModel } from '../../page/home/home.model';
 
 @observer
 class TopDeveloper extends React.Component<WrappedComponentProps & { developer?: TopDeveloperDto }> {
+
+    @resolve
+    private model: HomeModel;
 
     @observable
     private isFocused: boolean;
 
     public render() {
-        const viewProfileAction = this.renderViewProfileAction();
         const {developer} = this.props;
         const {rate, currency} = developer.rate;
         const {city, countryCode} = developer.address;
@@ -21,8 +26,8 @@ class TopDeveloper extends React.Component<WrappedComponentProps & { developer?:
                 <Card
                     className={this.isFocused ? "top-developer-focused" : "top-developer"}
                     actions={[
-                        "Hire Me",
-                        viewProfileAction
+                        <this.hireMenu key="hire-me-action" freelancer={developer} />,
+                        <Link key="view-profile-action" to={`/profile/view/${developer.id}`}><span>View Profile</span></Link>
                     ]}>
                     <Space direction="horizontal" align="start" size={20}>
                         <Avatar
@@ -54,14 +59,6 @@ class TopDeveloper extends React.Component<WrappedComponentProps & { developer?:
         )
     }
 
-    private renderViewProfileAction() {
-        return (
-            <>
-                <a onClick={() => this.isFocused = !this.isFocused}>View Profile</a>
-            </>
-        )
-    }
-
     private getCurrencySign(currency: CurrencyType): string {
         switch (currency) {
             // @formatter:off
@@ -70,6 +67,59 @@ class TopDeveloper extends React.Component<WrappedComponentProps & { developer?:
             case CurrencyType.UAH: return "₴";
             case CurrencyType.USD: return "$";
             // @formatter:on
+        }
+    }
+
+    private hireMenu = (props: { project?: TopProjectDto, freelancer?: TopDeveloperDto }) => {
+        const [menu, setMenu] = React.useState([]);
+        const [real, setReal] = React.useState(true);
+        React.useEffect(() => {
+            const getMenu = async () => {
+                const projects = await this.model.getUserProjects(props.project, props.freelancer);
+                if (projects.length === 1 && projects[0].id <= 0) {
+                    setReal(false);
+                }
+                setMenu(projects);
+            };
+            getMenu();
+        }, [props.project, props.freelancer]);
+
+        return (
+            <Dropdown overlayClassName="hire-me-dropdown" trigger={["click"]} overlay={<Menu>
+                {
+                    !real ? null : <>
+                        <li>
+                            <strong>
+                            {
+                                !!props.project ? "Confirm project before send" : "Select Your Projects"
+                            }
+                            </strong>
+                        </li>
+                        <Divider plain/>
+                    </>
+                }
+                {
+                    menu.map((value) => (
+                        <Menu.Item prefix="ant-dropdown-menu" disabled={value.id === 0} key={`menu-${value.id}`}>
+                            <span onClick={()=>this.handleHire(value, props.project, props.freelancer)}>{value.name}</span>
+                        </Menu.Item>
+                    ))
+                }
+            </Menu>}><a>Hire Me</a></Dropdown>
+        )
+    }
+
+    private async handleHire(value, project, freelancer) {
+        if (!value || value.id === 0) {
+            return;
+        }
+
+        if (value && freelancer) {
+            await this.model.hireFreelancer(freelancer.id, value.id);
+        }
+
+        if (value && project) {
+            await this.model.hireFreelancer(value.id, project.id);
         }
     }
 }

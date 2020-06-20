@@ -5,9 +5,9 @@ import { resolve } from "inversify-react";
 import { observer } from "mobx-react";
 
 import Time from "react-time";
-import { Card, Avatar, Space, Typography, Divider, Tag } from "antd";
+import { Card, Avatar, Space, Typography, Divider, Tag, Dropdown, Menu } from 'antd';
 
-import { CurrencyType, TopProjectDto } from '@client/api-client';
+import { CurrencyType, TopProjectDto, TopDeveloperDto } from '@client/api-client';
 import { HomeModel } from "@page/home";
 import { toJS } from 'mobx';
 
@@ -74,11 +74,12 @@ class IncomingProject extends React.Component<WrappedComponentProps & { project?
 
     private renderProjectAction(project: TopProjectDto) {
         return [
-            "Get Job",
+            <this.hireMenu key="hire-me-action" project={project} />,
             <span key="contact-owner" onClick={() => this.openContactDrawer(project)}>Contact Owner</span>,
             <span key="view-project"><Link to={`/project/view/${project.id}`}>View Project</Link></span>
         ]
     }
+
     private openContactDrawer(project: TopProjectDto) {
         this.model.activeProject = project;
         this.model.isCommentDrawerOpen = true;
@@ -92,6 +93,59 @@ class IncomingProject extends React.Component<WrappedComponentProps & { project?
             case CurrencyType.UAH: return "₴";
             case CurrencyType.USD: return "$";
             // @formatter:on
+        }
+    }
+
+    private hireMenu = (props: { project?: TopProjectDto, freelancer?: TopDeveloperDto }) => {
+        const [menu, setMenu] = React.useState([]);
+        const [real, setReal] = React.useState(true);
+        React.useEffect(() => {
+            const getMenu = async () => {
+                const projects = await this.model.getUserProjects(props.project, props.freelancer);
+                if (projects.length === 1 && projects[0].id <= 0) {
+                    setReal(false);
+                }
+                setMenu(projects);
+            };
+            getMenu();
+        }, [props.project, props.freelancer]);
+
+        return (
+            <Dropdown overlayClassName="hire-me-dropdown" trigger={["click"]} overlay={<Menu>
+                {
+                    !real ? null : <>
+                        <li>
+                            <strong>
+                            {
+                                !!props.project ? "Confirm project before send" : "Select Your Projects"
+                            }
+                            </strong>
+                        </li>
+                        <Divider plain/>
+                    </>
+                }
+                {
+                    menu.map((value) => (
+                        <Menu.Item prefix="ant-dropdown-menu" disabled={value.id === 0} key={`menu-${value.id}`}>
+                            <span onClick={()=>this.handleHire(value, props.project, props.freelancer)}>{value.name}</span>
+                        </Menu.Item>
+                    ))
+                }
+            </Menu>}><a>Hire Me</a></Dropdown>
+        )
+    }
+
+    private async handleHire(value, project, freelancer) {
+        if (!value || value.id === 0) {
+            return;
+        }
+
+        if (value && freelancer) {
+            await this.model.hireFreelancer(freelancer.id, value.id);
+        }
+
+        if (value && project) {
+            await this.model.hireFreelancer(value.id, project.id);
         }
     }
 }

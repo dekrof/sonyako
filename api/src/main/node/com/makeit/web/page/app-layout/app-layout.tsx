@@ -1,7 +1,7 @@
 import * as React from "react";
-import { FormattedMessage, injectIntl, WrappedComponentProps } from 'react-intl';
+import { FormattedMessage } from "react-intl";
 import { observer, Provider } from "mobx-react";
-import { IValueWillChange, observable, observe, toJS } from 'mobx';
+import { IValueWillChange, observable, observe } from 'mobx';
 import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
 
 import { LocaleStore } from "@translation/index";
@@ -44,7 +44,7 @@ import {
     LocaleSwitcher,
     TitleTarget,
     TopCategoriesMenu
- } from "@page/app-layout";
+} from "@page/app-layout";
 
 import {
     CategoryList,
@@ -69,7 +69,7 @@ const SinceOfTime = (TimeAgo as unknown) as React.Component<TimeAgoProps> & { ne
 
 
 const store = {
-    locale: new LocaleStore("uk", {uk, en, ru})
+    locale: new LocaleStore("uk", { uk, en, ru })
 };
 
 enum SessionStatus {
@@ -91,7 +91,7 @@ const sessionExpiredSoon = <>
 </>;
 
 @context(AppModule) @observer
-export default class AppLayout extends React.Component<WrappedComponentProps> {
+export default class AppLayout extends React.Component {
 
     @resolve
     private model: AppModel;
@@ -123,20 +123,20 @@ export default class AppLayout extends React.Component<WrappedComponentProps> {
                                 <PageHeader
                                     className="app-header"
                                     title={<div className="app-logo"><Link to="/"><span>Make IT</span></Link></div>}
-                                    subTitle={<TitleTarget/>}
+                                    subTitle={<TitleTarget />}
                                     extra={this.renderExtraContent()}
-                                    onBack={() => window.history.back()}/>
-                                <TopCategoriesMenu/>
+                                    onBack={() => window.history.back()} />
+                                <TopCategoriesMenu />
                                 <Switch>
-                                    <Route path={["/"]} exact component={HomePage}/>
-                                    <Route path={["/sign-in"]} exact component={SignInPage}/>
-                                    <Route path={["/sign-up", "/sign-up/(user|owner)/:tab?"]} exact component={SignUpPage}/>
-                                    <Route path={["/email-confirmation"]} exact component={EmailConfirmation}/>
-                                    <Route path={["/email-verification"]} exact component={EmailVerification}/>
-                                    <Route path={["/project/create"]} exact component={ProjectCreate}/>
-                                    <Route path={["/project/view/:id"]} component={ProjectView}/>
-                                    <Route path={["/profile/view/:id"]} component={UserView}/>
-                                    <Route path={["/category/:categoryUrl"]} component={CategoryList}/>
+                                    <Route path={["/"]} exact component={HomePage} />
+                                    <Route path={["/sign-in"]} exact component={SignInPage} />
+                                    <Route path={["/sign-up", "/sign-up/(user|owner)/:tab?"]} exact component={SignUpPage} />
+                                    <Route path={["/email-confirmation"]} exact component={EmailConfirmation} />
+                                    <Route path={["/email-verification"]} exact component={EmailVerification} />
+                                    <Route path={["/project/create"]} exact component={ProjectCreate} />
+                                    <Route path={["/project/view/:id"]} component={ProjectView} />
+                                    <Route path={["/profile/view/:id"]} component={UserView} />
+                                    <Route path={["/category/:categoryUrl"]} component={CategoryList} />
                                 </Switch>
                                 <Drawer
                                     width={520}
@@ -146,9 +146,9 @@ export default class AppLayout extends React.Component<WrappedComponentProps> {
                                     onClose={() => this.isUserDrawerOpen = false}
                                     title={this.renderUserDrawerTitle()}>
                                     <Timeline>
-                                    {
-                                        this.model.history.map(item => this.renderHistoryTimeline(item))
-                                    }
+                                        {
+                                            this.model.history.map(item => this.renderHistoryTimeline(item))
+                                        }
                                     </Timeline>
                                 </Drawer>
                                 <Modal
@@ -160,7 +160,7 @@ export default class AppLayout extends React.Component<WrappedComponentProps> {
                                     footer={this.renderModalFooter()}>
                                     <div>
                                         <Space align="center" direction="horizontal" size={10}>
-                                            <Icons.SessionExpiration width={90} height={90}/>
+                                            <Icons.SessionExpiration width={90} height={90} />
                                             {
                                                 this.isSessionShouldBeExtended
                                                     ? this.renderExtendSessionForm()
@@ -170,7 +170,7 @@ export default class AppLayout extends React.Component<WrappedComponentProps> {
                                     </div>
                                 </Modal>
                             </main>
-                            <FooterTarget/>
+                            <FooterTarget />
                         </>
                     </Router>
                 </LocaleProvider>
@@ -194,7 +194,7 @@ export default class AppLayout extends React.Component<WrappedComponentProps> {
     }
 
     private renderProjectHistory(item: HistoryDto) {
-        const {id, logo: avatarUrl} = item.project;
+        const { id, logo: avatarUrl } = item.project;
 
         const logo =
             <Link to={`/project/view/${id}`} target="blank">
@@ -203,19 +203,19 @@ export default class AppLayout extends React.Component<WrappedComponentProps> {
         return (
             <div className="project-history">
                 <strong>
-                {item.dated ? <><SinceOfTime datetime={item.createdAt} />,</> : null }
-                {   !item.userStatus
+                    {item.dated ? <><SinceOfTime datetime={item.createdAt} />,</> : null}
+                    {!item.userStatus
                         ? "You created project"
                         : item.userStatus === UserStatusType.HIRE_ME
                             ? "You are hiring on project"
                             : item.userStatus === UserStatusType.HIRED
                                 ? "You are hired on project"
                                 : "You are declined on project"
-                }
+                    }
                 </strong>
                 <div>
                     {logo}
-                    <blockquote style={{marginLeft: 50, height: ""}}>
+                    <blockquote style={{ marginLeft: 50, height: "" }}>
                         {item.project.name}
                     </blockquote>
                 </div>
@@ -242,26 +242,26 @@ export default class AppLayout extends React.Component<WrappedComponentProps> {
         let logo = null;
         if (commentedByUser) {
             if (item.commentType === CommentType.PROJECT) {
-               const {id, logo: avatarUrl} = item.belongTo;
-               logo =
-                <Link to={`/project/view/${id}`} target="blank">
-                    <img src={avatarUrl} width={40} height={40} style={{float: "left"}} />
-                </Link>
+                const { id, logo: avatarUrl } = item.belongTo;
+                logo =
+                    <Link to={`/project/view/${id}`} target="blank">
+                        <img src={avatarUrl} width={40} height={40} style={{ float: "left" }} />
+                    </Link>
             } else {
-                const {id, name, surname, avatarUrl} = item.comment.parent.commentator.profile;
+                const { id, name, surname, avatarUrl } = item.comment.parent.commentator.profile;
                 title += ` to ${name} ${surname}`
                 logo =
-                <Link to={`/profile/view/${id}`} target="blank">
-                    <img src={avatarUrl} width={40} height={40} style={{float: "left"}} />
-                </Link>
+                    <Link to={`/profile/view/${id}`} target="blank">
+                        <img src={avatarUrl} width={40} height={40} style={{ float: "left" }} />
+                    </Link>
             }
         } else {
             if (item.commentType === CommentType.PROJECT) {
-                const {id, logo: avatarUrl} = item.belongTo;
-               logo =
-                <Link to={`/project/view/${id}`} target="blank">
-                    <img src={avatarUrl} width={40} height={40} style={{float: "left"}} />
-                </Link>
+                const { id, logo: avatarUrl } = item.belongTo;
+                logo =
+                    <Link to={`/project/view/${id}`} target="blank">
+                        <img src={avatarUrl} width={40} height={40} style={{ float: "left" }} />
+                    </Link>
             } else {
                 const { id, avatarUrl } = item.comment.commentator.profile;
                 title += " to you";
@@ -274,11 +274,11 @@ export default class AppLayout extends React.Component<WrappedComponentProps> {
         return (
             <div className="comment-history">
                 <strong>
-                {item.dated ? <SinceOfTime datetime={item.createdAt} /> : null }, {commentator} {title}
+                    {item.dated ? <SinceOfTime datetime={item.createdAt} /> : null}, {commentator} {title}
                 </strong>
                 <div>
                     {logo}
-                    <blockquote style={{marginLeft: 50, height: ""}}>
+                    <blockquote style={{ marginLeft: 50, height: "" }}>
                         {item.comment.description}
                     </blockquote>
                 </div>
@@ -298,11 +298,11 @@ export default class AppLayout extends React.Component<WrappedComponentProps> {
     private renderExtendSessionForm() {
         return (
             <>
-                <Form layout="vertical" style={{width: 385}}>
+                <Form layout="vertical" style={{ width: 385 }}>
                     <Form.Item
                         label="Password"
                         help="Confirm your identity to extend current session">
-                        <Input.Password name="password"/>
+                        <Input.Password name="password" />
                     </Form.Item>
                 </Form>
             </>
@@ -310,24 +310,24 @@ export default class AppLayout extends React.Component<WrappedComponentProps> {
     }
 
     private renderExtraContent() {
-        const {jwt, helper} = this.model;
+        const { jwt, helper } = this.model;
         return (
             <>
                 <Space size={24}>
-                    <Link to="/sign-in"><FormattedMessage id="app.header.sign-in"/></Link>
-                    <Link to="/sign-up"><FormattedMessage id="app.header.sign-up"/></Link>
-                    <Button type="primary" onClick={() => this.postJob()}><FormattedMessage id="app.header.post-job"/></Button>
-                    <LocaleSwitcher/>
+                    <Link to="/sign-in"><FormattedMessage id="app.header.sign-in" /></Link>
+                    <Link to="/sign-up"><FormattedMessage id="app.header.sign-up" /></Link>
+                    <Button type="primary" onClick={() => this.postJob()}><FormattedMessage id="app.header.post-job" /></Button>
+                    <LocaleSwitcher />
                     {
                         !jwt ? null : <div onClick={() => this.isUserDrawerOpen = true}>
                             <Avatar
                                 shape="square"
-                                style={{background: "#f0f0f0"}}
+                                style={{ background: "#f0f0f0" }}
                                 size={32} src={helper.decodeToken(jwt.accessToken)?.avatarUrl}>
                                 {
                                     !!helper.decodeToken(jwt.accessToken).avatarUrl
                                         ? null
-                                        : <Icons.UserAnonymous width={32} height={32}/>
+                                        : <Icons.UserAnonymous width={32} height={32} />
                                 }
                             </Avatar>
                         </div>
@@ -341,9 +341,9 @@ export default class AppLayout extends React.Component<WrappedComponentProps> {
         return (
             <div>
                 <span
-                    style={{display: "inline", float: "left"}}
+                    style={{ display: "inline", float: "left" }}
                     onClick={() => this.isUserDrawerOpen = false}>
-                    <Icons.ModalClose width={24} height={24}/>
+                    <Icons.ModalClose width={24} height={24} />
                 </span>
                 <Typography.Title>
                     <strong className="title">
@@ -362,7 +362,7 @@ export default class AppLayout extends React.Component<WrappedComponentProps> {
     private computeSessionStatus(token: string) {
         const soon = 60 * 1000, now = Date.now();
 
-        let {exp} = this.model.helper.decodeToken(token);
+        let { exp } = this.model.helper.decodeToken(token);
         exp = exp * 1000;
 
         if (now >= exp) {
@@ -384,7 +384,7 @@ export default class AppLayout extends React.Component<WrappedComponentProps> {
     }
 
     private async postJob() {
-        const {jwt, helper} = this.model;
+        const { jwt, helper } = this.model;
 
         if (!jwt) {
             notification.warn({

@@ -77,7 +77,7 @@ export class CategoryListModel {
             .then(value => value.data);
     }
 
-    @action @memo()
+    @action
     public async getUserProjects(project: ProjectDto = null, freelancer: TopDeveloperDto = null): Promise<Array<{id: number, name: string}>> {
         if (!this.jwtData) {
             return [{id: 0, name: "No actions provided. Please, sign-in to continue"}];

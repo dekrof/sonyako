@@ -7,11 +7,12 @@ import { FormattedHTMLMessage } from "@page/app-layout/lang";
 import { HomeModule, Pictures, HomeModel } from '@page/home';
 import { Title, Footer } from "@page/app-layout";
 
-import { Typography, Space, Button, Avatar, Drawer, Comment, notification } from 'antd';
+import { Typography, Space, Button, Avatar, Drawer, Comment, notification} from "antd";
+import TextArea from "antd/lib/input/TextArea";
+
 import { TopDeveloperCarousel, IncomingProjectCarousel } from "@component/home";
 
 import "@page/home/home.less";
-import TextArea from "antd/lib/input/TextArea";
 
 @page(false) @context(HomeModule) @observer
 class HomePage extends React.Component<WrappedComponentProps & RouteComponentProps> {
@@ -35,9 +36,6 @@ class HomePage extends React.Component<WrappedComponentProps & RouteComponentPro
                             <Typography.Title>
                                 <FormattedHTMLMessage id="com.makeit.web.page.home.find-developers" />
                             </Typography.Title>
-                            <Button type="primary">
-                                <FormattedMessage id="com.makeit.web.page.home.get-started" />
-                            </Button>
                         </div>
                         <Pictures.HomeWorkingTogether width={700} />
                     </article>
