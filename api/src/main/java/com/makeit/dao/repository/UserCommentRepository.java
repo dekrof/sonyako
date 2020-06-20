@@ -18,7 +18,7 @@ import java.util.List;
 @Repository
 public interface UserCommentRepository extends JpaRepository<UserComment, UserCommentId> {
 
-    List<UserComment> findById_UserId(@Param("userId") Long projectId);
+    List<UserComment> findById_UserId(@Param("userId") Long userId);
 
     Page<UserComment> findById_UserId(@Param("userId") Long projectId, Pageable pageable);
 }

@@ -15,6 +15,8 @@ import java.util.Optional;
  * @since 1.0.0
  */
 public interface UserService {
+    List getHistory(Long userId);
+
     /**
      * Finds a user in the database by username
      */

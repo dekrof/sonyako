@@ -567,6 +567,14 @@ export class UserClient<O> {
     }
 
     /**
+     * HTTP GET /api/user/history
+     * Java method: com.makeit.api.controller.UserController.getUserHistory
+     */
+    getUserHistory(options?: O): RestResponse<ApiResponse<HistoryDto[]>> {
+        return this.httpClient.request({ method: "GET", url: uriEncoding`api/user/history`, options: options });
+    }
+
+    /**
      * HTTP POST /api/user/logout
      * Java method: com.makeit.api.controller.UserController.logoutUser
      */
@@ -943,6 +951,33 @@ export interface GrantedAuthority {
     authority: string;
 }
 
+export class HistoryDto {
+    type: HistoryType;
+    commentType: CommentType;
+    userStatus: UserStatusType;
+    project: ProjectDto;
+    comment: CommentDto;
+    createdAt: Date;
+    belongTo: any;
+    dated: boolean;
+
+    static fromData(data: HistoryDto, target?: HistoryDto): HistoryDto {
+        if (!data) {
+            return data;
+        }
+        const instance = target || new HistoryDto();
+        instance.type = data.type;
+        instance.commentType = data.commentType;
+        instance.userStatus = data.userStatus;
+        instance.project = ProjectDto.fromData(data.project);
+        instance.comment = CommentDto.fromData(data.comment);
+        instance.createdAt = data.createdAt;
+        instance.belongTo = data.belongTo;
+        instance.dated = data.dated;
+        return instance;
+    }
+}
+
 export class JwtAuthenticationDto {
     accessToken: string;
     refreshToken: string;
@@ -1040,9 +1075,9 @@ export interface Page<T> {
 export interface Pageable {
     offset: number;
     sort: Sort;
-    pageNumber: number;
     paged: boolean;
     unpaged: boolean;
+    pageNumber: number;
     pageSize: number;
 }
 
@@ -1515,8 +1550,8 @@ export class SkillRatingId {
 }
 
 export class Sort {
-    sorted: boolean;
     unsorted: boolean;
+    sorted: boolean;
     empty: boolean;
 
     static fromData(data: Sort, target?: Sort): Sort {
@@ -1524,8 +1559,8 @@ export class Sort {
             return data;
         }
         const instance = target || new Sort();
-        instance.sorted = data.sorted;
         instance.unsorted = data.unsorted;
+        instance.sorted = data.sorted;
         instance.empty = data.empty;
         return instance;
     }
@@ -1960,6 +1995,11 @@ export const enum DeviceType {
     DEVICE_TYPE_ANDROID = "DEVICE_TYPE_ANDROID",
     DEVICE_TYPE_IOS = "DEVICE_TYPE_IOS",
     DEVICE_TYPE_PC_BOX = "DEVICE_TYPE_PC_BOX",
+}
+
+export const enum HistoryType {
+    PROJECT = "PROJECT",
+    COMMENT = "COMMENT",
 }
 
 export const enum RoleName {

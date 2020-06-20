@@ -1,7 +1,7 @@
 import * as React from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, injectIntl, WrappedComponentProps } from 'react-intl';
 import { observer, Provider } from "mobx-react";
-import { IValueWillChange, observable, observe } from "mobx";
+import { IValueWillChange, observable, observe, toJS } from 'mobx';
 import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
 
 import { LocaleStore } from "@translation/index";
@@ -9,7 +9,7 @@ import en from "@translation/locales/en";
 import uk from "@translation/locales/uk";
 import ru from "@translation/locales/ru";
 
-import { JwtAuthenticationDto, RoleName } from "@client/api-client";
+import { JwtAuthenticationDto, RoleName, HistoryDto, HistoryType, CommentType, UserStatusType } from '@client/api-client';
 import { context, resolve } from "@page/decorator";
 
 import {
@@ -22,10 +22,18 @@ import {
     Modal,
     notification,
     PageHeader,
-    Radio,
     Space,
-    Typography
+    Typography,
+    Timeline
 } from "antd";
+
+import { ClockCircleOutlined } from "@ant-design/icons";
+
+import TimeAgo, { TimeAgoProps } from "timeago-react/lib/timeago-react";
+import * as timeago from "timeago.js";
+import ukl from "timeago.js/lib/lang/uk";
+import rul from "timeago.js/lib/lang/ru";
+import enl from "timeago.js/lib/lang/en_US";
 
 import {
     AppModel,
@@ -51,6 +59,14 @@ import {
 } from "@page/pages";
 
 import "@css/theme.less";
+import { RouteComponentProps } from 'react-router';
+
+timeago.register("uk", ukl);
+timeago.register("en", enl);
+timeago.register("ru", rul);
+
+const SinceOfTime = (TimeAgo as unknown) as React.Component<TimeAgoProps> & { new(props: TimeAgoProps): React.Component<TimeAgoProps> };
+
 
 const store = {
     locale: new LocaleStore("uk", {uk, en, ru})
@@ -75,7 +91,7 @@ const sessionExpiredSoon = <>
 </>;
 
 @context(AppModule) @observer
-export default class AppLayout extends React.Component {
+export default class AppLayout extends React.Component<WrappedComponentProps> {
 
     @resolve
     private model: AppModel;
@@ -129,7 +145,11 @@ export default class AppLayout extends React.Component {
                                     visible={this.isUserDrawerOpen}
                                     onClose={() => this.isUserDrawerOpen = false}
                                     title={this.renderUserDrawerTitle()}>
-                                    test
+                                    <Timeline>
+                                    {
+                                        this.model.history.map(item => this.renderHistoryTimeline(item))
+                                    }
+                                    </Timeline>
                                 </Drawer>
                                 <Modal
                                     visible={this.model.isSecure && this.sessionStatus != SessionStatus.LIVE}
@@ -155,6 +175,114 @@ export default class AppLayout extends React.Component {
                     </Router>
                 </LocaleProvider>
             </Provider>
+        )
+    }
+
+    private renderHistoryTimeline(item: HistoryDto) {
+        return (
+            <Timeline.Item
+                key={Math.random()}
+                dot={item.dated ? <ClockCircleOutlined style={{ fontSize: 16, color: "#222" }} /> : null}
+            >
+                {
+                    item.type === HistoryType.COMMENT
+                        ? this.renderCommentHistory(item)
+                        : this.renderProjectHistory(item)
+                }
+            </Timeline.Item>
+        );
+    }
+
+    private renderProjectHistory(item: HistoryDto) {
+        const {id, logo: avatarUrl} = item.project;
+
+        const logo =
+            <Link to={`/project/view/${id}`} target="blank">
+                <img src={avatarUrl} width={40} height={40} style={{ float: "left" }} />
+            </Link>
+        return (
+            <div className="project-history">
+                <strong>
+                {item.dated ? <><SinceOfTime datetime={item.createdAt} />,</> : null }
+                {   !item.userStatus
+                        ? "You created project"
+                        : item.userStatus === UserStatusType.HIRE_ME
+                            ? "You are hiring on project"
+                            : item.userStatus === UserStatusType.HIRED
+                                ? "You are hired on project"
+                                : "You are declined on project"
+                }
+                </strong>
+                <div>
+                    {logo}
+                    <blockquote style={{marginLeft: 50, height: ""}}>
+                        {item.project.name}
+                    </blockquote>
+                </div>
+            </div>
+        )
+    }
+
+    private renderCommentHistory(item: HistoryDto) {
+
+        if (!item || !item.comment) {
+            return null;
+        }
+
+        let title = item.commentType === CommentType.PROJECT
+            ? "commented in project"
+            : "send comment"
+
+        const commentedByUser = item.comment?.commentator?.id === Number(this.model.jwtData.sub);
+
+        const commentator = commentedByUser
+            ? "You"
+            : `${item.comment?.commentator?.profile.name} ${item.comment?.commentator?.profile.surname}`
+
+        let logo = null;
+        if (commentedByUser) {
+            if (item.commentType === CommentType.PROJECT) {
+               const {id, logo: avatarUrl} = item.belongTo;
+               logo =
+                <Link to={`/project/view/${id}`} target="blank">
+                    <img src={avatarUrl} width={40} height={40} style={{float: "left"}} />
+                </Link>
+            } else {
+                const {id, name, surname, avatarUrl} = item.comment.parent.commentator.profile;
+                title += ` to ${name} ${surname}`
+                logo =
+                <Link to={`/profile/view/${id}`} target="blank">
+                    <img src={avatarUrl} width={40} height={40} style={{float: "left"}} />
+                </Link>
+            }
+        } else {
+            if (item.commentType === CommentType.PROJECT) {
+                const {id, logo: avatarUrl} = item.belongTo;
+               logo =
+                <Link to={`/project/view/${id}`} target="blank">
+                    <img src={avatarUrl} width={40} height={40} style={{float: "left"}} />
+                </Link>
+            } else {
+                const { id, avatarUrl } = item.comment.commentator.profile;
+                title += " to you";
+                logo =
+                    <Link to={`/profile/view/${id}`} target="blank">
+                        <img src={avatarUrl} width={40} height={40} style={{ float: "left" }} />
+                    </Link>
+            }
+        }
+        return (
+            <div className="comment-history">
+                <strong>
+                {item.dated ? <SinceOfTime datetime={item.createdAt} /> : null }, {commentator} {title}
+                </strong>
+                <div>
+                    {logo}
+                    <blockquote style={{marginLeft: 50, height: ""}}>
+                        {item.comment.description}
+                    </blockquote>
+                </div>
+            </div>
         )
     }
 
@@ -192,17 +320,16 @@ export default class AppLayout extends React.Component {
                     <LocaleSwitcher/>
                     {
                         !jwt ? null : <div onClick={() => this.isUserDrawerOpen = true}>
-                            <Badge showZero={false} count={42} style={{marginRight: 9}}>
-                                <Avatar
-                                    style={{background: "#f0f0f0"}}
-                                    size={32} src={helper.decodeToken(jwt.accessToken)?.avatarUrl}>
-                                    {
-                                        !!helper.decodeToken(jwt.accessToken).avatarUrl
-                                            ? null
-                                            : <Icons.UserAnonymous width={32} height={32}/>
-                                    }
-                                </Avatar>
-                            </Badge>
+                            <Avatar
+                                shape="square"
+                                style={{background: "#f0f0f0"}}
+                                size={32} src={helper.decodeToken(jwt.accessToken)?.avatarUrl}>
+                                {
+                                    !!helper.decodeToken(jwt.accessToken).avatarUrl
+                                        ? null
+                                        : <Icons.UserAnonymous width={32} height={32}/>
+                                }
+                            </Avatar>
                         </div>
                     }
                 </Space>
@@ -218,11 +345,16 @@ export default class AppLayout extends React.Component {
                     onClick={() => this.isUserDrawerOpen = false}>
                     <Icons.ModalClose width={24} height={24}/>
                 </span>
-                <Radio.Group defaultValue={DrawerView.TODAY}>
-                    <Radio.Button value={DrawerView.TODAY}>Today</Radio.Button>
-                    <Radio.Button value={DrawerView.NOTIFICATION}>Notification</Radio.Button>
-                    <Radio.Button value={DrawerView.PREFERENCES}>Preferences</Radio.Button>
-                </Radio.Group>
+                <Typography.Title>
+                    <strong className="title">
+                        Your history
+                    </strong>
+                    <a onClick={() => {
+                        localStorage.removeItem("app-model");
+                        this.model.jwt = null;
+                        this.isUserDrawerOpen = false;
+                    }}>Log out</a>
+                </Typography.Title>
             </div>
         );
     }

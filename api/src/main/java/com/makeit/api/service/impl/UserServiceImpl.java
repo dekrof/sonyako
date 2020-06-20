@@ -1,16 +1,28 @@
 package com.makeit.api.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Sets;
 import com.makeit.api.exception.UserLogoutException;
+import com.makeit.api.model.CommentDto;
+import com.makeit.api.model.HistoryDto;
 import com.makeit.api.model.LogoutDto;
+import com.makeit.api.model.ProjectDto;
 import com.makeit.api.model.RegistrationDto;
+import com.makeit.api.model.UserDto;
 import com.makeit.api.service.RefreshTokenService;
 import com.makeit.api.service.RoleService;
 import com.makeit.api.service.UserDeviceService;
 import com.makeit.api.service.UserService;
+import com.makeit.dao.model.CommentType;
+import com.makeit.dao.model.HistoryType;
 import com.makeit.dao.model.Role;
 import com.makeit.dao.model.RoleName;
 import com.makeit.dao.model.User;
+import com.makeit.dao.model.UserProject;
+import com.makeit.dao.model.UserProjectId;
+import com.makeit.dao.repository.ProjectCommentRepository;
+import com.makeit.dao.repository.UserCommentRepository;
+import com.makeit.dao.repository.UserProjectRepository;
 import com.makeit.dao.repository.UserRepository;
 import com.makeit.security.JwtUserDetails;
 import lombok.*;
@@ -20,9 +32,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.time.temporal.ChronoUnit;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author sonnyako <Makydon Sofiia>
@@ -34,6 +50,11 @@ import java.util.Set;
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class UserServiceImpl implements UserService {
 
+    private final ObjectMapper objectMapper;
+    private final UserProjectRepository userProjectRepository;
+    private final UserCommentRepository userCommentRepository;
+    private final ProjectCommentRepository projectCommentRepository;
+
     @Lazy
     @Inject
     private PasswordEncoder passwordEncoder;
@@ -42,6 +63,56 @@ public class UserServiceImpl implements UserService {
     private final RoleService roleService;
     private final UserDeviceService deviceService;
     private final RefreshTokenService refreshTokenService;
+
+    @Override
+    public List getHistory(Long userId) {
+        var comments = userCommentRepository.findById_UserId(userId).stream()
+            .map(userComment -> HistoryDto.builder()
+                .comment(objectMapper.convertValue(userComment.getComment(), CommentDto.class))
+                .createdAt(userComment.getComment().getCreatedAt())
+                .belongTo(objectMapper.convertValue(userComment.getUser(), UserDto.class))
+                .dated(true)
+                .type(HistoryType.COMMENT)
+                .commentType(CommentType.USER)
+                .build()
+            );
+
+        List<UserProject> userProjects = userProjectRepository.findById_UserId(userId);
+        Set<Long> projectIds = userProjects.stream()
+            .map(UserProject::getId)
+            .map(UserProjectId::getProjectId)
+            .collect(Collectors.toSet());
+
+        var projects = userProjects.stream()
+            .map(userProject -> HistoryDto.builder()
+                .type(HistoryType.PROJECT)
+                .project(objectMapper.convertValue(userProject.getProject(), ProjectDto.class))
+                .createdAt(userProject.getProject()
+                    .getCreatedAt()
+                    .plus(userProject.isUserCreator() ? 0 : userProject.getUserStatus().ordinal(), ChronoUnit.MINUTES))
+                .dated(userProject.isUserCreator())
+                .userStatus(userProject.isUserCreator() ? null : userProject.getUserStatus())
+                .build()
+            );
+
+        var stream = Stream.concat(comments, projects);
+
+        var projectComments = projectCommentRepository.findProjectCommentsById_ProjectIdIn(projectIds)
+            .stream()
+            .map(projectComment -> HistoryDto.builder()
+                .comment(objectMapper.convertValue(projectComment.getComment(), CommentDto.class))
+                .createdAt(projectComment.getComment().getCreatedAt())
+                .belongTo(objectMapper.convertValue(projectComment.getProject(), ProjectDto.class))
+                .type(HistoryType.COMMENT)
+                .commentType(CommentType.PROJECT)
+                .dated(true)
+                .build()
+            );
+
+        return Stream.concat(stream, projectComments)
+            .sorted((left, right) -> Comparator.comparing(HistoryDto::getCreatedAt).compare(left, right))
+            .collect(Collectors.toList());
+    }
 
     /**
      * {@inheritDoc}

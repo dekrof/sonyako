@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author sonnyako <Makydon Sofiia>
@@ -17,6 +18,8 @@ import java.util.List;
  */
 @Repository
 public interface ProjectCommentRepository extends JpaRepository<ProjectComment, ProjectCommentId> {
+
+    List<ProjectComment> findProjectCommentsById_ProjectIdIn(@Param("projectIds") Set<Long> projectIds);
 
     List<ProjectComment> findById_ProjectId(@Param("projectId") Long projectId);
 

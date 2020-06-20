@@ -2,6 +2,7 @@ package com.makeit.api.controller;
 
 import com.makeit.api.exception.UpdatePasswordException;
 import com.makeit.api.model.ApiResponse;
+import com.makeit.api.model.HistoryDto;
 import com.makeit.api.model.LogoutDto;
 import com.makeit.api.model.UpdatePasswordDto;
 import com.makeit.api.service.AuthenticationService;
@@ -62,6 +63,19 @@ public class UserController {
     ) {
         LOGGER.info("User: {}, has role(s): {}", currentUser.getUsername(), currentUser.getUser().getRoles());
         return ResponseEntity.ok(currentUser.getUser());
+    }
+
+    @GetMapping("/history")
+    @PreAuthorize("hasRole('USER')")
+    @ApiOperation(
+        value = "Returns the current user profile"
+    )
+    public ApiResponse<List<HistoryDto>> getUserHistory(
+        @ApiIgnore @CurrentUser JwtUserDetails currentUser
+    ) {
+        return ApiResponse.<List<HistoryDto>>data()
+            .data(userService.getHistory(currentUser.getUser().getId()))
+            .build();
     }
 
     /**
