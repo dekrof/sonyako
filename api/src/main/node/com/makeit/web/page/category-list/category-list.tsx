@@ -17,7 +17,7 @@ import { Footer, Title } from "@page/app-layout";
 import { context, page, resolve } from "@page/decorator";
 
 import { Divider, List, Tabs, Drawer, Comment, Input, Button, Menu, Dropdown, notification } from "antd";
-import { FolderViewOutlined, PaperClipOutlined, UserAddOutlined, SendOutlined, ContactsOutlined } from "@ant-design/icons";
+import { FolderViewOutlined, CrownOutlined, UserAddOutlined, SendOutlined, ContactsOutlined } from "@ant-design/icons";
 
 import { ProjectDto, TopDeveloperDto, CurrencyType } from '@client/api-client';
 
@@ -288,15 +288,15 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
 
     private renderProjectActions(project: ProjectDto) {
         return [
-            <span key="view-project-action"><FolderViewOutlined /> <Link to={`/project/view/${project.id}`}>View Project</Link></span>,
-            <span key="save-project-action"><PaperClipOutlined /> Save project</span>,
+            <span key="view-project-action"><FolderViewOutlined /> <Link to={`/project/view/${project.id}`}> View Project</Link></span>,
+            <span key="contact-user-action"><CrownOutlined /> <Link to={`/profile/view/${project.owner.id}`}> View Owner</Link></span>,
             <span key="hire-me-action"><UserAddOutlined /><this.hireMenu project={project} /></span>
         ]
     }
 
     private renderFreelancerActions(freelancer: TopDeveloperDto) {
         return [
-            <span key="view-profile-action"><ContactsOutlined /> <Link to={`/profile/view/${freelancer?.id}`}>View Profile</Link></span>,
+            <span key="view-profile-action"><ContactsOutlined /> <Link to={`/profile/view/${freelancer?.id}`}> View Profile</Link></span>,
             <span key="contact-user-action"><a onClick={() => this.openContactDrawer(freelancer)}><SendOutlined /> Contact Freelancer</a></span>,
             <span key="hire-me-action"><UserAddOutlined /><this.hireMenu freelancer={freelancer} /></span>
         ]
