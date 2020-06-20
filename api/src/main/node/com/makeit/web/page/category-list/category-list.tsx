@@ -52,7 +52,7 @@ const experiences = [
     }
 ];
 
-type TabKeys = "projects" | "freelancers";
+type TabKeys = "projects" | "freelancers" | "owners";
 
 @page(false) @context(CategoryListModule) @observer
 class CategoryList extends React.Component<WrappedComponentProps & RouteComponentProps> {
@@ -89,7 +89,11 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
     }
 
     public render() {
-        const { totalProjects, projectPageSize, projects, totalFreelancers, freelancerPageSize, freelancers } = this.model;
+        const {
+            totalProjects, projectPageSize, projects,
+            totalFreelancers, freelancerPageSize, freelancers,
+            totalOwners, ownersPageSize, owners
+        } = this.model;
         const { categoryUrl } = this.props.match.params as { categoryUrl: string };
         this.category.url = categoryUrl;
 
@@ -136,10 +140,31 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
                                     defaultCurrent: this.page,
                                     defaultPageSize: this.size,
                                     showSizeChanger: true,
-                                    pageSizeOptions: ["4", "10", "20", "30", "40", "50"],
+                                    pageSizeOptions: ["10", "20", "30", "40", "50"],
                                     total: totalFreelancers,
                                     onChange: (page, pageSize) => this.model.getFreelancers(this.category.url, page - 1, pageSize),
                                     onShowSizeChange: (page, pageSize) => this.model.getFreelancers(this.category.url, page - 1, pageSize),
+                                }}
+                            />
+                        </Tabs.TabPane>
+                        <Tabs.TabPane key="owners" tabKey="owners" tab="Owners">
+                            <List
+                                grid={{ gutter: 0, column: 2 }}
+                                size="large"
+                                style={{ width: "100%" }}
+                                renderItem={(freelancer: TopDeveloperDto, index: number) => this.renderFreelancer(freelancer, index)}
+                                dataSource={
+                                    owners
+                                }
+                                pagination={{
+                                    position: "both",
+                                    defaultCurrent: this.page,
+                                    defaultPageSize: this.size,
+                                    showSizeChanger: true,
+                                    pageSizeOptions: ["10", "20", "30", "40", "50"],
+                                    total: totalOwners,
+                                    onChange: (page, pageSize) => this.model.getOwners(this.category.url, page - 1, pageSize),
+                                    onShowSizeChange: (page, pageSize) => this.model.getOwners(this.category.url, page - 1, pageSize),
                                 }}
                             />
                         </Tabs.TabPane>
@@ -166,12 +191,15 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
     }
 
     private handleTabChange(key: TabKeys) {
-        const { projects, freelancers } = this.model;
+        const { projects, freelancers, owners } = this.model;
         if (key === "projects" && projects.length === 0) {
             this.loadProjects(this.category.url);
         }
         if (key === "freelancers" && freelancers.length === 0) {
             this.loadFreelancers(this.category.url);
+        }
+        if (key === "owners" && owners.length === 0) {
+            this.loadOwners(this.category.url);
         }
     }
 
@@ -184,6 +212,12 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
     private loadFreelancers = flow(function* (url: string) {
         if (url) {
             yield this.model.getFreelancers(url, this.page, this.size);
+        }
+    }.bind(this));
+
+    private loadOwners = flow(function* (url: string) {
+        if (url) {
+            yield this.model.getOwners(url, this.page, this.size);
         }
     }.bind(this));
 

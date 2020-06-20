@@ -8,6 +8,7 @@ import com.makeit.api.model.TagDto;
 import com.makeit.api.model.TopDeveloperDto;
 import com.makeit.dao.model.Address;
 import com.makeit.dao.model.Payment;
+import com.makeit.dao.model.RoleName;
 import com.makeit.dao.model.User;
 import com.makeit.dao.model.UserProject;
 import com.makeit.dao.model.UserProjectId;
@@ -83,7 +84,12 @@ public class FreelancerServiceImpl implements com.makeit.api.service.FreelancerS
 
     @Override
     public Page<TopDeveloperDto> getFreelancers(Pageable pageable) {
-        return repository.findAll(pageable).map((user) -> mapper.apply(objectMapper, user));
+        return repository.findUsersByRole(pageable, RoleName.ROLE_FREELANCER.name()).map((user) -> mapper.apply(objectMapper, user));
+    }
+
+    @Override
+    public Page<TopDeveloperDto> getOwners(Pageable pageable) {
+        return repository.findUsersByRole(pageable, RoleName.ROLE_OWNER.name()).map((user) -> mapper.apply(objectMapper, user));
     }
 
     @Override

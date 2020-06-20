@@ -81,6 +81,38 @@ public class FreelancerController {
         }
     }
 
+    @PermitAll
+    @GetMapping("/freelancers/page")
+    public ApiResponse<Page<TopDeveloperDto>> getFreelancersPage(Pageable pageable) {
+        try {
+            return ApiResponse.<Page<TopDeveloperDto>>data()
+                .data(service.getFreelancers(pageable))
+                .build();
+        } catch (Exception ex) {
+            LOGGER.error(ex.getMessage(), ex);
+            return ApiResponse.<Page<TopDeveloperDto>>error()
+                .cause(ex.getMessage())
+                .data(Page.empty())
+                .build();
+        }
+    }
+
+    @PermitAll
+    @GetMapping("/owners/page")
+    public ApiResponse<Page<TopDeveloperDto>> getOwnersPage(Pageable pageable) {
+        try {
+            return ApiResponse.<Page<TopDeveloperDto>>data()
+                .data(service.getOwners(pageable))
+                .build();
+        } catch (Exception ex) {
+            LOGGER.error(ex.getMessage(), ex);
+            return ApiResponse.<Page<TopDeveloperDto>>error()
+                .cause(ex.getMessage())
+                .data(Page.empty())
+                .build();
+        }
+    }
+
     @PostMapping("/hire/freelancer")
     @RolesAllowed({"ROLE_FREELANCER", "ROLE_OWNER"})
     public ApiResponse<Boolean> hireFreelancer(@RequestBody UserProjectDto userProject) {

@@ -54,6 +54,15 @@ export class CategoryListModel {
     @observable
     public freelancerPageSize: number = 0;
 
+    @observable
+    public owners: TopDeveloperDto[] = [];
+
+    @observable
+    public totalOwners: number = 0;
+
+    @observable
+    public ownersPageSize: number = 0;
+
     @computed
     public get jwtData(): any {
         return this.appModel.jwtData;
@@ -168,7 +177,7 @@ export class CategoryListModel {
         const retrieveFreelancers = async () => {
             const category = this.appModel.categories.find(category => category.url === categoryUrl);
             if (category) {
-                const response = await this.freelancerClient.getFreelancers(category.id, { page, size })
+                const response = await this.freelancerClient.getFreelancersPage({ page, size })
                     .then(value => value.data)
                     .then(value => value.data);
 
@@ -187,6 +196,37 @@ export class CategoryListModel {
                 if (++count < 5) {
                     await retrieveFreelancers();
                     if (this.freelancers.length > 0) {
+                        clearInterval(interval);
+                    }
+                }
+            }, 300);
+        }
+    }
+
+    @action @delay(300)
+    public async getOwners(categoryUrl: string, page: number, size: number) {
+        const retrieveOwners = async () => {
+            const category = this.appModel.categories.find(category => category.url === categoryUrl);
+            if (category) {
+                const response = await this.freelancerClient.getOwnersPage({ page, size })
+                    .then(value => value.data)
+                    .then(value => value.data);
+
+                this.category = category;
+                this.owners = response.content;
+                this.totalOwners = response.totalElements;
+                this.ownersPageSize = response.size;
+            }
+        }
+
+        if (this.appModel.categories.length > 0) {
+            await retrieveOwners();
+        } else {
+            let count = 0;
+            const interval = setTimeout(async () => {
+                if (++count < 5) {
+                    await retrieveOwners();
+                    if (this.owners.length > 0) {
                         clearInterval(interval);
                     }
                 }

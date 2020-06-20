@@ -267,6 +267,14 @@ export class FreelancerClient<O> {
     }
 
     /**
+     * HTTP GET /api/freelancer/freelancers/page
+     * Java method: com.makeit.api.controller.FreelancerController.getFreelancersPage
+     */
+    getFreelancersPage(queryParams?: { page?: number; size?: number; sort?: string; }, options?: O): RestResponse<ApiResponse<Page<TopDeveloperDto>>> {
+        return this.httpClient.request({ method: "GET", url: uriEncoding`api/freelancer/freelancers/page`, queryParams: queryParams, options: options });
+    }
+
+    /**
      * HTTP GET /api/freelancer/get/top/nine/freelancers
      * Java method: com.makeit.api.controller.FreelancerController.getTopNineFreelancers
      */
@@ -288,6 +296,14 @@ export class FreelancerClient<O> {
      */
     getFreelancers(categoryId: number, queryParams?: { page?: number; size?: number; sort?: string; }, options?: O): RestResponse<ApiResponse<Page<TopDeveloperDto>>> {
         return this.httpClient.request({ method: "GET", url: uriEncoding`api/freelancer/of/category/${categoryId}`, queryParams: queryParams, options: options });
+    }
+
+    /**
+     * HTTP GET /api/freelancer/owners/page
+     * Java method: com.makeit.api.controller.FreelancerController.getOwnersPage
+     */
+    getOwnersPage(queryParams?: { page?: number; size?: number; sort?: string; }, options?: O): RestResponse<ApiResponse<Page<TopDeveloperDto>>> {
+        return this.httpClient.request({ method: "GET", url: uriEncoding`api/freelancer/owners/page`, queryParams: queryParams, options: options });
     }
 
     /**
@@ -1077,8 +1093,8 @@ export interface Pageable {
     sort: Sort;
     paged: boolean;
     unpaged: boolean;
-    pageNumber: number;
     pageSize: number;
+    pageNumber: number;
 }
 
 /**
@@ -1550,8 +1566,8 @@ export class SkillRatingId {
 }
 
 export class Sort {
-    unsorted: boolean;
     sorted: boolean;
+    unsorted: boolean;
     empty: boolean;
 
     static fromData(data: Sort, target?: Sort): Sort {
@@ -1559,8 +1575,8 @@ export class Sort {
             return data;
         }
         const instance = target || new Sort();
-        instance.unsorted = data.unsorted;
         instance.sorted = data.sorted;
+        instance.unsorted = data.unsorted;
         instance.empty = data.empty;
         return instance;
     }

@@ -22,6 +22,8 @@ public interface FreelancerService {
 
     Page<TopDeveloperDto> getFreelancers(Pageable pageable);
 
+    Page<TopDeveloperDto> getOwners(Pageable pageable);
+
     boolean hireFreelancer(Long userId, Long projectId);
 
     boolean acceptFreelancer(Long userId, Long projectId);

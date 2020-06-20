@@ -2,8 +2,11 @@ package com.makeit.dao.repository;
 
 import com.makeit.dao.model.Role;
 import com.makeit.dao.model.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -66,4 +69,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
             + "LIMIT 9"
     )
     List<User> findTopNineFreelancers();
+
+    @Query(
+        nativeQuery = true,
+        value = "SELECT * FROM make_it.USER usr, make_it.USER_AUTHORITY aut, ROLE rle "
+            + "WHERE aut.user_id = usr.id "
+            + "  AND aut.role_id = rle.id "
+            + "  AND rle.role_name = :roleName"
+    )
+    Page<User> findUsersByRole(Pageable pageable, @Param("roleName") String roleName);
 }
