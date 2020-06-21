@@ -153,6 +153,12 @@ export default {
     "com.makeit.web.page.create.project.description":"Project description",
     "com.makeit.web.page.create.project":"Create project",
 
+    //Category List
+    "com.makeit.web.page.category-list.view.project":"View project",
+    "com.makeit.web.page.category-list.view.owner":"View Owner",
+    "com.makeit.web.page.category-list.contact":"Contact me",
+
+
     //TaskController
     "task.should.not.be.null": "Task should not be null",
     "task.should.not.be.saved.before": "Task should not be saved before",

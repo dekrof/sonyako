@@ -148,6 +148,10 @@ export default {
     "com.makeit.web.page.user-view.projects":"Проекти користувача",
     "com.makeit.web.page.user-view.rate":"Оплата користувача",
 
+    //Category List
+    "com.makeit.web.page.category-list.view.project":"Показати проект",
+    "com.makeit.web.page.category-list.view.owner":"Показати власника",
+    "com.makeit.web.page.category-list.contact":"Зв'язатись зі мною",
     //TaskController
     "task.should.not.be.null": "Відсутнє завдання",
     "task.should.not.be.saved.before": "Завдання не повинно бути збереженим раніше",

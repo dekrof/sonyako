@@ -147,6 +147,10 @@ export default {
     "com.makeit.web.page.user-view.projects":"Проекты пользователя",
     "com.makeit.web.page.user-view.rate":"Оплата пользователя",
 
+    //Category List
+    "com.makeit.web.page.category-list.view.project":"Показать проект",
+    "com.makeit.web.page.category-list.view.owner":"Показать владельца",
+    "com.makeit.web.page.category-list.contact":"Cвязаться со мной",
     //TaskController
     "task.should.not.be.null": "Отсутствует задание",
     "task.should.not.be.saved.before": "Задание не должно быть сохраненным ранее",

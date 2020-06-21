@@ -1,25 +1,25 @@
 import * as React from "react";
-import { injectIntl, WrappedComponentProps } from "react-intl";
-import { RouteComponentProps } from "react-router";
-import { Link } from "react-router-dom";
+import {FormattedMessage, injectIntl, WrappedComponentProps} from "react-intl";
+import {RouteComponentProps} from "react-router";
+import {Link} from "react-router-dom";
 
-import { flow, observable, observe } from 'mobx';
-import { observer } from "mobx-react";
+import {flow, observable, observe} from 'mobx';
+import {observer} from "mobx-react";
 
-import TimeAgo, { TimeAgoProps } from "timeago-react/lib/timeago-react";
+import TimeAgo, {TimeAgoProps} from "timeago-react/lib/timeago-react";
 import * as timeago from "timeago.js";
 import uk from "timeago.js/lib/lang/uk";
 import ru from "timeago.js/lib/lang/ru";
 import en from "timeago.js/lib/lang/en_US";
 
-import { CategoryListModel, CategoryListModule } from "@page/category-list";
-import { Footer, Title } from "@page/app-layout";
-import { context, page, resolve } from "@page/decorator";
+import {CategoryListModel, CategoryListModule} from "@page/category-list";
+import {Footer, Title} from "@page/app-layout";
+import {context, page, resolve} from "@page/decorator";
 
-import { Divider, List, Tabs, Drawer, Comment, Input, Button, Menu, Dropdown, notification } from "antd";
-import { FolderViewOutlined, CrownOutlined, UserAddOutlined, SendOutlined, ContactsOutlined } from "@ant-design/icons";
+import {Divider, List, Tabs, Drawer, Comment, Input, Button, Menu, Dropdown, notification, Checkbox} from "antd";
+import {FolderViewOutlined, CrownOutlined, UserAddOutlined, SendOutlined, ContactsOutlined} from "@ant-design/icons";
 
-import { ProjectDto, TopDeveloperDto, CurrencyType } from '@client/api-client';
+import {ProjectDto, TopDeveloperDto, CurrencyType} from '@client/api-client';
 
 import "@page/category-list/category-list.less";
 
@@ -64,7 +64,7 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
     private textMessage: string;
 
     @observable
-    private category: { url: string } = { url: "" };
+    private category: { url: string } = {url: ""};
 
     private page: number;
 
@@ -81,7 +81,7 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
     }
 
     public componentDidMount() {
-        const { search } = this.props.location;
+        const {search} = this.props.location;
         const params = new URLSearchParams(search);
         const [page, size] = [parseInt(params.get("page")), parseInt(params.get("size"))];
         this.page = isNaN(page) ? 0 : page;
@@ -94,7 +94,7 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
             totalFreelancers, freelancerPageSize, freelancers,
             totalOwners, ownersPageSize, owners
         } = this.model;
-        const { categoryUrl } = this.props.match.params as { categoryUrl: string };
+        const {categoryUrl} = this.props.match.params as { categoryUrl: string };
         this.category.url = categoryUrl;
 
         return (
@@ -109,7 +109,7 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
                             <List
                                 itemLayout="vertical"
                                 size="large"
-                                style={{ width: "100%" }}
+                                style={{width: "100%"}}
                                 renderItem={(project: ProjectDto, index: number) => this.renderProject(project, index)}
                                 dataSource={
                                     projects
@@ -128,9 +128,9 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
                         </Tabs.TabPane>
                         <Tabs.TabPane key="freelancers" tabKey="freelancers" tab="Freelancers">
                             <List
-                                grid={{ gutter: 0, column: 2 }}
+                                grid={{gutter: 0, column: 2}}
                                 size="large"
-                                style={{ width: "100%" }}
+                                style={{width: "100%"}}
                                 renderItem={(freelancer: TopDeveloperDto, index: number) => this.renderFreelancer(freelancer, index)}
                                 dataSource={
                                     freelancers
@@ -149,9 +149,9 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
                         </Tabs.TabPane>
                         <Tabs.TabPane key="owners" tabKey="owners" tab="Owners">
                             <List
-                                grid={{ gutter: 0, column: 2 }}
+                                grid={{gutter: 0, column: 2}}
                                 size="large"
-                                style={{ width: "100%" }}
+                                style={{width: "100%"}}
                                 renderItem={(freelancer: TopDeveloperDto, index: number) => this.renderFreelancer(freelancer, index)}
                                 dataSource={
                                     owners
@@ -170,7 +170,7 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
                         </Tabs.TabPane>
                     </Tabs>
                 </section>
-                <Footer />
+                <Footer/>
                 <Drawer
                     closable={false}
                     placement="top"
@@ -178,11 +178,13 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
                     visible={this.model.isCommentDrawerOpen}
                     footer={this.renderDrawerFooter()}>
                     <Comment
-                        avatar={<img src={this.model.jwtData?.avatarUrl} />}
+                        avatar={<img src={this.model.jwtData?.avatarUrl}/>}
                         author={`${this.model.jwtData?.name} ${this.model.jwtData?.surname}`}
                         content={<>
-                            <Input.TextArea rows={4} onChange={(ev) => this.textMessage = ev.target.value} />
-                            <p><sub>You writing to {this.model.activeFreelancer?.firstName} {this.model.activeFreelancer?.lastName}</sub></p>
+                            <Input.TextArea rows={4} onChange={(ev) => this.textMessage = ev.target.value}/>
+                            <p><sub>You writing
+                                to {this.model.activeFreelancer?.firstName} {this.model.activeFreelancer?.lastName}</sub>
+                            </p>
                         </>}
                     />
                 </Drawer>
@@ -191,7 +193,7 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
     }
 
     private handleTabChange(key: TabKeys) {
-        const { projects, freelancers, owners } = this.model;
+        const {projects, freelancers, owners} = this.model;
         if (key === "projects" && projects.length === 0) {
             this.loadProjects(this.category.url);
         }
@@ -231,19 +233,24 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
                             <span>{freelancer.legalBusiness}</span>
                             <p>
                                 <strong>{`${freelancer.rate.rate}${this.getCurrencySign(freelancer.rate.currency)}/hr`}</strong>
-                                <br />
+                                <br/>
                                 <span>{`${freelancer.address.city}, ${freelancer.address.countryCode}`}</span>
                             </p>
                         </>
                     }
                     avatar={<img src={freelancer.avatarUrl}
-                        width={120}
-                        height={120}
-                        style={{ padding: 2, borderRadius: 2, border: "1px solid #f0f0f0", background: "#fff" }} />}>
+                                 width={120}
+                                 height={120}
+                                 style={{
+                                     padding: 2,
+                                     borderRadius: 2,
+                                     border: "1px solid #f0f0f0",
+                                     background: "#fff"
+                                 }}/>}>
                 </List.Item.Meta>
                 <p>
                 </p>
-                <Divider plain style={{ marginBottom: 0 }} />
+                <Divider plain style={{marginBottom: 0}}/>
             </List.Item>
         )
     }
@@ -303,10 +310,15 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
                     title={`${project.name}`}
                     description={this.renderProjectDescription(project)}
                     avatar={<img src={project.logo}
-                        width={60}
-                        height={60}
-                        style={{ padding: 6, borderRadius: 2, border: "1px solid #f0f0f0", background: "#fff" }} />} />
-                <p dangerouslySetInnerHTML={{ __html: description }}></p>
+                                 width={60}
+                                 height={60}
+                                 style={{
+                                     padding: 6,
+                                     borderRadius: 2,
+                                     border: "1px solid #f0f0f0",
+                                     background: "#fff"
+                                 }}/>}/>
+                <p dangerouslySetInnerHTML={{__html: description}}></p>
                 <p>
                     <strong>Proposals - {project.proposals} person(s). </strong>
                     <span> Rate Per Hour - <span>{project.ratePerHour}{this.getCurrencySign(project.rateCurrency)} </span></span>
@@ -314,24 +326,30 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
                         <em>{payment} </em>{project.fixedTime ? <em>Fixed Time</em> : null}
                     </span>
                 </p>
-                <Divider plain style={{ marginBottom: 0 }} />
+                <Divider plain style={{marginBottom: 0}}/>
             </List.Item>
         )
     }
 
     private renderProjectActions(project: ProjectDto) {
         return [
-            <span key="view-project-action"><FolderViewOutlined /> <Link to={`/project/view/${project.id}`}> View Project</Link></span>,
-            <span key="contact-user-action"><CrownOutlined /> <Link to={`/profile/view/${project.owner.id}`}> View Owner</Link></span>,
-            <span key="hire-me-action"><UserAddOutlined /><this.hireMenu project={project} /></span>
+            <span key="view-project-action"><FolderViewOutlined/> <Link to={`/project/view/${project.id}`}>{
+                <FormattedMessage
+                    id="com.makeit.web.page.category-list.view.project"/>}</Link></span>,
+            <span key="contact-user-action"><CrownOutlined/> <Link to={`/profile/view/${project.owner.id}`}> {
+                <FormattedMessage
+                    id="com.makeit.web.page.category-list.view.owner"/>}</Link></span>,
+            <span key="hire-me-action"><UserAddOutlined/><this.hireMenu project={project}/></span>
         ]
     }
 
     private renderFreelancerActions(freelancer: TopDeveloperDto) {
         return [
-            <span key="view-profile-action"><ContactsOutlined /> <Link to={`/profile/view/${freelancer?.id}`}> View Profile</Link></span>,
-            <span key="contact-user-action"><a onClick={() => this.openContactDrawer(freelancer)}><SendOutlined /> Contact Me</a></span>,
-            <span key="hire-me-action"><UserAddOutlined /><this.hireMenu freelancer={freelancer} /></span>
+            <span key="view-profile-action"><ContactsOutlined/> <Link to={`/profile/view/${freelancer?.id}`}> <FormattedMessage
+                id="com.makeit.web.page.user-view.title"/></Link></span>,
+            <span key="contact-user-action"><a onClick={() => this.openContactDrawer(freelancer)}><SendOutlined/> <FormattedMessage
+                id="com.makeit.web.page.category-list.contact"/></a></span>,
+            <span key="hire-me-action"><UserAddOutlined/><this.hireMenu freelancer={freelancer}/></span>
         ]
     }
 
@@ -355,9 +373,9 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
                     !real ? null : <>
                         <li>
                             <strong>
-                            {
-                                !!props.project ? "Confirm project before send" : "Select Your Projects"
-                            }
+                                {
+                                    !!props.project ? "Confirm project before send" : "Select Your Projects"
+                                }
                             </strong>
                         </li>
                         <Divider plain/>
@@ -366,7 +384,8 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
                 {
                     menu.map((value) => (
                         <Menu.Item prefix="ant-dropdown-menu" disabled={value.id === 0} key={`menu-${value.id}`}>
-                            <span onClick={()=>this.handleHire(value, props.project, props.freelancer)}>{value.name}</span>
+                            <span
+                                onClick={() => this.handleHire(value, props.project, props.freelancer)}>{value.name}</span>
                         </Menu.Item>
                     ))
                 }
@@ -389,13 +408,15 @@ class CategoryList extends React.Component<WrappedComponentProps & RouteComponen
     }
 
     private renderProjectDescription(project: ProjectDto) {
-        const { locale } = this.props.intl;
-        const { name, surname } = project.owner.profile;
+        const {locale} = this.props.intl;
+        const {name, surname} = project.owner.profile;
         return (
             <>
-                <strong>Level - {experiences.find(experience => experience.level = project.requiredLevel).label}. </strong>
+                <strong>Level
+                    - {experiences.find(experience => experience.level = project.requiredLevel).label}. </strong>
                 <span>Est. time {`${project.maxDuration}-${project.maxDuration}, ${project.loe} hr/week`}. </span>
-                <span>Posted: <SinceOfTime datetime={project.createdAt} locale={locale} /> by {`${name} ${surname}`}</span>
+                <span>Posted: <SinceOfTime datetime={project.createdAt}
+                                           locale={locale}/> by {`${name} ${surname}`}</span>
             </>
         );
     }
