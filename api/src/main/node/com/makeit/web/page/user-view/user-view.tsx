@@ -238,7 +238,10 @@ class UserView extends React.Component<WrappedComponentProps & RouteComponentPro
                         </Popconfirm>
                     ]}
                     author={author}
-                    avatar={comment.commentator?.profile?.avatarUrl}
+                    avatar={<a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={`/profile/view/${comment.commentator?.id}`}><img src={comment.commentator?.profile?.avatarUrl} /></a>}
                     content={comment.description}
                     datetime={<span>
                         <Time value={comment.createdAt || Date.now()} format="YYYY-MM-DD HH:mm" style={{color: "#a6a6a9"}}/>

@@ -14,7 +14,6 @@ import { context, resolve } from "@page/decorator";
 
 import {
     Avatar,
-    Badge,
     Button,
     Drawer,
     Form,
@@ -354,6 +353,7 @@ export default class AppLayout extends React.Component {
                         this.model.jwt = null;
                         this.isUserDrawerOpen = false;
                     }}>Log out</a>
+                    <Link to={`/profile/view/${this.model?.jwtData?.sub}`}>Your profile</Link>
                 </Typography.Title>
             </div>
         );

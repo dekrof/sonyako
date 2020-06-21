@@ -85,7 +85,6 @@ class ProjectView extends React.Component<WrappedComponentProps & RouteComponent
     }
 
     private renderProjectArticle() {
-        console.log(this.model.appModel.jwtData);
         const { project, hiredUsers, hiringUsers, declinedUsers } = this.model;
         const { profile } = project?.owner;
 
@@ -337,7 +336,10 @@ class ProjectView extends React.Component<WrappedComponentProps & RouteComponent
                         </Popconfirm>
                     ]}
                     author={author}
-                    avatar={comment.commentator?.profile?.avatarUrl}
+                    avatar={<a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={`/profile/view/${comment.commentator?.id}`}><img src={comment.commentator?.profile?.avatarUrl} /></a>}
                     content={comment.description}
                     datetime={<span>
                         <Time value={comment.createdAt} format="YYYY-MM-DD HH:mm" style={{ color: "#a6a6a9" }} />
