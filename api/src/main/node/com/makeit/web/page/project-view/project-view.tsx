@@ -1,7 +1,7 @@
 import * as React from "react";
 import { RouteComponentProps } from "react-router";
 import { Link } from "react-router-dom";
-import { injectIntl, WrappedComponentProps } from "react-intl";
+import {FormattedMessage, injectIntl, WrappedComponentProps} from "react-intl";
 
 import { Button, Comment, Divider, Form, Input, List, Modal, notification, Popconfirm, Rate, Space, Typography, Dropdown, Menu, Avatar, Card } from 'antd';
 
@@ -73,7 +73,7 @@ class ProjectView extends React.Component<WrappedComponentProps & RouteComponent
         const { projectNotFound, project } = this.model;
         return (
             <>
-                <Title>Project View</Title>
+                <Title>{<FormattedMessage id="com.makeit.web.page.project-view.title"/>}</Title>
                 <section className="project-view">
                     {
                         projectNotFound || !project ? null : this.renderProjectArticle()
@@ -225,7 +225,7 @@ class ProjectView extends React.Component<WrappedComponentProps & RouteComponent
         return (
             <>
                 <Typography.Text>
-                    <h3>About the client</h3>
+                    <h3> {<FormattedMessage id="com.makeit.web.page.project-view.about.cl"/>}</h3>
                 </Typography.Text>
                 <Typography.Text>
                     <dl>
@@ -252,7 +252,7 @@ class ProjectView extends React.Component<WrappedComponentProps & RouteComponent
         return (
             <>
                 <Typography.Text>
-                    <h3>Project details</h3>
+                    <h3>{<FormattedMessage id="com.makeit.web.page.project-view.project.details"/>}</h3>
                 </Typography.Text>
                 <Typography.Text>
                     <dl>
@@ -276,7 +276,7 @@ class ProjectView extends React.Component<WrappedComponentProps & RouteComponent
                 <Divider plain dashed />
                 <Typography.Text>
                     <h3>
-                        Project&apos;s recent history
+                        {<FormattedMessage id="com.makeit.web.page.project-view.history"/>}
                     </h3>
                 </Typography.Text>
                 <List dataSource={comments}

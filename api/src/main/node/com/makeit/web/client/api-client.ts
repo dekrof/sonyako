@@ -1091,25 +1091,25 @@ export class LogoutDto {
 }
 
 export interface Page<T> {
-    totalPages: number;
     totalElements: number;
-    last: boolean;
+    totalPages: number;
     size: number;
     content: T[];
     number: number;
     sort: Sort;
+    last: boolean;
     first: boolean;
-    numberOfElements: number;
     pageable: Pageable;
+    numberOfElements: number;
     empty: boolean;
 }
 
 export interface Pageable {
     offset: number;
     sort: Sort;
+    unpaged: boolean;
     pageNumber: number;
     paged: boolean;
-    unpaged: boolean;
     pageSize: number;
 }
 
@@ -1952,8 +1952,8 @@ export class UserProject {
     project: Project;
     rating: number;
     userStatus: UserStatusType;
-    userCreator: boolean;
     userOwner: boolean;
+    userCreator: boolean;
 
     static fromData(data: UserProject, target?: UserProject): UserProject {
         if (!data) {
@@ -1965,8 +1965,8 @@ export class UserProject {
         instance.project = Project.fromData(data.project);
         instance.rating = data.rating;
         instance.userStatus = data.userStatus;
-        instance.userCreator = data.userCreator;
         instance.userOwner = data.userOwner;
+        instance.userCreator = data.userCreator;
         return instance;
     }
 }

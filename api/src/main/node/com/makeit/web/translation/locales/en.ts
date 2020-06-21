@@ -56,6 +56,15 @@ export default {
     "com.makeit.web.page.sign-up.birthday":"Birthday",
     "com.makeit.web.page.sign-up.avatar.load.description":"Click on picture to upload your own avatar, or",
     "com.makeit.web.page.sign-up.avatar.or.load.description":"to generate a new one.",
+    "com.makeit.web.page.create.description1":"We user the first paragraph of description to highlight the\n" +
+        "most valuable parts of your project.",
+    "com.makeit.web.page.create.description2":"Please, tell us shortly about your project in this paragraph.",
+
+    //project view
+    "com.makeit.web.page.project-view.about.cl":"About the client:",
+    "com.makeit.web.page.project-view.project.details":"Project details",
+    "com.makeit.web.page.project-view.history":"Project`c recent history",
+    "com.makeit.web.page.project-view.title":"Project view",
     //address
     "com.makeit.web.page.sign-up.region":"Region",
     "com.makeit.web.page.sign-up.district":"District",
@@ -65,6 +74,36 @@ export default {
     "com.makeit.web.page.sign-up.entrance.and.appparament":"Entrance&Appparament",
     "com.makeit.web.page.sign-up.entrance.and.location":"Location",
     "com.makeit.web.page.sign-up.address.information":"Address information",
+
+    //user view
+    "com.makeit.web.page.user-view.title":"User Profile",
+    "com.makeit.web.page.user-view.recent.history":"User`s recent history",
+    "com.makeit.web.page.user-view.projects":"User`s projects",
+    "com.makeit.web.page.user-view.rate":"User rate & payment",
+
+    //payment
+    "com.makeit.web.page.sign-up.payment":"Payment",
+    "com.makeit.web.page.sign-up.card.number":"Card number",
+    "com.makeit.web.page.sign-up.card.holder":"Card holder",
+    "com.makeit.web.page.sign-up.valid.thru":"Valid thru",
+    "com.makeit.web.page.sign-up.name.of.business":"Legal name of business",
+    "com.makeit.web.page.sign-up.currency":"Currency",
+    "com.makeit.web.page.sign-up.base.rate":"Base rate",
+    "com.makeit.web.page.sign-up.remittance.info":"Remittance Information",
+    "com.makeit.web.page.sign-up.guaranties":"make guaranties to get you paid up to 7 business days.",
+    "com.makeit.web.page.sign-up.comission":`apply Tax Commission $30 USD per wire to any bank,
+     until you reach the minimum paid cost in your professional level.`,
+    "com.makeit.web.page.sign-up.attest":"I attest that I am the owner and have full authorization to this bank account.",
+    "com.makeit.web.page.sign-up.tax.information":"Tax information",
+    "com.makeit.web.page.sign-up.tax.comission":"Tax comission",
+
+    //skills
+    "com.makeit.web.page.sign-up.professional.skills":"Professional.skills",
+    "com.makeit.web.page.sign-up.skill.description":'Please enter your top skills regarding to the category you choose.\n' +
+    'That will help to find out the best job you are matched with.\n' +
+    'Add your experience to each skill, the average skill level will represent you in our system.',
+    "com.makeit.web.page.sign-up.skill.description1":"No more than 10 skills should be selected. No worry about those skills,\n" +
+    "you can update the selected set whatever you like,\n" +"also you are able to update the experience level when you thought it has grown.",
 
     // home page
     "com.makeit.web.page.home.title": "Home",
@@ -87,6 +126,25 @@ export default {
     "com.makeit.web.page.home.how-it-works-item-3-head": "Payment simplified",
     "com.makeit.web.page.home.how-it-works-item-3-text": "Pay hourly or fixed-price and receive invoices through Make IT. Pay for work you authorize.",
     "com.makeit.web.page.home.incoming-projects": "Discover upcoming projects",
+
+    //project create
+    "com.makeit.web.page.create.project.project.information":"Project information",
+    "com.makeit.web.page.create.project.project.description":"doing the best to provide a quality logo picture for\n" +
+    "your project.\n" +" Every time, while you entering the new name, the new unique logo will be\n" +
+    "immediately ready for your choice.",
+    "com.makeit.web.page.create.project.project.name":"Name",
+    "com.makeit.web.page.create.project.project.category":"Category",
+    "com.makeit.web.page.create.project.project.fix.rate":"Is this project has fixed rate?",
+    "com.makeit.web.page.create.project.project.fix.time":" Is this project fixed by time?",
+    "com.makeit.web.page.create.project.min.duration":"Min. duration(month)",
+    "com.makeit.web.page.create.project.max.duration":"Max. duration(month)",
+    "com.makeit.web.page.create.project.project.tags":"Tags",
+    "com.makeit.web.page.create.project.rate.per.hour":"Rate per hour",
+    "com.makeit.web.page.create.project.proposal":"Proposal (person)",
+    "com.makeit.web.page.create.required.level":"Required level",
+    "com.makeit.web.page.create.required.loe":"Level of Effort (hours per week)",
+    "com.makeit.web.page.create.project.description":"Project description",
+    "com.makeit.web.page.create.project":"Create project",
 
     //TaskController
     "task.should.not.be.null": "Task should not be null",

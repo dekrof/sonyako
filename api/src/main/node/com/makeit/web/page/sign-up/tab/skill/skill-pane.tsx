@@ -1,5 +1,5 @@
 import * as React from "react";
-import { injectIntl, WrappedComponentProps } from 'react-intl';
+import {FormattedMessage, injectIntl, WrappedComponentProps} from 'react-intl';
 
 import { Formik } from "formik";
 import { Form, Select } from "formik-antd";
@@ -199,16 +199,15 @@ class SkillPanel extends React.Component {
                                     return null;
                                 })()
                             }
-                            <Divider orientation="left">Professional Skills</Divider>
+                            <Divider orientation="left">{<FormattedMessage
+                                id="com.makeit.web.page.sign-up.professional.skills"/>}</Divider>
                             <p>
-                                Please enter your top skills regarding to the category you choose.
-                                That will help to find out the best job you are matched with.
-                                Add your experience to each skill, the average skill level will represent you in our system.
+                                {<FormattedMessage
+                                    id="com.makeit.web.page.sign-up.skill.description"/>}
                         </p>
                             <p>
-                                No more than 10 skills should be selected. No worry about those skills,
-                                you can update the selected set whatever you like,
-                                also you are able to update the experience level when you thought it has grown.
+                                {<FormattedMessage
+                                    id="com.makeit.web.page.sign-up.skill.description1"/>}
                         </p>
                             <Divider dashed />
                             <Tabs

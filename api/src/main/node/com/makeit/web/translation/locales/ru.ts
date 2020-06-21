@@ -50,6 +50,7 @@ export default {
     "com.makeit.web.page.sign-up.birthday":"Дата рождения",
     "com.makeit.web.page.sign-up.avatar.load.description":"Нажмите на картинку, чтобы загрузить свой аватар, или",
     "com.makeit.web.page.sign-up.avatar.or.load.description":"чтобы создать новый",
+
     //address
     "com.makeit.web.page.sign-up.region": "Область",
     "com.makeit.web.page.sign-up.district": "Район",
@@ -59,6 +60,31 @@ export default {
     "com.makeit.web.page.sign-up.entrance.and.appparament": "Подъезд&Квартира",
     "com.makeit.web.page.sign-up.entrance.and.location": "Локация",
     "com.makeit.web.page.sign-up.address.information": "Информация об адресе",
+
+    //payment
+    "com.makeit.web.page.sign-up.payment":"Оплата",
+    "com.makeit.web.page.sign-up.card.number":"Номер карты",
+    "com.makeit.web.page.sign-up.card.holder":"Владелец карты",
+    "com.makeit.web.page.sign-up.valid.thru":"Действительна до",
+    "com.makeit.web.page.sign-up.name.of.business":"Юридическое название бизнеса",
+    "com.makeit.web.page.sign-up.currency":"Валюта",
+    "com.makeit.web.page.sign-up.base.rate":"Средняя оплата",
+    "com.makeit.web.page.sign-up.remittance.info":"Информация о денежном переводе",
+    "com.makeit.web.page.sign-up.guaranties":"Гарантирует, чтобы вам заплатили до 7 рабочих дней.",
+    "com.makeit.web.page.sign-up.comission":`применяет налоговую комиссию в размере 30 долларов США за перевод в любой
+    банк,пока вы не достигнете минимальной оплачиваемой стоимости на вашем профессиональном уровне`,
+    "com.makeit.web.page.sign-up.attest":"Я подтверждаю, что я являюсь владельцем и имею полное разрешение на этот банковский счет.",
+    "com.makeit.web.page.sign-up.tax.information":"Налоговая информация",
+    "com.makeit.web.page.sign-up.tax.comission":"Налоговая комиссия",
+
+    //skills
+    "com.makeit.web.page.sign-up.professional.skills":"Профессиональные навыки",
+    "com.makeit.web.page.sign-up.skill.description":'Пожалуйста, укажите свои лучшие навыки в отношении выбранной вами категории.' +
+        'Это поможет найти лучшую работу, которой вы подходите Добавьте свой опыт к каждому навыку, средний уровень навыка ' +
+        'будет представлять вас в нашей системе ',
+    "com.makeit.web.page.sign-up.skill.description1":"Должно быть выбрано не более 10 навыков. Не беспокойся об этих навыках,\n" +
+        "Вы можете обновить выбранный набор по своему усмотрению, ,\n" +"также вы можете обновить уровень опыта, когда он выростет.",
+
     // home page
     "com.makeit.web.page.home.title": "Главная страница",
     "com.makeit.web.page.home.find-developers": "Найдите опытных фрилансеров<br /> и агентства<br /> для вашего проекта",
@@ -80,6 +106,39 @@ export default {
     "com.makeit.web.page.home.how-it-works-item-3-head": "Простая оплата работы",
     "com.makeit.web.page.home.how-it-works-item-3-text": "Платите почасово или по фиксированной цене и полу-чайте счета через Make&nbsp;ІТ. Оплачивайте работу, кото-рую Вы авторозировали.",
     "com.makeit.web.page.home.incoming-projects": "Откройте для себя новые проекты",
+
+    //project create
+    "com.makeit.web.page.create.project.project.information":"Информация о проекте",
+    "com.makeit.web.page.create.project.project.description":"делает все возможное, чтобы обеспечить качественное изображение логотипа" +
+     "вашего проекта. Каждый раз, когда вы вводите новое название,  новый уникальный логотип будет немедленно готов к вашему выбору",
+    "com.makeit.web.page.create.project.project.name":"Название",
+    "com.makeit.web.page.create.project.project.category":"Категория",
+    "com.makeit.web.page.create.project.project.fix.rate":"Этот проект имеет фиксированную ставку?",
+    "com.makeit.web.page.create.project.project.fix.time":"Этот проект зафиксирован по времени?",
+    "com.makeit.web.page.create.project.min.duration":"Минимальная продолжительность (месяц)",
+    "com.makeit.web.page.create.project.max.duration":"Максимальная продолжительность (месяц)",
+    "com.makeit.web.page.create.project.project.tags":"Теги",
+    "com.makeit.web.page.create.project.rate.per.hour":"Оплата за час",
+    "com.makeit.web.page.create.project.proposal":"Предложений (персон)",
+    "com.makeit.web.page.create.required.level":"Требуемый уровень",
+    "com.makeit.web.page.create.required.loe": "Уровень усилий (часов в неделю)",
+    "com.makeit.web.page.create.project.description":"Описание проекта",
+    "com.makeit.web.page.create.project":"Создание проекта",
+    "com.makeit.web.page.create.description1":" Мы используем первый абзац описания, чтобы выделить\n" +
+        "самые важные части вашего проекта.",
+    "com.makeit.web.page.create.description2":"Пожалуйста, расскажите нам коротко о вашем проекте в этом пункте.",
+
+    //project view
+    "com.makeit.web.page.project-view.about.cl":"О клиенте:",
+    "com.makeit.web.page.project-view.project.details":"Детали проекта",
+    "com.makeit.web.page.project-view.history":"Недавняя история проекта",
+    "com.makeit.web.page.project-view.title":"Просмотр проекта",
+
+    //user view
+    "com.makeit.web.page.user-view.title":"Профиль пользователя",
+    "com.makeit.web.page.user-view.recent.history":"Недавняя история пользователя",
+    "com.makeit.web.page.user-view.projects":"Проекты пользователя",
+    "com.makeit.web.page.user-view.rate":"Оплата пользователя",
 
     //TaskController
     "task.should.not.be.null": "Отсутствует задание",

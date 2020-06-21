@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { injectIntl, WrappedComponentProps } from "react-intl";
+import { FormattedMessage, injectIntl, WrappedComponentProps } from "react-intl";
+
 
 import { Divider, Space, Typography } from "antd";
 import Cards, { Focused } from "react-credit-cards";
@@ -37,7 +38,8 @@ class PaymentPanel extends React.Component<WrappedComponentProps> {
                                         return null;
                                     })()
                                 }
-                                <Divider orientation="left">Payment Card</Divider>
+                                <Divider orientation="left">{<FormattedMessage
+                                    id="com.makeit.web.page.sign-up.payment"/>}</Divider>
                                 <Space direction="horizontal" align="center" size={30}>
                                     <div style={{userSelect: "none"}}>
                                         <Cards
@@ -56,7 +58,7 @@ class PaymentPanel extends React.Component<WrappedComponentProps> {
                                             <FormItem
                                                 name="cardNumber"
                                                 validate={value => this.model.validateCardNumber(value)}
-                                                label="Card Number">
+                                                label={<FormattedMessage id="com.makeit.web.page.sign-up.card.number"/>}>
                                                 <InputNumber
                                                     size="large"
                                                     style={{width: "100%"}}
@@ -69,7 +71,7 @@ class PaymentPanel extends React.Component<WrappedComponentProps> {
                                                 <FormItem
                                                     name="cardHolder"
                                                     validate={value => this.model.validateCardHolder(value)}
-                                                    label="Card Holder">
+                                                    label={<FormattedMessage id="com.makeit.web.page.sign-up.card.holder"/>}>
                                                     <Input
                                                         onFocus={() => this.focused = "name"}
                                                         onChange={(ev) => this.model.cardHolder = ev.target.value}
@@ -79,7 +81,7 @@ class PaymentPanel extends React.Component<WrappedComponentProps> {
                                                     name="cardExpireDate"
                                                     validateTrigger={["change", "blur", "focus"]}
                                                     validate={() => this.model.validateCardExpireDate()}
-                                                    label="Valid Thru">
+                                                    label={<FormattedMessage id="com.makeit.web.page.sign-up.valid.thru"/>}>
                                                     <DatePicker
                                                         onFocus={() => this.focused = "expiry"}
                                                         onChange={(ev) => this.model.cardExpireDate = ev.format("YYMM")}
@@ -89,9 +91,10 @@ class PaymentPanel extends React.Component<WrappedComponentProps> {
                                         </Space>
                                     </div>
                                 </Space>
-                                <Divider orientation="left" type="horizontal">Tax Information</Divider>
+                                <Divider orientation="left">{<FormattedMessage
+                                    id="com.makeit.web.page.sign-up.tax.information"/>}</Divider>
                                 <FormItem
-                                    label="Legal Name of Business"
+                                    label={<FormattedMessage id="com.makeit.web.page.sign-up.name.of.business"/>}
                                     validate={value => this.model.validateBeneficiaryName(value)}
                                     name="beneficiaryName">
                                     <Input
@@ -99,7 +102,7 @@ class PaymentPanel extends React.Component<WrappedComponentProps> {
                                         onChange={ev => this.model.beneficiaryName = ev.currentTarget.value}/>
                                 </FormItem>
                                 <FormItem
-                                    label="Currency"
+                                    label={<FormattedMessage id="com.makeit.web.page.sign-up.currency"/>}
                                     name="currency">
                                     <Select
                                         name="currency"
@@ -113,7 +116,7 @@ class PaymentPanel extends React.Component<WrappedComponentProps> {
                                     </Select>
                                 </FormItem>
                                 <FormItem
-                                    label="Base Rate"
+                                    label={<FormattedMessage id="com.makeit.web.page.sign-up.base.rate"/>}
                                     validate={value => this.model.validateRate(value)}
                                     name="rate">
                                     <InputNumber
@@ -122,7 +125,7 @@ class PaymentPanel extends React.Component<WrappedComponentProps> {
                                         onChange={ev => this.model.rate = Number(ev?.toString().trim())}/>
                                 </FormItem>
                                 <FormItem
-                                    label="Remittance Information (optional)"
+                                    label={<FormattedMessage id="com.makeit.web.page.sign-up.remittance.info"/>}
                                     name="remittanceInfo">
                                     <Input.TextArea
                                         name="remittanceInfo"
@@ -131,12 +134,14 @@ class PaymentPanel extends React.Component<WrappedComponentProps> {
                                         onChange={ev => this.model.remittanceInfo = ev.currentTarget.value?.trim()}
                                     />
                                 </FormItem>
-                                <Divider orientation="left" type="horizontal" dashed>Tax Comission</Divider>
+                                <Divider orientation="left">{<FormattedMessage
+                                    id="com.makeit.web.page.sign-up.tax.comission"/>}</Divider>
                                 <Typography.Paragraph>
-                                    <Link to="/">Make IT</Link> make guaranties to get you paid up to 7 business days.
+                                    <Link to="/">Make IT</Link> {<FormattedMessage
+                                    id="com.makeit.web.page.sign-up.guaranties"/>}
                                     <br/>
-                                    <Link to="/">Make IT</Link> apply Tax Commission $30 USD per wire to any bank,
-                                    until you reach the minimum paid cost in your professional level.
+                                    <Link to="/">Make IT</Link> {<FormattedMessage
+                                    id="com.makeit.web.page.sign-up.comission"/>}
                                 </Typography.Paragraph>
                                 <Typography.Paragraph type="secondary">
                                     <dl>
@@ -162,7 +167,8 @@ class PaymentPanel extends React.Component<WrappedComponentProps> {
                                     <Checkbox
                                         name="attestation"
                                         onChange={ev => this.model.attestation = ev.target.checked}>
-                                        I attest that I am the owner and have full authorization to this bank account.
+                                        {<FormattedMessage
+                                            id="com.makeit.web.page.sign-up.attest"/>}
                                     </Checkbox>
                                 </FormItem>
                             </Form>

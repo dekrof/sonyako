@@ -60,6 +60,32 @@ export default {
     "com.makeit.web.page.sign-up.entrance.and.appparament":"Під'їзд&Квартира",
     "com.makeit.web.page.sign-up.entrance.and.location":"Локація",
     "com.makeit.web.page.sign-up.address.information":"Інформація про адресу",
+
+
+    //payment
+    "com.makeit.web.page.sign-up.payment":"Оплата",
+    "com.makeit.web.page.sign-up.card.number":"Номер картки",
+    "com.makeit.web.page.sign-up.card.holder":"Власник картки",
+    "com.makeit.web.page.sign-up.valid.thru":"Дійсна до",
+    "com.makeit.web.page.sign-up.name.of.business":"Юридична назва бізнесу",
+    "com.makeit.web.page.sign-up.currency":"Валюта",
+    "com.makeit.web.page.sign-up.base.rate":"Середня платня",
+    "com.makeit.web.page.sign-up.remittance.info":"Інформація про грошовий переказ",
+    "com.makeit.web.page.sign-up.guaranties":"Гарантує, щоб вам заплатили до 7 рабочих днів.",
+    "com.makeit.web.page.sign-up.comission":`застосовує податкову комісію в розмірі 30 доларів США за пеказ в будь-який 
+    банк, поки ви не досягнете мінімальної оплачуваної вартості на вашому професійному рівні.`,
+    "com.makeit.web.page.sign-up.attest":" Я підтверджую, що я є власником і маю повне право на цей банківський рахунок",
+    "com.makeit.web.page.sign-up.tax.information":"Податкова інформація",
+    "com.makeit.web.page.sign-up.tax.comission":"Податкова комісія",
+
+    //skills
+    "com.makeit.web.page.sign-up.professional.skills":"Професійні навички",
+    "com.makeit.web.page.sign-up.skill.description":'Будь ласка, вкажіть свої кращі навички щодо обраної вами категорії.' +
+    'Це допоможе знайти кращу роботу, на яку ви підходите.  Додайте свій досвід до кожної навички, середній рівень навички ' +
+    'представлятиме вас в нашій систем ',
+    "com.makeit.web.page.sign-up.skill.description1":"Повинно бути обрано не більше 10 навичок. Не турбуйтесь про ці навички,\n" +
+        "Ви можете оновити обраний набір на свій розсуд, \n" +"також ви можете оновити рівень досвіду, коли він виросте.",
+
     // home page
     "com.makeit.web.page.home.title": "Головна строрінка",
     "com.makeit.web.page.home.find-developers": "Знайдіть відомих фрілансерів<br /> та агентства<br /> для вашого проекту",
@@ -81,6 +107,40 @@ export default {
     "com.makeit.web.page.home.how-it-works-item-3-head": "Проста оплата праці",
     "com.makeit.web.page.home.how-it-works-item-3-text": "Оплачуйте погодинну або фіксовану ціну та отримуйте рахунки через Make&nbsp;ІТ. Платіть за роботу, яку Ви авторизуєте.",
     "com.makeit.web.page.home.incoming-projects": "Дізнайтеся про нові проекти",
+
+    //project create
+    "com.makeit.web.page.create.project.project.information":"Інформація про проект",
+    "com.makeit.web.page.create.project.project.description":"робить все можливе, щоб забезпечити якісне зображення логотипу" +
+        "вашого проекту. Щоразу, поки ви вводите нову назву, новий унікальний логотип  негайно буде готовий до вашого вибору.",
+    "com.makeit.web.page.create.project.project.name":"Назва",
+    "com.makeit.web.page.create.project.project.category":"Категорія",
+    "com.makeit.web.page.create.project.project.fix.rate":"Цей проект має фіксовану ставку?",
+    "com.makeit.web.page.create.project.project.fix.time":"Цей проект зафіксований за часом?",
+    "com.makeit.web.page.create.project.min.duration":"Мінімальна тривалість (місяць)",
+    "com.makeit.web.page.create.project.max.duration":"Максимальна тривалість (місяць)",
+    "com.makeit.web.page.create.project.project.tags":"Теги",
+    "com.makeit.web.page.create.project.rate.per.hour":"Оплата за годину",
+    "com.makeit.web.page.create.project.proposal":"Пропозицій (персон)",
+    "com.makeit.web.page.create.required.level":"Потрібний рівень",
+    "com.makeit.web.page.create.required.loe": "Рівень зусиль (годин в тиждень)",
+    "com.makeit.web.page.create.project.description":"Опис проекта",
+    "com.makeit.web.page.create.project":"Створення проекта",
+    "com.makeit.web.page.create.description1":" Ми використовуємо перший абзац опису, щоб виділити\n" +
+        "    найважливіші частини вашого проекту.",
+    "com.makeit.web.page.create.description2":"Розкажіть, будь ласка, коротко про ваш проект у цьому пункті.",
+
+    //project view
+    "com.makeit.web.page.project-view.about.cl":"Про клієнта:",
+    "com.makeit.web.page.project-view.project.details":"Деталі проекту",
+    "com.makeit.web.page.project-view.history":"Недавня історія проекту",
+    "com.makeit.web.page.project-view.title":"Перегляд проекту",
+
+
+    //user view
+    "com.makeit.web.page.user-view.title":"Профіль користувача",
+    "com.makeit.web.page.user-view.recent.history":"Недавня історія користувача",
+    "com.makeit.web.page.user-view.projects":"Проекти користувача",
+    "com.makeit.web.page.user-view.rate":"Оплата користувача",
 
     //TaskController
     "task.should.not.be.null": "Відсутнє завдання",

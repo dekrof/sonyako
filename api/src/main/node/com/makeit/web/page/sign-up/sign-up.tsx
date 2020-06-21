@@ -2,7 +2,7 @@ import * as React from "react";
 import { observer } from "mobx-react";
 import { Link } from "react-router-dom";
 import { RouteComponentProps } from "react-router";
-import { injectIntl, WrappedComponentProps } from "react-intl";
+import {FormattedMessage, injectIntl, WrappedComponentProps} from "react-intl";
 
 import { Button, Checkbox, Space, Tabs, Badge, Popover, List } from "antd";
 
@@ -99,7 +99,7 @@ class SignUpPage extends React.Component<WrappedComponentProps & RouteComponentP
                                     errors={paymentErrors}
                                     showErrors={hasPaymentErrors}
                                     icon={<Icons.UserPayment width={45} height={45} />}
-                                    title="Payment" />}>
+                                    title="Payment"/>}>
                                 <PaymentPanel />
                             </Tabs.TabPane>
                             <Tabs.TabPane

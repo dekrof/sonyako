@@ -1,5 +1,5 @@
 import * as React from "react";
-import { injectIntl, WrappedComponentProps } from 'react-intl';
+import {FormattedMessage, injectIntl, WrappedComponentProps} from 'react-intl';
 import { RouteComponentProps } from 'react-router';
 import { Link } from "react-router-dom";
 
@@ -82,7 +82,7 @@ class UserView extends React.Component<WrappedComponentProps & RouteComponentPro
         const {userNotFound, user} = this.model;
         return (
             <>
-                <Title>User Profile</Title>
+                <Title>{<FormattedMessage id="com.makeit.web.page.user-view.title"/>}</Title>
                 <section className="user-view">
                     {
                         userNotFound || !user ? null : this.renderUserArticle()
@@ -152,7 +152,7 @@ class UserView extends React.Component<WrappedComponentProps & RouteComponentPro
                 <Divider plain dashed/>
                 <Typography.Text>
                     <h3>
-                        User&apos;s projects
+                        {<FormattedMessage id="com.makeit.web.page.user-view.projects"/>}
                     </h3>
                 </Typography.Text>
                 <div>
@@ -201,7 +201,7 @@ class UserView extends React.Component<WrappedComponentProps & RouteComponentPro
                 <Divider plain dashed/>
                 <Typography.Text>
                     <h3>
-                        User&apos;s recent history
+                        {<FormattedMessage id="com.makeit.web.page.user-view.recent.history"/>}
                     </h3>
                 </Typography.Text>
                 <List dataSource={comments}
@@ -297,7 +297,7 @@ class UserView extends React.Component<WrappedComponentProps & RouteComponentPro
         return (
             <>
                 <Typography.Text>
-                    <h3>User rate & payment</h3>
+                    <h3>{<FormattedMessage id="com.makeit.web.page.user-view.rate"/>}</h3>
                 </Typography.Text>
                 <Typography.Text>
                     <dl>
@@ -315,7 +315,7 @@ class UserView extends React.Component<WrappedComponentProps & RouteComponentPro
                 </Typography.Text>
                 <Divider plain/>
                 <Typography.Text>
-                    <h3>User location</h3>
+                    <h3>{<FormattedMessage id="com.makeit.web.page.sign-up.entrance.and.location"/>}</h3>
                 </Typography.Text>
                 <dl>
                     <li>{address.countryCode}, {address.city}</li>

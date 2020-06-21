@@ -1,7 +1,7 @@
 import * as React from "react";
 import { RouteComponentProps } from "react-router";
 import { Link } from "react-router-dom";
-import { injectIntl, WrappedComponentProps } from "react-intl";
+import {FormattedMessage, injectIntl, WrappedComponentProps} from "react-intl";
 import { context, observable, observer, page, resolve } from "@page/decorator";
 
 import Avatars from "@dicebear/avatars";
@@ -127,7 +127,7 @@ class ProjectCreate extends React.Component<WrappedComponentProps & RouteCompone
 
         return (
             <>
-                <Title>Create Project</Title>
+                <Title>{<FormattedMessage id="com.makeit.web.page.create.project"/>}</Title>
                 <section className="project-create">
                     <Formik initialValues={this.model} onSubmit={(__, helpers) => helpers.setSubmitting(false)}>
                         {
@@ -140,7 +140,7 @@ class ProjectCreate extends React.Component<WrappedComponentProps & RouteCompone
                                             return null;
                                         })()
                                     }
-                                    <Divider type="horizontal" orientation="left">Project Information</Divider>
+                                    <Divider orientation="left">{<FormattedMessage id="com.makeit.web.page.create.project.project.information"/>}</Divider>
                                     <Space direction="horizontal" align="start" size={20} className="signup-form-avatar-space">
                                         <div className="signup-form-user-avatar">
                                             <Upload
@@ -155,21 +155,18 @@ class ProjectCreate extends React.Component<WrappedComponentProps & RouteCompone
                                         </div>
                                         <div>
                                             <p>
-                                                <Link to="/">Make IT</Link> doing the best to provide a quality logo picture for
-                                                your project.
-                                                Every time, while you entering the new name, the new unique logo will be
-                                                immediately ready for your choice.
+                                                <Link to="/">Make IT</Link>{<FormattedMessage id="com.makeit.web.page.create.project.project.description"/>}
                                             </p>
                                             <Divider />
                                             <p>
-                                                Click on picture to upload your own avatar, or <span>
-                                                    <a onClick={ev => this.resetLogo(ev)}>reset</a> to generate a new one.
+                                                {<FormattedMessage id= "com.makeit.web.page.sign-up.avatar.load.description"/>}<span>
+                                                    <a onClick={ev => this.resetLogo(ev)}> reset</a>  {<FormattedMessage id= "com.makeit.web.page.sign-up.avatar.or.load.description"/>}
                                                 </span>
                                             </p>
                                         </div>
                                     </Space>
                                     <FormItem
-                                        label="Name"
+                                        label={<FormattedMessage id="com.makeit.web.page.create.project.project.name"/>}
                                         name="name">
                                         <Input
                                             name="name"
@@ -177,7 +174,7 @@ class ProjectCreate extends React.Component<WrappedComponentProps & RouteCompone
                                     </FormItem>
                                     <Space size={20} direction="horizontal" align="end">
                                         <FormItem
-                                            label="Category"
+                                            label={<FormattedMessage id="com.makeit.web.page.create.project.project.category"/>}
                                             name="category">
                                             <Select
                                                 name="category"
@@ -195,12 +192,12 @@ class ProjectCreate extends React.Component<WrappedComponentProps & RouteCompone
                                                 <Checkbox
                                                     onChange={ev => this.model.fixedTime = ev.target.checked}
                                                     name="fixedRate">
-                                                    Is this project has fixed rate?
+                                                    {<FormattedMessage id="com.makeit.web.page.create.project.project.fix.time"/>}
                                                 </Checkbox>
                                                 <Checkbox
                                                     onChange={ev => this.model.fixedRate = ev.target.checked}
                                                     name="fixedRate">
-                                                    Is this project fixed by time?
+                                                    {<FormattedMessage id="com.makeit.web.page.create.project.project.fix.rate"/>}
                                                 </Checkbox>
                                             </Space>
                                         </FormItem>
@@ -208,7 +205,7 @@ class ProjectCreate extends React.Component<WrappedComponentProps & RouteCompone
                                     <Space size={20} direction="horizontal" align="end">
                                         <FormItem
                                             style={{ width: "100%" }}
-                                            label="Tags"
+                                            label={<FormattedMessage id="com.makeit.web.page.create.project.project.tags"/>}
                                             name="tags">
                                             <Select
                                                 onChange={ev => this.model.tags = ev}
@@ -222,7 +219,7 @@ class ProjectCreate extends React.Component<WrappedComponentProps & RouteCompone
                                         <div>
                                             <Space size={20} direction="horizontal">
                                                 <FormItem
-                                                    label="Min Duration (month)"
+                                                    label={<FormattedMessage id="com.makeit.web.page.create.project.min.duration"/>}
                                                     name="minDuration">
                                                     <InputNumber
                                                         onChange={ev => this.model.minDuration = Number(ev.toString())}
@@ -230,7 +227,7 @@ class ProjectCreate extends React.Component<WrappedComponentProps & RouteCompone
                                                         style={{ width: "100%" }} />
                                                 </FormItem>
                                                 <FormItem
-                                                    label="Max Duration (month)"
+                                                    label={<FormattedMessage id="com.makeit.web.page.create.project.max.duration"/>}
                                                     name="maxDuration">
                                                     <InputNumber
                                                         onChange={ev => this.model.maxDuration = Number(ev.toString())}
@@ -244,7 +241,7 @@ class ProjectCreate extends React.Component<WrappedComponentProps & RouteCompone
                                         <div>
                                             <Space size={20} direction="horizontal">
                                                 <FormItem
-                                                    label="Rate per Hour"
+                                                    label={<FormattedMessage id="com.makeit.web.page.create.project.rate.per.hour"/>}
                                                     name="ratePerHour">
                                                     <InputNumber
                                                         onChange={ev => this.model.ratePerHour = Number(ev.toString())}
@@ -252,7 +249,7 @@ class ProjectCreate extends React.Component<WrappedComponentProps & RouteCompone
                                                         style={{ width: "100%" }} />
                                                 </FormItem>
                                                 <FormItem
-                                                    label="Rate Currency"
+                                                    label={<FormattedMessage id="com.makeit.web.page.sign-up.currency"/>}
                                                     name="rateCurrency">
                                                     <Select
                                                         name="rateCurrency"
@@ -270,7 +267,7 @@ class ProjectCreate extends React.Component<WrappedComponentProps & RouteCompone
                                         <div>
                                             <Space size={20} direction="horizontal">
                                                 <FormItem
-                                                    label="Proposals (persons)"
+                                                    label={<FormattedMessage id="com.makeit.web.page.create.project.proposal"/>}
                                                     name="proposals">
                                                     <InputNumber
                                                         onChange={ev => this.model.proposals = Number(ev.toString())}
@@ -278,7 +275,7 @@ class ProjectCreate extends React.Component<WrappedComponentProps & RouteCompone
                                                         style={{ width: "100%" }} />
                                                 </FormItem>
                                                 <FormItem
-                                                    label="Required Level"
+                                                    label={<FormattedMessage id="com.makeit.web.page.create.required.level"/>}
                                                     name="requiredLevel">
                                                     <Select
                                                         name="requiredLevel"
@@ -298,14 +295,14 @@ class ProjectCreate extends React.Component<WrappedComponentProps & RouteCompone
                                         </div>
                                     </Space>
                                     <FormItem
-                                        label="Level of Effort (hours per week)"
+                                        label={<FormattedMessage id="com.makeit.web.page.create.required.loe"/>}
                                         name="loe">
                                         <InputNumber
                                             onChange={ev => this.model.loe = Number(ev.toString())}
                                             name="loe"
                                             style={{ width: "calc(25% - 15px)" }} />
                                     </FormItem>
-                                    <Divider type="horizontal" orientation="left">Project Description</Divider>
+                                    <Divider orientation="left">{<FormattedMessage id="com.makeit.web.page.create.project.description"/>}</Divider>
                                     <FormItem name="description">
                                         <section spellCheck={false} onFocusCapture={() => this.showEditorMenu = true}>
                                             <SmartBlock
@@ -318,10 +315,9 @@ class ProjectCreate extends React.Component<WrappedComponentProps & RouteCompone
                                             <span className="project-create-description-disclaimer">
                                                 <Divider plain dashed />
                                                 <Typography.Text type="secondary">
-                                                    We user the first paragraph of description to highlight the
-                                                    most valuable parts of your project.
+                                                   {<FormattedMessage id="com.makeit.web.page.create.description1"/>}
                                                 <br />
-                                                Please, tell us shortly about your project in this paragraph.
+                                                    {<FormattedMessage id="com.makeit.web.page.create.description2"/>}
                                             </Typography.Text>
                                             </span>
                                         </section>
