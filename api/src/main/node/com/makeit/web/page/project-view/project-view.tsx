@@ -90,7 +90,7 @@ class ProjectView extends React.Component<WrappedComponentProps & RouteComponent
         const { profile } = project?.owner;
 
         return (
-            <Space direction="horizontal" size={20}>
+            <Space direction="horizontal" size={20} style={!project.active ? {filter: "grayscale(1)"}: null}>
                 <article>
                     <div>
                         <img
@@ -128,7 +128,9 @@ class ProjectView extends React.Component<WrappedComponentProps & RouteComponent
                             <>
                                 <Divider plain dashed />
                                 <Space direction="vertical" size={20} align="center">
-                                    <Button danger>Close Project</Button>
+                                    <Button danger onClick={() => this.model.changeProjectStatus()}>
+                                        {project.active ? "Close": "Activate"} Project
+                                    </Button>
                                 </Space>
                             </>
                             : null

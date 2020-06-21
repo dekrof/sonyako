@@ -49,6 +49,14 @@ export class ProjectViewModel {
     }
 
     @action
+    public async changeProjectStatus() {
+        const {tokenType, accessToken} = this.appModel.jwt;
+        await this.projectClient.changeStatus(this.project.id, {headers: {Authorization: `${tokenType} ${accessToken}`}})
+            .then(value => value.data.data)
+            .then(value => this.project.active = value);
+    }
+
+    @action
     public async declineFreelancer(user: UserDto) {
         const {tokenType, accessToken} = this.appModel.jwt;
         const response = await this.freelancerClient.declineFreelancer({
