@@ -33,6 +33,13 @@ export default {
 
     // sign-up page
     "sign-up.title": "Регистрация",
+    "sign-up.profile":"Профиль",
+    "sign-up.address":"Адрес",
+    "sign-up.payment":"Оплата",
+    "sign-up.skills":"Навыки",
+    "sign-up.sign-up1":"Регистрация",
+    "sign-up.agree":"Я соглашаюсь с  ",
+    "sign-up.agree1":"Условиями и положениями",
 
     //contact information
     "com.makeit.web.page.sign-up.contact.information": "Контактная информация",

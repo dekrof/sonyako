@@ -34,7 +34,13 @@ export default {
 
     // sign-up page
     "sign-up.title": "Реєстрація",
-
+    "sign-up.profile":"Профіль",
+    "sign-up.address":"Адреса",
+    "sign-up.payment":"Оплата",
+    "sign-up.skills":"Навички",
+    "sign-up.sign-up1":"Реєстрація",
+    "sign-up.agree":"Я погоджуюсь з ",
+    "sign-up.agree[1]":"Умовами й положеннями",
     //contact information
     "com.makeit.web.page.sign-up.contact.information":"Контактна інформація",
     "com.makeit.web.page.sign-up.user.type":"Тип користувача",

@@ -81,7 +81,7 @@ class SignUpPage extends React.Component<WrappedComponentProps & RouteComponentP
                                     errors={profileErrors}
                                     showErrors={hasProfileErrors}
                                     icon={<Icons.UserContact width={45} height={45} />}
-                                    title="Profile" />}>
+                                    title={t("sign-up.profile")} />}>
                                 <UserPanel />
                             </Tabs.TabPane>
                             <Tabs.TabPane
@@ -90,7 +90,7 @@ class SignUpPage extends React.Component<WrappedComponentProps & RouteComponentP
                                     errors={addressErrors}
                                     showErrors={hasAddressErrors}
                                     icon={<Icons.UserAddress width={45} height={45} />}
-                                    title="Address" />}>
+                                    title={t("sign-up.address")} />}>
                                 <AddressPanel />
                             </Tabs.TabPane>
                             <Tabs.TabPane
@@ -99,7 +99,7 @@ class SignUpPage extends React.Component<WrappedComponentProps & RouteComponentP
                                     errors={paymentErrors}
                                     showErrors={hasPaymentErrors}
                                     icon={<Icons.UserPayment width={45} height={45} />}
-                                    title="Payment"/>}>
+                                    title={t("sign-up.payment")} />}>
                                 <PaymentPanel />
                             </Tabs.TabPane>
                             <Tabs.TabPane
@@ -108,7 +108,7 @@ class SignUpPage extends React.Component<WrappedComponentProps & RouteComponentP
                                     errors={skillErrors}
                                     showErrors={hasSkillErrors}
                                     icon={<Icons.UserSkills width={45} height={45} />}
-                                    title="Skills" />}>
+                                    title={t("sign-up.skills")} />}>
                                 <SkillPanel />
                             </Tabs.TabPane>
                         </Tabs>
@@ -124,11 +124,11 @@ class SignUpPage extends React.Component<WrappedComponentProps & RouteComponentP
                                     style={{ width: 126 }}
                                     disabled={!this.model.isTermAndConditionAccepted}
                                     onClick={() => this.model.submitRegistration(this.props.history)}>
-                                    Sign Up
+                                    {t("sign-up.sign-up1")}
                             </Button>
                                 <Checkbox
                                     onChange={ev => this.model.isTermAndConditionAccepted = ev.target.checked}>
-                                    I agree with <a>Terms and Conditions</a> of <Link to="/">Make IT</Link> company.
+                                    {t("sign-up.agree")}<a>{t("sign-up.agree1")}</a>  <Link to="/">Make IT</Link> company.
                                 </Checkbox>
                             </Space>
                         </div>

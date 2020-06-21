@@ -39,6 +39,13 @@ export default {
 
     // sign-up page
       "sign-up.title": "Sign Up",
+      "sign-up.profile":"Profile",
+      "sign-up.address":"Address",
+      "sign-up.payment":"Payment",
+      "sign-up.skills":"Skills",
+      "sign-up.sign-up1":"Sign-up",
+      "sign-up.agree":"I agree with ",
+      "sign-up.agree1":"Terms and Conditions",
 
     //contact information
     "com.makeit.web.page.sign-up.user.type":"User type",
