@@ -306,7 +306,7 @@ class ProjectView extends React.Component<WrappedComponentProps & RouteComponent
                     <Button
                         onClick={() => this.addComment(currentComment)}
                         loading={isCommentBeingSaved} type="ghost">
-                        Add Comment
+                        <FormattedMessage id="com.makeit.web.page.project-view.add.comment"/>
                     </Button>
                 </Form.Item>
             </Form>
@@ -325,7 +325,7 @@ class ProjectView extends React.Component<WrappedComponentProps & RouteComponent
                     key={`list-item-comment-${comment.id}`}
                     actions={[
                         <a key="comment-nested-reply-to"
-                            onClick={ev => this.renderCommentPopup(comment)}>Reply to {author}</a>,
+                            onClick={ev => this.renderCommentPopup(comment)}><FormattedMessage id="com.makeit.web.page.project-view.reply.to"/> {author}</a>,
                         <Divider type="vertical" key={Math.random()} />,
                         <Popconfirm
                             key={Math.random()}
@@ -333,7 +333,7 @@ class ProjectView extends React.Component<WrappedComponentProps & RouteComponent
                             title="Are you sure delete this comment?"
                             onConfirm={() => this.deleteComment(comment)}
                             okText="Yes" cancelText="No">
-                            <a key="comment-nested-delete">Delete comment</a>
+                            <a key="comment-nested-delete"><FormattedMessage id="com.makeit.web.page.project-view.delete.comment"/></a>
                         </Popconfirm>
                     ]}
                     author={author}

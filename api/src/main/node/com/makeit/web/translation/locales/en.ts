@@ -1,6 +1,7 @@
 import {FormattedMessage} from "react-intl";
 import {FormItem} from "formik-antd";
 import * as React from "react";
+import {Popconfirm} from "antd";
 
 export default {
     // app-layout
@@ -72,6 +73,9 @@ export default {
     "com.makeit.web.page.project-view.project.details":"Project details",
     "com.makeit.web.page.project-view.history":"Project`c recent history",
     "com.makeit.web.page.project-view.title":"Project view",
+    "com.makeit.web.page.project-view.delete.comment":"Delete comment",
+    "com.makeit.web.page.project-view.reply.to":"Reply to",
+    "com.makeit.web.page.project-view.add.comment":"Add comment",
     //address
     "com.makeit.web.page.sign-up.region":"Region",
     "com.makeit.web.page.sign-up.district":"District",

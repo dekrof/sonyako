@@ -140,8 +140,9 @@ export default {
     "com.makeit.web.page.project-view.project.details":"Деталі проекту",
     "com.makeit.web.page.project-view.history":"Недавня історія проекту",
     "com.makeit.web.page.project-view.title":"Перегляд проекту",
-
-
+    "com.makeit.web.page.project-view.delete.comment":"Видалити коментар",
+    "com.makeit.web.page.project-view.reply.to":"Відповісти",
+    "com.makeit.web.page.project-view.add.comment":"Додати коментар",
     //user view
     "com.makeit.web.page.user-view.title":"Профіль користувача",
     "com.makeit.web.page.user-view.recent.history":"Недавня історія користувача",
